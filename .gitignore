@@ -1,5 +1,6 @@
 #visual studio files
 *.avrgccproj
+Debug/
 
 # Object files
 *.o

@@ -10,8 +10,11 @@
 
 int main(void)
 {
+	DDRB |= (1 << DDB1);
     while(1)
     {
+		PORTB |= (1 << DDB1);
+		PORTB &= ~(1 << DDB1);
         //TODO:: Please write your application code 
     }
 }
