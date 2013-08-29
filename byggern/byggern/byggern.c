@@ -8,9 +8,9 @@
 #include <util/delay.h>
 #include <avr/io.h>
 
-	void Wait()
+	void Wait(int waitTime)
 	{
-		for(uint8_t i=0;i<2;i++)
+		for(uint8_t i=0;i<waitTime;i++)
 		{
 			_delay_loop_2(0);
 		}
@@ -19,6 +19,7 @@
 int main(void)
 {
 	DDRB = 0xFF;
+	Wait(10);
 	PORTB = 0x80;
     while(1)
     {
@@ -28,7 +29,7 @@ int main(void)
 			if(i == 0){
 				PORTB |= (1 << DDB7);
 			}
-			Wait();
+			Wait(2);
 		}
 		
 		
