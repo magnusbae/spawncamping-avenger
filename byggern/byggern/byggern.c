@@ -7,6 +7,10 @@
 
 #include <util/delay.h>
 #include <avr/io.h>
+#include <stdio.h>
+void write(char val);
+char read_();
+void set_initial(uint8_t baud_rate_value);
 
 	void Wait(int waitTime)
 	{
@@ -18,21 +22,36 @@
 	
 int main(void)
 {
-	DDRB = 0xFF;
-	Wait(10);
-	PORTB = 0x80;
+	set_initial(31);
     while(1)
     {
-		for (int i = 0; i < 8; i++){
-			PORTB = (PORTB >> 1);
-			
-			if(i == 0){
-				PORTB |= (1 << DDB7);
-			}
-			Wait(2);
-		}
-		
-		
-        //TODO:: Please write your application code 
+		//while(!(UCSR0A & (1<<RXC0))){
+		//}
+		write('a');
+		//while(!(UCSR0A & (1<<TXC0))){
+		//}
+        read_();
     }
+}
+
+void set_initial(uint8_t baud_rate_value){
+	
+	
+	UBRR0H=(8>>baud_rate_value);
+	UBRR0L=baud_rate_value;
+	UCSR0C|=(1<<URSEL0)|(1<<UCSZ01)|(1<<UCSZ00);
+	UCSR0B|=(1<<RXEN0)|(1<<TXEN0);
+	UCSR0B|=(1<<RXCIE0)|(1<<TXCIE0);
+}
+
+char read_(){
+	
+	
+	return UDR0;
+}
+
+void write(char val){
+
+	
+	UDR0=val;		
 }
