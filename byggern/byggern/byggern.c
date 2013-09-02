@@ -23,14 +23,20 @@ void set_initial(uint8_t baud_rate_value);
 int main(void)
 {
 	set_initial(31);
+	fdevopen(write, read_);
     while(1)
     {
-		//while(!(UCSR0A & (1<<RXC0))){
-		//}
-		write('a');
-		//while(!(UCSR0A & (1<<TXC0))){
-		//}
-        read_();
+		
+		char a = read_();
+		if(a == 'p'){
+			write(a);
+		}else{
+			printf("Nothing to see here ");
+		}
+		
+		
+		
+			        
     }
 }
 
@@ -47,11 +53,18 @@ void set_initial(uint8_t baud_rate_value){
 char read_(){
 	
 	
+	while(!(UCSR0A & (1<<RXC0))){
+		Wait(1);
+	}
+	
 	return UDR0;
 }
 
 void write(char val){
-
+	
+	while(!(UCSR0A & (1<<UDRE0))){
+	}
 	
 	UDR0=val;		
 }
+
