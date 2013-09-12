@@ -30,8 +30,7 @@ void SRAM_test(void)
 		}
 		//printf("SRAM OK (write phase): ext_ram[%d] = %02X (should be %02X). Address is %02X\r\n", i, ext_ram[i], testvalue, i);  //For verifying
 	}
-	for
-	(i = 0; i < 0x800; i++) {
+	for	(i = 0; i < 0x800; i++) {
 		testvalue = ~(i % 256);
 		if (ext_ram[i] != testvalue) {
 			printf("SRAM error (read phase): ext_ram[%d] = %02X (should be %02X)\r\n", i, ext_ram[i], testvalue);
@@ -56,9 +55,23 @@ int main(void)
 	print_welcome();
 	printf("UART Initialized\r\n");
 	
-	MCUCR|=(1<<SRE);
-
-	SRAM_test();
+	//MCUCR|=(1<<SRE);
+	//SRAM_test();
+	
+	DDRC |= (1<<PC0) | (1<<PC1) | (1<<PC2);
+	
+	PORTC = (1<<PC0);
+	Wait(150);
+	printf("a");
+	
+	PORTC = (1<<PC1);
+	Wait(150);
+	printf("b");
+	
+	PORTC = (1<<PC2);
+	Wait(150);
+	printf("c");
+	
 	printf("Test complete!\r\n\r\n");
     while(1){
 	}

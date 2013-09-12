@@ -22,12 +22,11 @@ entity adress_decoder  is
 	attribute LOC of a11	: signal is "P1";
 	attribute LOC of a10	: signal is "P2";
 	attribute LOC of a9	: signal is "P3";
-	attribute LOC of a8	: signal is "P4";
 end adress_decoder;
 
 architecture behavioral of adress_decoder is begin
-	oled_cs <= (not a8) and (not a9) and (not a10);
-	adc_cs <= (not a8) and a9;
-	ram_cs <= a8;
+	oled_cs <= (not a10) and (not a9) and a11;
+	adc_cs <= (not a9) and a10;
+	ram_cs <= a9;
 end behavioral;
 
