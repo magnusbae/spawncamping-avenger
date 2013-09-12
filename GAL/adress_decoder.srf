@@ -5,7 +5,7 @@
 #Hostname: SANNTID05
 
 $ Start of Compile
-#Thu Sep 12 17:06:14 2013
+#Thu Sep 12 17:41:49 2013
 
 Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
 Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
@@ -15,9 +15,11 @@ Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
 VHDL syntax check successful!
 @N: CD630 :"C:\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behave 
 Post processing for work.adress_decoder.behave
+@W: CL240 :"C:\gal\galmodule.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
+@W: CL159 :"C:\gal\galmodule.vhd":11:2:11:3|Input a8 is unused
 @END
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 12 17:06:14 2013
+# Thu Sep 12 17:41:49 2013
 
 ###########################################################]
 Synopsys CPLD Technology Mapper, Version map500lat, Build 127R, Built Apr 21 2010
@@ -28,7 +30,7 @@ Resource Usage Report
 
 Simple gate primitives:
 IBUF            3 uses
-OBUF            3 uses
+OBUF            4 uses
 AND2            3 uses
 INV             2 uses
 
@@ -37,6 +39,6 @@ INV             2 uses
 D-2009.12LC-1
 Mapper successful!
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 12 17:06:15 2013
+# Thu Sep 12 17:41:50 2013
 
 ###########################################################]

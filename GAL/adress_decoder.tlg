@@ -1,2 +1,4 @@
 @N: CD630 :"C:\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behave 
 Post processing for work.adress_decoder.behave
+@W: CL240 :"C:\gal\galmodule.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
+@W: CL159 :"C:\gal\galmodule.vhd":11:2:11:3|Input a8 is unused

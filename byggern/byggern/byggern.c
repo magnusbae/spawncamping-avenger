@@ -24,9 +24,6 @@ void SRAM_test(void)
 	printf("Starting SRAM test...\r\n");
 	for (i = 0; i < 0x800; i++) {
 		testvalue = ~(i % 256);
-		if (i == 0x500){
-			Wait(1000);
-		}
 		ext_ram[i] = testvalue;
 		if (ext_ram[i] != testvalue) {
 			printf("SRAM error (write phase): ext_ram[%02X] = %02X (should be %02X)\r\n", (0x1800+i), ext_ram[i], testvalue);
