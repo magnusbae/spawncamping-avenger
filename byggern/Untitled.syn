@@ -1,0 +1,10 @@
+JDF B
+// Created by Version 1.4 
+PROJECT Untitled
+DESIGN untitled Normal
+DEVKIT GAL16V8D-15QP
+ENTRY Pure VHDL
+MODULE galprogramvdhl.vhd
+MODSTYLE GALProg Normal
+SYNTHESIS_TOOL Synplify
+TOPMODULE GALProg
