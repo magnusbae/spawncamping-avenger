@@ -1,0 +1,54 @@
+line 3895, col 57: Option set not found: vcs_actel_smart_fusion_lib.
+
+
+Running in Lattice mode
+
+
+Starting:    C:\ISPLEVER_CLASSIC1_4\synpbase\bin\mbin\synbatch.exe
+Install:     C:\ISPLEVER_CLASSIC1_4\synpbase
+Date:        Thu Sep 12 14:33:48 2013
+Version:     D-2009.12LC-1
+
+
+Arguments:   -product synplify_pro  -batch c:/gal\adress_decoder.prj
+ProductType: synplify_pro
+
+
+
+
+
+
+Running synthesis on adress_decoder:gal
+
+log file: "C:\gal\adress_decoder.srf"
+
+
+
+Running flow compile_flow ...
+
+
+Running HDL Compiler...
+Start Time:14:33:49
+
+
+Compiler Completed
+Return Code: 0
+Completion Time:14:33:49
+
+
+Running flow synthesis ...
+
+Launching mapper in pro mode
+
+
+Running ispGAL Mapper...
+Start Time:14:33:49
+
+
+ispGAL Mapper Completed
+Return Code: 0
+Completion Time:14:33:50
+
+exit status=0
+
+

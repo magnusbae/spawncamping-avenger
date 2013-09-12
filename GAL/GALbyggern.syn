@@ -4,7 +4,7 @@ PROJECT GALbyggern
 DESIGN galbyggern Normal
 DEVKIT GAL16V8D-15QP
 ENTRY Pure VHDL
-MODULE adress decoder.vhd
-MODSTYLE Adress Normal
+MODULE galmodule.vhd
+MODSTYLE adress_decoder Normal
 SYNTHESIS_TOOL Synplify
-TOPMODULE Adress
+TOPMODULE adress_decoder

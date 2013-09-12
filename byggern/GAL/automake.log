@@ -1,8 +1,0 @@
-ispLEVER Auto-Make Log File
----------------------------
-
-Updating: Hierarchy
-Cannot get current project information.
-Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\vhd2jhd.exe "adress decoder.vhd" -o "adress decoder.jhd" -m "C:\ispLEVER_Classic1_4\ispcpld/generic/lib/vhd/location.map" -p "C:\ispLEVER_Classic1_4\ispcpld/generic/lib"'
-
-Done: completed successfully.

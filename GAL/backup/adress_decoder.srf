@@ -1,0 +1,22 @@
+#Build: Synplify Pro for Lattice D-2009.12LC-1, Build 040R, Jan 20 2010
+#install: C:\ISPLEVER_CLASSIC1_4\synpbase
+#OS: Windows_NT
+
+#Hostname: SANNTID05
+
+$ Start of Compile
+#Thu Sep 12 14:30:00 2013
+
+Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
+Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
+
+@N: CD720 :"C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ns
+@N:"C:\users\tommp\documents\atmel studio\spawncamping-avenger\byggern\byggern\gal\galmodule.vhd":6:7:6:20|Top entity is set to adress_decoder.
+@E: CD126 :"C:\users\tommp\documents\atmel studio\spawncamping-avenger\byggern\byggern\gal\galmodule.vhd":16:1:16:1|Expecting identifier
+1 error parsing file C:\users\tommp\documents\atmel studio\spawncamping-avenger\byggern\byggern\gal\galmodule.vhd
+@END
+@E|Parse errors encountered - exiting
+Process took 0h:00m:01s realtime, 0h:00m:01s cputime
+# Thu Sep 12 14:30:00 2013
+
+###########################################################]

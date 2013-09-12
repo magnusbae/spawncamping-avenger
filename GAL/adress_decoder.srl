@@ -1,0 +1,75 @@
+%%% protect protected_file
+@E
+@ 
+#
+#
+#
+# Created by Synplify VHDL Compiler version comp500rc, Build 070R from Synplicity, Inc.
+# Copyright 1994-2010 Synopsys, Inc. , All rights reserved.
+# Synthesis Netlist written on Thu Sep 12 14:33:49 2013
+#
+#
+#OPTIONS:"|-top|adress_decoder|-dfltencoding|sequential|-encrypt|-pro|-lite|-ll|2000|-ui|-fid2|-ram|-sharing|on|-autosm|-ignore_undefined_lib|-lib|work"
+#CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\bin\\c_vhdl.exe":1272017192
+#CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\location.map":1216910970
+#CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std.vhd":1272017908
+#CUR:"C:\\gal\\galmodule.vhd":1378989223
+#CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std1164.vhd":1272017908
+#CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\arith.vhd":1272017906
+#CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\unsigned.vhd":1272017910
+f "C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std.vhd"; # file 0
+af .is_vhdl 1;
+f "C:\gal\galmodule.vhd"; # file 1
+af .is_vhdl 1;
+f "C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std1164.vhd"; # file 2
+af .is_vhdl 1;
+f "C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\arith.vhd"; # file 3
+af .is_vhdl 1;
+f "C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\unsigned.vhd"; # file 4
+af .is_vhdl 1;
+@E
+@ 
+ftell;
+@E@MR@n4::n(::R.jI	FsRsN8C_##8FCO8RCsLNCEPsHFN
+D;N3PRHE#P84DR;P
+NR#3H_8PED;R4
+RNP3M#$_NVlbIR"FRs	\:"B\N\oDo\\NFDl8CkD38PE\""
+;
+
+
+
+@HR@U4::U.::NcR4N4R4
+4;N3HRs_0DFosHMCNlR4"N4
+";NDHRF"ORu;4"
+@HR@g4::g.::NcR4NjR4
+j;N3HRs_0DFosHMCNlR4"Nj
+";NDHRF"ORu;."
+@HR@44:j::.4dj:RRNgN
+g;N3HRs_0DFosHMCNlRg"N"N;
+HFRDOuR"d
+";
+@HR@44:4::.4d4:RRNUN
+U;N3HRs_0DFosHMCNlRU"N"N;
+HFRDOuR"c
+";
+@FR@44:d::.4(d:RlsN_RO#s_NlO
+#;N3HRs_0DFosHMCNlRN"sl#_O"N;
+HFRDOuR"4;g"
+@FR@44:c::.4(c:RON8_RO#N_8OO
+#;N3HRs_0DFosHMCNlR8"NO#_O"N;
+HFRDOuR"4;U"
+@FR@44:6::.4U6:RCFD8#_ORCFD8#_O;H
+NR03sDs_FHNoMl"CRF8DC_"O#;H
+NRODFR4"u(
+";b@R@44:4:4.:4R:dLRkVs_NlOs#RNOl_#URN;R
+b@:@4..g:ng:.:Rd4HRMPF8DC__O#4DRFCO8_#R_4N
+g;b@R@4g:.::4d.4g:UMRHPMRk.D_FCO8_#MRk.D_FCO8_#URN;R
+b@:@4.dg:gg:.:Rc6HRMPk_McF8DC_RO#k_McF8DC_RO#N;4j
+@bR@4j::44::0.RsRkC0CskRk0sCb;
+Rj@@:44::.4:RDVN#VCRNCD#RDVN#
+C;b@R@4g:.::4d.cg:6MRN8FPRD_C8OF#RD_C8OF#RD_C8O4#_R.kM_CFD8#_ORckM_CFD8#_O;R
+b@:@4d4j:.j:d:R.6NPM8RON8_RO#N_8OON#RgMRk.D_FCO8_#C;
+;
+
+
+

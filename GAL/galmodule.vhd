@@ -12,7 +12,7 @@ entity adress_decoder  is
 
 		ram_cs : Out std_logic;
 		adc_cs : Out std_logic;
-		oled_cs: Out std_logic;
+		oled_cs: Out std_logic
 	);
 	attribute LOC : string;
 	attribute LOC of ram_cs : signal is "P19";
