@@ -4,7 +4,7 @@
   (keywordMap (keywordLevel 0))
   (status
     (written
-      (timeStamp 2013 9 12 15 32 59)
+      (timeStamp 2013 9 12 16 53 26)
       (author "Synplicity, Inc.")
       (program "Synplify Pro" (version "D-2009.12LC-1, mapper map500lat, Build 127R"))
      )
@@ -50,7 +50,7 @@
     (edifLevel 0)
     (technology (numberDefinition ))
     (cell adress_decoder (cellType GENERIC)
-       (view behavioral (viewType NETLIST)
+       (view behave (viewType NETLIST)
          (interface
            (port a11 (direction INPUT)
            (property loc (string "P1"))
@@ -61,7 +61,6 @@
            (port a9 (direction INPUT)
            (property loc (string "P3"))
  )
-           (port a8 (direction INPUT))
            (port ram_cs (direction OUTPUT)
            (property loc (string "P19"))
  )
@@ -118,9 +117,6 @@
           (net a9 (joined
            (portRef a9)
            (portRef I0 (instanceRef a9))
-          ))
-          (net a8 (joined
-           (portRef a8)
           ))
           (net ram_cs (joined
            (portRef O (instanceRef ram_cs))

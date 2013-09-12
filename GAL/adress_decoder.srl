@@ -6,14 +6,14 @@
 #
 # Created by Synplify VHDL Compiler version comp500rc, Build 070R from Synplicity, Inc.
 # Copyright 1994-2010 Synopsys, Inc. , All rights reserved.
-# Synthesis Netlist written on Thu Sep 12 15:32:58 2013
+# Synthesis Netlist written on Thu Sep 12 16:53:25 2013
 #
 #
 #OPTIONS:"|-top|adress_decoder|-dfltencoding|sequential|-encrypt|-pro|-lite|-ll|2000|-ui|-fid2|-ram|-sharing|on|-autosm|-ignore_undefined_lib|-lib|work"
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\bin\\c_vhdl.exe":1272017192
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\location.map":1216910970
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std.vhd":1272017908
-#CUR:"C:\\gal\\galmodule.vhd":1378992765
+#CUR:"C:\\gal\\galmodule.vhd":1378997595
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std1164.vhd":1272017908
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\arith.vhd":1272017906
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\unsigned.vhd":1272017910
@@ -30,8 +30,8 @@ af .is_vhdl 1;
 @E
 @ 
 ftell;
-@E@MR@n4::n(::R.jI	FsRsN8C_##8FCO8RCsLNCEPsHFN
-D;N3PRHE#P84DR;P
+@E@MR@n4::n(::R.jI	FsRsN8C_##8FCO8RCsLNCEP
+C;N3PRHE#P84DR;P
 NR#3H_8PED;R4
 RNP3M#$_NVlbIR"FRs	\:"B\N\oDo\\NFDl8CkD38PE\""
 ;
@@ -48,17 +48,13 @@ j;N3HRs_0DFosHMCNlR4"Nj
 g;N3HRs_0DFosHMCNlRg"N"N;
 HFRDOuR"d
 ";
-@HR@44:4::.4d4:RRNUN
-U;N3HRs_0DFosHMCNlRU"N"
-;
-
-@FR@44:d::.4(d:RlsN_RO#s_NlO
+@FR@44:.::.4(.:RlsN_RO#s_NlO
 #;N3HRs_0DFosHMCNlRN"sl#_O"N;
 HFRDOuR"4;g"
-@FR@44:c::.4(c:RON8_RO#N_8OO
+@FR@44:d::.4(d:RON8_RO#N_8OO
 #;N3HRs_0DFosHMCNlR8"NO#_O"N;
 HFRDOuR"4;U"
-@FR@44:6::.4U6:RCFD8#_ORCFD8#_O;H
+@FR@44:c::.4Uc:RCFD8#_ORCFD8#_O;H
 NR03sDs_FHNoMl"CRF8DC_"O#;H
 NRODFR4"u(
 ";b@R@4j:4:4.:jR:dLRkVs_NlOs#RNOl_#gRN;R

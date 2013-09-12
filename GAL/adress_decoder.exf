@@ -1,5 +1,5 @@
 Section Cross Reference File
-Design 'adress_decoder' created Thu Sep 12 15:33:03 2013
+Design 'adress_decoder' created Thu Sep 12 16:53:31 2013
    Type              New Name                               Original Name
 // ----------------------------------------------------------------------
 End
@@ -8,7 +8,6 @@ Section Type      Name
         Input     a11
         Input     a10
         Input     a9
-        Input     a8
         Output     ram_cs
         Output     adc_cs
         Output     oled_cs

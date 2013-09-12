@@ -8,7 +8,6 @@ entity adress_decoder  is
 		a11 : In std_logic;
 		a10 : In std_logic;
 		a9 : In std_logic;
-		a8 : In std_logic;
 
 		ram_cs : Out std_logic;
 		adc_cs : Out std_logic;
@@ -24,9 +23,10 @@ entity adress_decoder  is
 	attribute LOC of a9	: signal is "P3";
 end adress_decoder;
 
-architecture behavioral of adress_decoder is begin
+architecture behave of adress_decoder is begin
+
 	oled_cs <= (not a10) and (not a9) and a11;
 	adc_cs <= (not a9) and a10;
 	ram_cs <= a9;
-end behavioral;
+end behave;
 

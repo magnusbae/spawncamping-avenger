@@ -1,3 +1,2 @@
-@N: CD630 :"C:\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behavioral 
-Post processing for work.adress_decoder.behavioral
-@W: CL159 :"C:\gal\galmodule.vhd":11:2:11:3|Input a8 is unused
+@N: CD630 :"C:\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behave 
+Post processing for work.adress_decoder.behave
