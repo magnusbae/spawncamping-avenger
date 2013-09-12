@@ -28,6 +28,7 @@ void SRAM_test(void)
 			printf("SRAM error (write phase): ext_ram[%d] = %02X (should be %02X)\r\n", i, ext_ram[i], testvalue);
 			werrors++;
 		}
+		//printf("SRAM OK (write phase): ext_ram[%d] = %02X (should be %02X). Address is %02X\r\n", i, ext_ram[i], testvalue, i);  //For verifying
 	}
 	for
 	(i = 0; i < 0x800; i++) {
@@ -69,6 +70,7 @@ int main(void)
 }
 
 void print_welcome(){
+	printf("\r\n");
 	printf("__________                                          \r\n");
 	printf("\\______   \\___.__. ____   ____   ___________  ____  \r\n");
 	printf(" |    |  _<   |  |/ ___\\ / ___\\_/ __ \\_  __ \\/    \\ \r\n");
