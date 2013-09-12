@@ -4,7 +4,7 @@
   (keywordMap (keywordLevel 0))
   (status
     (written
-      (timeStamp 2013 9 12 17 2 34)
+      (timeStamp 2013 9 12 17 6 15)
       (author "Synplicity, Inc.")
       (program "Synplify Pro" (version "D-2009.12LC-1, mapper map500lat, Build 127R"))
      )
@@ -79,7 +79,7 @@
           (instance adc_cs (viewRef prim (cellRef OBUF (libraryRef mach)))          )
           (instance oled_cs (viewRef prim (cellRef OBUF (libraryRef mach)))          )
           (instance adc_csand (viewRef prim (cellRef AND2 (libraryRef mach)))          )
-          (instance a9_i (viewRef prim (cellRef INV (libraryRef mach)))          )
+          (instance a11_i (viewRef prim (cellRef INV (libraryRef mach)))          )
           (instance a10_i (viewRef prim (cellRef INV (libraryRef mach)))          )
           (instance oled_csand_1 (viewRef prim (cellRef AND2 (libraryRef mach)))          )
           (instance oled_csand (viewRef prim (cellRef AND2 (libraryRef mach)))          )
@@ -87,14 +87,15 @@
            (portRef O (instanceRef a10_i))
            (portRef I1 (instanceRef oled_csand))
           ))
-          (net a9_i (joined
-           (portRef O (instanceRef a9_i))
-           (portRef I1 (instanceRef oled_csand_1))
-           (portRef I0 (instanceRef adc_csand))
+          (net a11_i (joined
+           (portRef O (instanceRef a11_i))
+           (portRef I0 (instanceRef oled_csand_1))
+           (portRef I1 (instanceRef adc_csand))
           ))
           (net a11_c (joined
            (portRef O (instanceRef a11))
-           (portRef I0 (instanceRef oled_csand_1))
+           (portRef I0 (instanceRef a11_i))
+           (portRef I0 (instanceRef ram_cs))
           ))
           (net a11 (joined
            (portRef a11)
@@ -103,7 +104,7 @@
           (net a10_c (joined
            (portRef O (instanceRef a10))
            (portRef I0 (instanceRef a10_i))
-           (portRef I1 (instanceRef adc_csand))
+           (portRef I0 (instanceRef adc_csand))
           ))
           (net a10 (joined
            (portRef a10)
@@ -111,8 +112,7 @@
           ))
           (net a9_c (joined
            (portRef O (instanceRef a9))
-           (portRef I0 (instanceRef a9_i))
-           (portRef I0 (instanceRef ram_cs))
+           (portRef I1 (instanceRef oled_csand_1))
           ))
           (net a9 (joined
            (portRef a9)

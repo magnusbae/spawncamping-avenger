@@ -6,14 +6,14 @@
 #
 # Created by Synplify VHDL Compiler version comp500rc, Build 070R from Synplicity, Inc.
 # Copyright 1994-2010 Synopsys, Inc. , All rights reserved.
-# Synthesis Netlist written on Thu Sep 12 17:02:33 2013
+# Synthesis Netlist written on Thu Sep 12 17:06:14 2013
 #
 #
 #OPTIONS:"|-top|adress_decoder|-dfltencoding|sequential|-encrypt|-pro|-lite|-ll|2000|-ui|-fid2|-ram|-sharing|on|-autosm|-ignore_undefined_lib|-lib|work"
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\bin\\c_vhdl.exe":1272017192
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\location.map":1216910970
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std.vhd":1272017908
-#CUR:"C:\\gal\\galmodule.vhd":1378998143
+#CUR:"C:\\gal\\galmodule.vhd":1378998344
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std1164.vhd":1272017908
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\arith.vhd":1272017906
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\unsigned.vhd":1272017910
@@ -57,13 +57,14 @@ HFRDOuR"4;U"
 @FR@44:c::.4Uc:RCFD8#_ORCFD8#_O;H
 NR03sDs_FHNoMl"CRF8DC_"O#;H
 NRODFR4"u(
-";b@R@4j:4:4.:jR:dLRkVs_NlOs#RNOl_#gRN;R
-b@:@4.4U:.U:.:R4(HRMPk_M4N_8OOk#RMN4_8OO_#gRN;R
+";b@R@4::U.::UckRLVNRsl#_ORlsN_RO#N;44
+@bR@.4:U.:4::.U4HURMkPRMN4_8OO_#MRk48_NO#_OR4N4;R
 b@:@4.4g:dg:.:R4gHRMPk_MdF8DC_RO#k_MdF8DC_RO#N;4j
 @bR@4j::44::0.RsRkC0CskRk0sCb;
 Rj@@:44::.4:RDVN#VCRNCD#RDVN#
-C;b@R@4U:.::4...U:nMRN8NPR8OO_#8RNO#_ORjN4R4kM_ON8_;O#
-@bR@.4:gd:4::.gcN4RMR8PF8DC_RO#F8DC_RO#NR44k_M4N_8OOk#RMFd_D_C8O
-#;C
+C;b@R@4U:.::4...U:(MRN8NPR8OO_#8RNO#_ORjN4R4kM_ON8_;O#
+@bR@.4:gd:4::.gcN4RMR8PF8DC_RO#F8DC_RO#NkgRMN4_8OO_#MRkdD_FCO8_#C;
 ;
+
+
 
