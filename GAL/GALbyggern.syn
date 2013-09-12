@@ -7,4 +7,5 @@ ENTRY Pure VHDL
 MODULE galmodule.vhd
 MODSTYLE adress_decoder Normal
 SYNTHESIS_TOOL Synplify
+SIMULATOR_TOOL ActiveHDL
 TOPMODULE adress_decoder

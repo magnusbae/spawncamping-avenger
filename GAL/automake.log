@@ -16,7 +16,7 @@ Done sucessfully with exit code 0.
 #Hostname: SANNTID05
 
 $ Start of Compile
-#Thu Sep 12 16:53:25 2013
+#Thu Sep 12 17:02:33 2013
 
 Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
 Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
@@ -28,7 +28,7 @@ VHDL syntax check successful!
 Post processing for work.adress_decoder.behave
 @END
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 12 16:53:25 2013
+# Thu Sep 12 17:02:33 2013
 
 ###########################################################]
 Synopsys CPLD Technology Mapper, Version map500lat, Build 127R, Built Apr 21 2010
@@ -48,7 +48,7 @@ INV             2 uses
 D-2009.12LC-1
 Mapper successful!
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 12 16:53:26 2013
+# Thu Sep 12 17:02:34 2013
 
 ###########################################################]
 
