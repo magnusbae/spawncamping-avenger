@@ -15,8 +15,7 @@ void Wait(int waitTime);
 
 void SRAM_test(void)
 {
-	volatile char *ext_ram = (char *) 0x1800;
-	//Start address for the SRAM
+	volatile char *ext_ram = (char *) 0x1800; //Start address for the SRAM
 	unsigned int i, werrors, rerrors;
 	werrors = 0;
 	rerrors = 0;
@@ -57,23 +56,26 @@ int main(void)
 	printf("UART Initialized\r\n");
 	
 	MCUCR|=(1<<SRE);
+	SFIOR |= (1<<XMM2);
 	SRAM_test();
+	
+	MCUCR &= ~(1<<SRE);
 	
 	DDRC |= (1<<PC0) | (1<<PC1) | (1<<PC2);
 	
-	PORTC = (1<<PC0);
+	PORTC = (1<<PC1);
 	Wait(150);
 	printf("a");
 	
-	PORTC = (1<<PC1);
+	PORTC = (1<<PC2);
 	Wait(150);
 	printf("b");
 	
-	PORTC = (1<<PC2);
+	PORTC = (1<<PC3);
 	Wait(150);
 	printf("c");
 	
-	printf("Test complete!\r\n\r\n");
+	printf(" Test complete!\r\n\r\n");
     while(1){
 	}
 

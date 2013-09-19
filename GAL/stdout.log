@@ -6,7 +6,7 @@ Running in Lattice mode
 
 Starting:    C:\ISPLEVER_CLASSIC1_4\synpbase\bin\mbin\synbatch.exe
 Install:     C:\ISPLEVER_CLASSIC1_4\synpbase
-Date:        Thu Sep 12 17:41:49 2013
+Date:        Thu Sep 19 11:14:19 2013
 Version:     D-2009.12LC-1
 
 
@@ -28,12 +28,12 @@ Running flow compile_flow ...
 
 
 Running HDL Compiler...
-Start Time:17:41:49
+Start Time:11:14:19
 
 
 Compiler Completed
 Return Code: 0
-Completion Time:17:41:49
+Completion Time:11:14:20
 
 
 Running flow synthesis ...
@@ -42,12 +42,12 @@ Launching mapper in pro mode
 
 
 Running ispGAL Mapper...
-Start Time:17:41:50
+Start Time:11:14:20
 
 
 ispGAL Mapper Completed
 Return Code: 0
-Completion Time:17:41:50
+Completion Time:11:14:21
 
 exit status=0
 

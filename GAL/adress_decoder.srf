@@ -5,7 +5,7 @@
 #Hostname: SANNTID05
 
 $ Start of Compile
-#Thu Sep 12 17:41:49 2013
+#Thu Sep 19 11:14:19 2013
 
 Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
 Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
@@ -19,7 +19,7 @@ Post processing for work.adress_decoder.behave
 @W: CL159 :"C:\gal\galmodule.vhd":11:2:11:3|Input a8 is unused
 @END
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 12 17:41:49 2013
+# Thu Sep 19 11:14:19 2013
 
 ###########################################################]
 Synopsys CPLD Technology Mapper, Version map500lat, Build 127R, Built Apr 21 2010
@@ -39,6 +39,6 @@ INV             2 uses
 D-2009.12LC-1
 Mapper successful!
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 12 17:41:50 2013
+# Thu Sep 19 11:14:21 2013
 
 ###########################################################]
