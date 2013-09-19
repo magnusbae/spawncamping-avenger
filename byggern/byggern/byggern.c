@@ -12,9 +12,8 @@
 #include <avr/interrupt.h>
 
 #include "drivers/uart.h"
-
-void Wait(int waitTime);
-
+#include "drivers/sram.h"
+#include "drivers/multifunction.h"
 
 volatile uint8_t JOY_READ = 0;
 
@@ -26,8 +25,8 @@ int main(void)
 	
 	printf(" Initialization complete!\r\n\r\n");
 	
-	volatile char *joystick = (char *) 0x1400;
 	
+	_delay_ms(10000);
 	
 	//MCUCR |= (1<<ISC01);
 	//GICR |= (1<<INT0);
@@ -36,9 +35,9 @@ int main(void)
 	
 	while(1){
 		//if(JOY_READ){
-			joystick[0] = 0b00000100;
+			adc[0] = 0b00000100;
 			_delay_ms(1);
-			printf("%d \r\n", joystick[0]);
+			printf("%d \r\n", adc[0]);
 			//JOY_READ = 0;
 			_delay_ms(1000);
 		//}
