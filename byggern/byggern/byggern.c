@@ -10,9 +10,25 @@
 #include <stdio.h>
 void write(char val);
 char read_();
-void set_initial(uint8_t baud_rate_value);
+void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value);
 void Wait(int waitTime);
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int main(void)
+{
+	setupUartAndSendWelcomeMessage();
+	setupRam();
+	
+	printf(" Initialization complete!\r\n\r\n");
+	
+	volatile char *joystick = (char *) 0x1400;
+	while(1){
+		
+		joystick[0] = 0b00000100;
+	}	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SRAM_test(void)
 {
 	volatile char *ext_ram = (char *) 0x1800; //Start address for the SRAM
@@ -47,42 +63,22 @@ void Wait(int waitTime)
 			_delay_loop_2(0);
 		}
 	}
-	
-int main(void)
+
+void setupUartAndSendWelcomeMessage() 
 {
-	set_initial(31);
+	setBaudRateAndInitializeUartWithCorrectBits(31);
 	fdevopen(write, read_);
 	print_welcome();
 	printf("UART Initialized\r\n");
+}
+
 	
+
+
+void setupRam(){
 	MCUCR|=(1<<SRE);
 	SFIOR |= (1<<XMM2);
 	SRAM_test();
-	
-	MCUCR &= ~(1<<SRE);
-	
-	DDRC |= (1<<PC0) | (1<<PC1) | (1<<PC2);
-	
-	PORTC = (1<<PC1);
-	Wait(150);
-	printf("a");
-	
-	PORTC = (1<<PC2);
-	Wait(150);
-	printf("b");
-	
-	PORTC = (1<<PC3);
-	Wait(150);
-	printf("c");
-	
-	printf(" Test complete!\r\n\r\n");
-    while(1){
-	}
-
-		
-		
-		
-			        
 }
 
 void print_welcome(){
@@ -95,7 +91,7 @@ void print_welcome(){
 	printf("        \\/ \\/   /_____//_____/      \\/           \\/ \r\n");
 }
 
-void set_initial(uint8_t baud_rate_value){
+void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value){
 	
 	
 	UBRR0H=(8>>baud_rate_value);
