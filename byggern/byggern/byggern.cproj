@@ -98,6 +98,12 @@
     <Compile Include="byggern.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\sram.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\sram.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\uart.c">
       <SubType>compile</SubType>
     </Compile>
