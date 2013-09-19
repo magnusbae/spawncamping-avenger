@@ -4,31 +4,52 @@
  * Created: 29.08.2013 12:12:10
  *  Author: tommp
  */ 
+#define F_CPU 4915200UL
 
 #include <util/delay.h>
 #include <avr/io.h>
 #include <stdio.h>
+#include <avr/interrupt.h>
 void write(char val);
 char read_();
 void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value);
 void Wait(int waitTime);
 
+
+volatile uint8_t JOY_READ = 0;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
 	setupUartAndSendWelcomeMessage();
-	setupRam();
+	setupAndTestRam();
 	
 	printf(" Initialization complete!\r\n\r\n");
 	
 	volatile char *joystick = (char *) 0x1400;
+	
+	
+	//MCUCR |= (1<<ISC01);
+	//GICR |= (1<<INT0);
+	//sei();
+	
+	
 	while(1){
-		
-		joystick[0] = 0b00000100;
+		//if(JOY_READ){
+			joystick[0] = 0b00000100;
+			_delay_ms(1);
+			printf("%d \r\n", joystick[0]);
+			//JOY_READ = 0;
+		//}
 	}	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ISR(INT0_vect){
+	JOY_READ = 1;
+}
+
 void SRAM_test(void)
 {
 	volatile char *ext_ram = (char *) 0x1800; //Start address for the SRAM
@@ -72,10 +93,9 @@ void setupUartAndSendWelcomeMessage()
 	printf("UART Initialized\r\n");
 }
 
-	
 
 
-void setupRam(){
+void setupAndTestRam(){
 	MCUCR|=(1<<SRE);
 	SFIOR |= (1<<XMM2);
 	SRAM_test();
