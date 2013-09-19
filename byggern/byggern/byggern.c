@@ -10,9 +10,9 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
-void write(char val);
-char read_();
-void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value);
+
+#include "drivers/uart.h"
+
 void Wait(int waitTime);
 
 
@@ -77,21 +77,6 @@ void SRAM_test(void)
 	printf("SRAM test completed with %d errors in write phase and %d errors in readphase\r\n", werrors, rerrors);
 }
 
-void Wait(int waitTime)
-	{
-		for(uint8_t i=0;i<waitTime;i++)
-		{
-			_delay_loop_2(0);
-		}
-	}
-
-void setupUartAndSendWelcomeMessage() 
-{
-	setBaudRateAndInitializeUartWithCorrectBits(31);
-	fdevopen(write, read_);
-	print_welcome();
-	printf("UART Initialized\r\n");
-}
 
 
 
@@ -101,41 +86,5 @@ void setupAndTestRam(){
 	SRAM_test();
 }
 
-void print_welcome(){
-	printf("\r\n");
-	printf("__________                                          \r\n");
-	printf("\\______   \\___.__. ____   ____   ___________  ____  \r\n");
-	printf(" |    |  _<   |  |/ ___\\ / ___\\_/ __ \\_  __ \\/    \\ \r\n");
-	printf(" |    |   \\\\___  / /_/  > /_/  >  ___/|  | \\/   |  \\ \r\n");
-	printf(" |______  // ____\\___  /\\___  / \\___  >__|  |___|  /\r\n");
-	printf("        \\/ \\/   /_____//_____/      \\/           \\/ \r\n");
-}
 
-void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value){
-	
-	
-	UBRR0H=(8>>baud_rate_value);
-	UBRR0L=baud_rate_value;
-	UCSR0C|=(1<<URSEL0)|(1<<UCSZ01)|(1<<UCSZ00);
-	UCSR0B|=(1<<RXEN0)|(1<<TXEN0);
-	UCSR0B|=(1<<RXCIE0)|(1<<TXCIE0);
-}
-
-char read_(){
-	
-	
-	while(!(UCSR0A & (1<<RXC0))){
-		Wait(1);
-	}
-	
-	return UDR0;
-}
-
-void write(char val){
-	
-	while(!(UCSR0A & (1<<UDRE0))){
-	}
-	
-	UDR0=val;		
-}
 
