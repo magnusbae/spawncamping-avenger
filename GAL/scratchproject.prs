@@ -1,15 +1,15 @@
 #-- Synopsys, Inc.
 #-- Version D-2009.12LC-1
-#-- Project file C:\gal\scratchproject.prs
-#-- Written on Thu Sep 19 11:14:19 2013
+#-- Project file C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\scratchproject.prs
+#-- Written on Thu Sep 26 14:27:01 2013
 
 
 #project files
-add_file -vhdl -lib work "C:/gal/galmodule.vhd"
+add_file -vhdl -lib work "C:/users/magnussb/documents/atmel studio/spawncamping-avenger/gal/galmodule.vhd"
 
 
 #implementation: "gal"
-impl -add C:\gal -type fpga
+impl -add "C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal" -type fpga
 
 #device options
 set_option -technology ispGAL
@@ -48,8 +48,8 @@ set_option -resource_sharing 1
 set_option -write_apr_constraint 1
 
 #set result format/file last
-project -result_file "C:/gal/adress_decoder.edi"
+project -result_file "C:/users/magnussb/documents/atmel studio/spawncamping-avenger/gal/adress_decoder.edi"
 
 #set log file 
-set_option log_file "C:/gal/adress_decoder.srf" 
+set_option log_file "C:/users/magnussb/documents/atmel studio/spawncamping-avenger/gal/adress_decoder.srf" 
 impl -active "gal"

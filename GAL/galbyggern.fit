@@ -1,7 +1,9 @@
+Warning 4154: Signal 'a9' (pin 3) is not used in the design -
+neither the signal nor its pin will be reassigned.
 Warning 4154: Signal 'a8' (pin 4) is not used in the design -
 neither the signal nor its pin will be reassigned.
 $DEVICE         P16V8AS    fit  galbyggern.tt3
-$PINS    8  a8:4   oled_dc:16   oled_cs:17   adc_cs:18   ram_cs:19   a9:3   a10:2   
+$PINS    8  a8:4   a9:3   oled_dc:16   oled_cs:17   adc_cs:18   ram_cs:19   a10:2   
 a11:1   
 --------------------------------------------------------------
 

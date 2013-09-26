@@ -6,7 +6,7 @@ Inspect circuit adress_decoder
     Number of output ports  : 4
     Number of bidir ports   : 0
     Number of instances     : 13
-    Number of nets          : 16
+    Number of nets          : 15
 
 No design errors found in circuit adress_decoder
 

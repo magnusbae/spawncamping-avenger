@@ -16,21 +16,22 @@ Done sucessfully with exit code 0.
 #Hostname: SANNTID05
 
 $ Start of Compile
-#Thu Sep 19 11:14:19 2013
+#Thu Sep 26 14:27:02 2013
 
 Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
 Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
 
 @N: CD720 :"C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ns
-@N:"C:\gal\galmodule.vhd":6:7:6:20|Top entity is set to adress_decoder.
+@N:"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":6:7:6:20|Top entity is set to adress_decoder.
 VHDL syntax check successful!
-@N: CD630 :"C:\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behave 
+@N: CD630 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behave 
 Post processing for work.adress_decoder.behave
-@W: CL240 :"C:\gal\galmodule.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
-@W: CL159 :"C:\gal\galmodule.vhd":11:2:11:3|Input a8 is unused
+@W: CL240 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
+@W: CL159 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":10:2:10:3|Input a9 is unused
+@W: CL159 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":11:2:11:3|Input a8 is unused
 @END
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 19 11:14:19 2013
+# Thu Sep 26 14:27:02 2013
 
 ###########################################################]
 Synopsys CPLD Technology Mapper, Version map500lat, Build 127R, Built Apr 21 2010
@@ -40,17 +41,17 @@ Product Version D-2009.12LC-1
 Resource Usage Report
 
 Simple gate primitives:
-IBUF            3 uses
+IBUF            2 uses
 OBUF            4 uses
-AND2            3 uses
-INV             2 uses
+AND2            2 uses
+INV             4 uses
 
 
 @N: FC100 |Timing Report not generated for this device, please use place and route tools for timing analysis.
 D-2009.12LC-1
 Mapper successful!
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Thu Sep 19 11:14:21 2013
+# Thu Sep 26 14:27:03 2013
 
 ###########################################################]
 
@@ -68,7 +69,7 @@ Inspect circuit adress_decoder
     Number of output ports  : 4
     Number of bidir ports   : 0
     Number of instances     : 13
-    Number of nets          : 16
+    Number of nets          : 15
 
 No design errors found in circuit adress_decoder
 
@@ -87,10 +88,10 @@ Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-
 U.C. Berkeley, SIS Ver. 1.0, supported by Lattice Semiconductor Corp.
 Reading Open-ABEL 2 file adress_decoder.bl0...
 Node a10_i has been collapsed.
-Node a9_c has been collapsed.
-Node a11_i has been collapsed.
 Node a10_c has been collapsed.
-Node oled_cs_c_1 has been collapsed.
+Node a11_c_i has been collapsed.
+Node N_2 has been collapsed.
+Node N_1 has been collapsed.
 Node gnd_n_n has been collapsed.
 Node a11_c has been collapsed.
 Node adc_cs_c has been collapsed.
@@ -166,6 +167,8 @@ Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-
 Input file: 'galbyggern.tt2'
 Device 'p16v8'
 Note 4161: Using device architecture type P16V8AS.
+Warning 4154:Signal 'a9' (pin 3) is not used in the design -
+neither the signal nor its pin will be reassigned.
 Warning 4154:Signal 'a8' (pin 4) is not used in the design -
 neither the signal nor its pin will be reassigned.
 Design FITS

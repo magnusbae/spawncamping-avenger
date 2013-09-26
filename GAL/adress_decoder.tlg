@@ -1,4 +1,5 @@
-@N: CD630 :"C:\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behave 
+@N: CD630 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":6:7:6:20|Synthesizing work.adress_decoder.behave 
 Post processing for work.adress_decoder.behave
-@W: CL240 :"C:\gal\galmodule.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
-@W: CL159 :"C:\gal\galmodule.vhd":11:2:11:3|Input a8 is unused
+@W: CL240 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
+@W: CL159 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":10:2:10:3|Input a9 is unused
+@W: CL159 :"C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\galmodule.vhd":11:2:11:3|Input a8 is unused

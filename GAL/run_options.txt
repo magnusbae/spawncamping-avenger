@@ -1,7 +1,7 @@
 #-- Synopsys, Inc.
 #-- Version D-2009.12LC-1
-#-- Project file C:\gal\run_options.txt
-#-- Written on Thu Sep 19 11:14:19 2013
+#-- Project file C:\users\magnussb\documents\atmel studio\spawncamping-avenger\gal\run_options.txt
+#-- Written on Thu Sep 26 14:27:01 2013
 
 
 #project files
@@ -51,5 +51,5 @@ set_option -write_apr_constraint 1
 project -result_file "./adress_decoder.edi"
 
 #set log file 
-set_option log_file "C:/gal/adress_decoder.srf" 
+set_option log_file "C:/users/magnussb/documents/atmel studio/spawncamping-avenger/gal/adress_decoder.srf" 
 impl -active "gal"

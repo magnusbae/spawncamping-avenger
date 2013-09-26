@@ -1,7 +1,7 @@
 
 
                                                                       Page 1
-ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 19 11:14:27 2013
+ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 26 14:27:08 2013
 
 
 
@@ -25,7 +25,7 @@ Output files:
 
 
                                                                       Page 2
-ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 19 11:14:27 2013
+ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 26 14:27:08 2013
 
 P16V8AS Programmed Logic:
 --------------------------------------------------------------------------------
@@ -34,16 +34,16 @@ P16V8AS Programmed Logic:
 
 ram_cs     = !(  !a11 );
 
-adc_cs     = (  !a11 & a10 );
+adc_cs     = !(  !a11 & a10 );
 
-oled_cs     = (  !a11 & !a10 & a9 );
+oled_cs     = !(  !a11 & !a10 );
 
 oled_dc     = (0);
 
 
 
                                                                       Page 3
-ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 19 11:14:27 2013
+ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 26 14:27:08 2013
 
 P16V8AS Chip Diagram:
 --------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ P16V8AS Chip Diagram:
 
 
                                                                       Page 4
-ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 19 11:14:27 2013
+ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 26 14:27:08 2013
 
 P16V8AS Resource Allocations:
 --------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ P16V8AS Resource Allocations:
                       |           |             |
 Input Pins:           |           |             |
                       |           |             |
-          Input:      |     10    |      3      |    7 ( 70 %)
+          Input:      |     10    |      2      |    8 ( 80 %)
                       |           |             |
 Output Pins:          |           |             |
                       |           |             |
@@ -111,7 +111,7 @@ Buried Nodes:         |           |             |
 
 
                                                                       Page 5
-ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 19 11:14:27 2013
+ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 26 14:27:08 2013
 
 P16V8AS Product Terms Distribution:
 --------------------------------------------------------------------------------
@@ -133,11 +133,10 @@ Signal Name                              | Pin      | Pin Type
 =========================================|==========|=========
 a11                                      |    1     | INPUT
 a10                                      |    2     | INPUT
-a9                                       |    3     | INPUT
 
 
                                                                       Page 6
-ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 19 11:14:27 2013
+ispLEVER Classic 1.4.00.04.27.10  -  Device Utilization Chart         Thu Sep 26 14:27:08 2013
 
 P16V8AS Unused Resources:
 --------------------------------------------------------------------------------
@@ -147,6 +146,7 @@ P16V8AS Unused Resources:
  Pin   |  Pin   |   Product   | Flip-flop
 Number |  Type  |   Terms     |   Type
 =======|========|=============|==========
+    3  |  INPUT |      -      |    -   
     4  |  INPUT |      -      |    -   
     5  |  INPUT |      -      |    -   
     6  |  INPUT |      -      |    -   
