@@ -17,32 +17,35 @@ unsigned int readAdcInput(uint8_t input){
 	return adc[0];	
 }
 
-unsigned int findJoystickDirection(){
-	joystickPosition jp = readJoystickPosition();
+unsigned int calculateJoystickDirection(joystickPosition jp){
 	unsigned int direction = NEUTRAL;
 	
-	uint8_t xpos = jp.xPosition-NEUTRAL_POSITION;
-	uint8_t ypos = jp.yPosition-NEUTRAL_POSITION;
-	uint8_t abs_x = abs(xpos);
-	uint8_t abs_y = abs(ypos);
+	uint8_t xpos = jp.xPosition;
+	uint8_t ypos = jp.yPosition;
+
 	
-	if (abs_x < DIRECTION_TRESHOLD && abs_y < DIRECTION_TRESHOLD)
+	if (((xpos < DIRECTION_TRESHOLD_POSITIVE) && (xpos > DIRECTION_TRESHOLD_NEGATIVE))  && ((ypos < DIRECTION_TRESHOLD_POSITIVE) && (ypos > DIRECTION_TRESHOLD_NEGATIVE)))
 	{
 		return direction;
-	}else if(abs_x > DIRECTION_TRESHOLD){
-		if(xpos < 0){
+	}else if((xpos > DIRECTION_TRESHOLD_POSITIVE) || (xpos < DIRECTION_TRESHOLD_NEGATIVE)){
+		if(xpos < DIRECTION_TRESHOLD_NEGATIVE){
 			direction = LEFT;
 		}else{
 			direction = RIGHT;
 		}
 	}else{
-		if(ypos > 0){
+		if(ypos > DIRECTION_TRESHOLD_POSITIVE){
 			direction = UP;
 		}else{
 			direction = DOWN;
 		}
 	}
 	return direction;
+}
+
+unsigned int findJoystickDirection(){
+	joystickPosition jp = readJoystickPosition();
+	return calculateJoystickDirection(jp);
 }
 
 joystickDirection readJoystickDirection(){
@@ -52,11 +55,23 @@ joystickDirection readJoystickDirection(){
 }
 
 
-
-joystickPosition readJoystickPosition(){
+joystickPosition getJoystickPosition(){
 	joystickPosition jp;
 	jp.xPosition = readAdcInput(JOYSTICK_X);
 	jp.yPosition = readAdcInput(JOYSTICK_Y);
+	return jp;
+}
+
+joystickPosition readJoystickPosition(){
+	joystickPosition jp = getJoystickPosition();
+	jp.xPosition = ((255*100)-(jp.xPosition*100))/255;
+	jp.yPosition = ((255*100)-(jp.yPosition*100))/255;
+	if (jp.xPosition < 54 && jp.xPosition > 46){
+		jp.xPosition = 50;
+	}
+	if (jp.yPosition < 54 && jp.yPosition > 46){
+		jp.yPosition = 50;
+	}
 	return jp;
 }
 

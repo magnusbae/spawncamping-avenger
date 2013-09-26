@@ -5,7 +5,6 @@
  *  Author: tommp
  */ 
 
-
 #ifndef MULTIFUNCTION_H_
 #define MULTIFUNCTION_H_
 
@@ -21,8 +20,9 @@
 #define TOUCH_LEFT ADC_CHANNEL3
 #define TOUCH_RIGHT ADC_CHANNEL4
 
-#define DIRECTION_TRESHOLD 30
-#define NEUTRAL_POSITION 132
+#define DIRECTION_TRESHOLD_NEGATIVE 110
+#define DIRECTION_TRESHOLD_POSITIVE 150
+#define DIRECTION_NEUTRAL 132
 
 typedef struct  
 {
@@ -33,7 +33,7 @@ typedef struct
 
 typedef struct
 {
-	enum {LEFT, RIGHT, UP, DOWN, NEUTRAL, LEFTUP, RIGHTUP, LEFTDOWN, RIGHTDOWN} direction;
+	enum {LEFT, RIGHT, UP, DOWN, NEUTRAL} direction;
 } joystickDirection;
 
 /*
