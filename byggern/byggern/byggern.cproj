@@ -128,9 +128,22 @@
     <Compile Include="drivers\uart.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="fonts\font_4x6.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fonts\font_5x7.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fonts\font_5x7w.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fonts\font_8x8.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="drivers" />
+    <Folder Include="fonts" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

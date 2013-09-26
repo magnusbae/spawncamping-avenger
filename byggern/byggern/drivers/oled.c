@@ -16,12 +16,16 @@
 
 #include "oled.h"
 #include <avr/io.h>
+#include "../fonts/font_4x6.h"
 
 void init_program();
 
 void init_oled(){
 	init_program();
-	write_data(0xFF);	
+	//oled_print('f');	
+	for(int i = 0; i < 64; i++){
+		oled_clear_line(i);
+	}
 }
 
 void init_program()
@@ -50,9 +54,27 @@ void init_program()
 	write_command(0xaf); // display on
 }
 
-void write_data(char c){
-	//volatile char *oled = (char *) OLED_DATA;
-	//oled[15] = c;
+void oled_clear_line(int line){
+	write_command(0x20);
+	write_command(0x00);
+
+	write_command(0x21);
+	write_command(1);
+	write_command(127);
+	
+
+	for(int i = 0; i < 127; i++){
+		volatile char *oled_clear = OLED_DATA;
+		oled_clear[0] = 0xff;
+	}
+}
+
+void oled_print(char* c){
+	volatile char *oled = (char *) OLED_DATA;
+	int i = 0;
+	for (int i = 0; i < 4; i++){
+		oled[0] = font[(int)c][i];	
+	}
 }
 
 void write_command(char c){
@@ -60,3 +82,4 @@ void write_command(char c){
 	volatile char *oled = (char *) OLED_COMMAND;
 	oled[0] = c;
 }
+

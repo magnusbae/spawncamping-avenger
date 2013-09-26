@@ -13,7 +13,9 @@
 #define OLED_DATA 0x1200
 
 void init_oled();
-void write_data(char c);
 void write_command(char c);
+void oled_clear_line(int line);
+void oled_print(char* c);
+
 
 #endif /* OLED_H_ */

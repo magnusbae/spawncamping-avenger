@@ -40,7 +40,7 @@ int main(void)
 		uint8_t leftSlider = readLeftSlider();
 		uint8_t rightSlider = readRightSlider();
 		printf("Joystick X: %d, Y: %d, direction: %d. Sliders, Left: %d, right: %d\r\n", jp.xPosition, jp.yPosition, jd.direction, leftSlider, rightSlider);
-		_delay_ms(1000);
+		_delay_ms(10);
 	}	
 }
 
