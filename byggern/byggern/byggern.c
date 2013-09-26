@@ -4,8 +4,8 @@
  * Created: 29.08.2013 12:12:10
  *  Author: tommp
  */ 
-#define F_CPU 4915200UL
 
+#include "drivers/crystal.h"
 #include <util/delay.h>
 #include <avr/io.h>
 #include <stdio.h>
@@ -25,22 +25,18 @@ int main(void)
 	
 	printf(" Initialization complete!\r\n\r\n");
 	
-	
-	_delay_ms(10000);
-	
 	//MCUCR |= (1<<ISC01);
 	//GICR |= (1<<INT0);
 	//sei();
 	
 	
 	while(1){
-		//if(JOY_READ){
-			adc[0] = 0b00000100;
-			_delay_ms(1);
-			printf("%d \r\n", adc[0]);
-			//JOY_READ = 0;
-			_delay_ms(1000);
-		//}
+		joystickPosition jp = readJoystickPosition();
+		joystickDirection jd = readJoystickDirection();
+		uint8_t leftSlider = readLeftSlider();
+		uint8_t rightSlider = readRightSlider();
+		printf("Joystick X: %d, Y: %d, direction: %d. Sliders, Left: %d, right: %d\r\n", jp.xPosition, jp.yPosition, jd.direction, leftSlider, rightSlider);
+		_delay_ms(1000);
 	}	
 }
 

@@ -21,19 +21,27 @@
 #define TOUCH_LEFT ADC_CHANNEL3
 #define TOUCH_RIGHT ADC_CHANNEL4
 
+#define DIRECTION_TRESHOLD 30
+#define NEUTRAL_POSITION 132
+
 typedef struct  
 {
 	unsigned int xPosition;
 	unsigned int yPosition;
 } joystickPosition;
 
-volatile char *adc = (char *) 0x1400;
+
+typedef struct
+{
+	enum {LEFT, RIGHT, UP, DOWN, NEUTRAL, LEFTUP, RIGHTUP, LEFTDOWN, RIGHTDOWN} direction;
+} joystickDirection;
 
 /*
 * Introduces > 2ms delay while waiting for ADC.
 */
 joystickPosition readJoystickPosition();
-int readLeftSlider();
-int readRightSlider();
+joystickDirection readJoystickDirection();
+unsigned int readLeftSlider();
+unsigned int readRightSlider();
 
 #endif /* MULTIFUNCTION_H_ */

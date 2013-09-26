@@ -98,6 +98,9 @@
     <Compile Include="byggern.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\crystal.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\multifunction.c">
       <SubType>compile</SubType>
     </Compile>

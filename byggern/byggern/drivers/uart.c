@@ -8,6 +8,7 @@
 #include "uart.h"
 #include <avr/io.h>
 #include <stdio.h>
+#include "crystal.h"
 #include <util/delay.h>
 
 void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value){
