@@ -10,6 +10,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+joystickPosition getJoystickPosition();
+
 unsigned int readAdcInput(uint8_t input){
 	volatile char *adc = (char *) ADC_ADRESS;
 	adc[0] = input;
@@ -44,7 +46,7 @@ unsigned int calculateJoystickDirection(joystickPosition jp){
 }
 
 unsigned int findJoystickDirection(){
-	joystickPosition jp = readJoystickPosition();
+	joystickPosition jp = getJoystickPosition();
 	return calculateJoystickDirection(jp);
 }
 

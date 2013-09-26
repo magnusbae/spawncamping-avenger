@@ -98,6 +98,9 @@
     <Compile Include="byggern.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\AddressBus.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\crystal.h">
       <SubType>compile</SubType>
     </Compile>
@@ -105,6 +108,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\multifunction.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\oled.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\oled.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\sram.h">

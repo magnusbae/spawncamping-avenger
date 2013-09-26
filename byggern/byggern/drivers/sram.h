@@ -10,7 +10,7 @@
 #define INCFILE1_H_
 
 
-void setupAndTestRam();
+void RamPOST();
 
 
 #endif /* INCFILE1_H_ */

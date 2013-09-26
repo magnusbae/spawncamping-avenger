@@ -8,9 +8,7 @@
 #include "uart.h"
 #include <avr/io.h>
 
-void setupAndTestRam(){
-	MCUCR|=(1<<SRE);
-	SFIOR |= (1<<XMM2);
+void RamPOST(){
 	SRAM_test();
 }
 

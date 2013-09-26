@@ -11,9 +11,11 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 
+#include "drivers/AddressBus.h"
 #include "drivers/uart.h"
 #include "drivers/sram.h"
 #include "drivers/multifunction.h"
+#include "drivers/oled.h"
 
 volatile uint8_t JOY_READ = 0;
 
@@ -21,7 +23,9 @@ volatile uint8_t JOY_READ = 0;
 int main(void)
 {
 	setupUartAndSendWelcomeMessage();
-	setupAndTestRam();
+	setupAddressBus();
+	RamPOST();
+	init_oled();
 	
 	printf(" Initialization complete!\r\n\r\n");
 	
