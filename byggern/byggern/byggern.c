@@ -35,6 +35,8 @@ int main(void)
 	
 	
 	while(1){
+		while(1){ //empty 
+		}
 		joystickPosition jp = readJoystickPosition();
 		joystickDirection jd = readJoystickDirection();
 		uint8_t leftSlider = readLeftSlider();
