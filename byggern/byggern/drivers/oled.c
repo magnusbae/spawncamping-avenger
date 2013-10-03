@@ -16,31 +16,23 @@
 
 #include "oled.h"
 #include <avr/io.h>
+#include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "../fonts/font_4x6.h"
 
 void init_program();
 
 void clear_display() 
-{
-	
-	
-	for(int i = 0; i < 64; i++){
+{	
+	for(int i = 0; i < 8; i++){
 		oled_clear_line(i);
 	}
 }
 
 void init_oled(){
 	init_program();
-	//oled_print('f');	
 	
-	clear_display();
-	
-
-	oled_print('H');
-	oled_print('E');
-	oled_print('I');
-	oled_print('!');
+	clear_display();		
 }
 
 void init_program()
@@ -69,7 +61,34 @@ void init_program()
 	write_command(0xaf); // display on
 }
 
+void oled_home(){
+	//Goes to top left coordinate
+	write_command(0xB0);
+	write_command(0x00);
+	write_command(0x10);
+}
+
+void oled_goto_column(int column){
+	uint8_t lsb = column & 0x0F; 
+	uint8_t msb = (column & 0xF0) / 0b10000;
+	write_command(lsb);
+	write_command(0x10 | msb);
+}
+
+void oled_goto_position(int row, int column){
+	oled_goto_line(row);
+	oled_goto_column(column);
+}
+
+void oled_goto_line(int line){
+	//char-lines, 0-7
+	write_command(0xB0 + line);
+	write_command(0x00);
+	write_command(0x10);
+}
+
 void oled_clear_line(int line){
+	oled_goto_line(line);
 	for(int i = 0; i < 128; i++){
 		volatile char *oled_clear = OLED_DATA;
 		oled_clear[0] = 0x00;
@@ -83,6 +102,7 @@ void oled_print(char* c){
 		oled[0] = pgm_read_byte(&font[((int)c)-32][i]);
 	}
 }
+
 
 void write_command(char c){
 	

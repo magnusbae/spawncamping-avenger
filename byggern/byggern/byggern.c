@@ -32,6 +32,8 @@ int main(void)
 	//MCUCR |= (1<<ISC01);
 	//GICR |= (1<<INT0);
 	//sei();
+	int numb = 60;
+	printf("%02X, %02X, %02X", numb, (0x10 | ((numb & 0xF0) / 0b10000)), (numb & 0x0F));
 	
 	
 	while(1){

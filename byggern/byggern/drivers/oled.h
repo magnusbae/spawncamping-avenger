@@ -16,6 +16,9 @@ void init_oled();
 void write_command(char c);
 void oled_clear_line(int line);
 void oled_print(char* c);
+void oled_home();
+void oled_position(int row, int column);
+void oled_goto_line(int line);
 
 
 #endif /* OLED_H_ */
