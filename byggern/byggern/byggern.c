@@ -16,28 +16,47 @@
 #include "drivers/sram.h"
 #include "drivers/multifunction.h"
 #include "drivers/oled.h"
+#include "menu/menu.h"
 
-volatile uint8_t JOY_READ = 0;
+volatile uint8_t JOY_CLICK = 0;
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
-	setupUartAndSendWelcomeMessage();
+	//setupUartAndSendWelcomeMessage();
 	setupAddressBus();
 	RamPOST();
 	init_oled();
 	
-	printf(" Initialization complete!\r\n\r\n");
+	//printf("Initialization complete!\r\n\r\n");
 	
-	//MCUCR |= (1<<ISC01);
-	//GICR |= (1<<INT0);
-	//sei();
-	int numb = 60;
-	printf("%02X, %02X, %02X", numb, (0x10 | ((numb & 0xF0) / 0b10000)), (numb & 0x0F));
+	oled_printf("fu!"); //you shouldn't see this on the display
+	
+	menuOption menu[4];
+	menu[0].isSelected = SELECTED;
+	menu[0].name = "Menyvalg 1";
+	menu[1].name = "Menyvalg 3";
+	menu[2].name = "Menyvalg 2";
+	menu[3].name = "Menyvalg 4";
+	
+	menu_display(menu);
+
+	DDRE &= ~(1<<PE0);
+	cli();
+	GICR |= (1<<INT2);
+	sei();
 	
 	
 	while(1){
-		while(1){ //empty 
+		while(JOY_CLICK == 1){
+			oled_goto_position(4, 10);
+			if(JOY_CLICK == 1){
+				oled_printf("Joy has been clicked");
+				JOY_CLICK = 0;
+				_delay_ms(1000);
+			}
+			oled_clear_line(4);
 		}
 		joystickPosition jp = readJoystickPosition();
 		joystickDirection jd = readJoystickDirection();
@@ -50,8 +69,8 @@ int main(void)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ISR(INT0_vect){
-	JOY_READ = 1;
+ISR(INT2_vect){
+	JOY_CLICK = 1;
 }
 
 

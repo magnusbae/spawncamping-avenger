@@ -8,11 +8,7 @@
 #include "uart.h"
 #include <avr/io.h>
 
-void RamPOST(){
-	SRAM_test();
-}
-
-void SRAM_test(void)
+void SRAM_test()
 {
 	volatile char *ext_ram = (char *) 0x1800; //Start address for the SRAM
 	unsigned int i, werrors, rerrors;
@@ -37,4 +33,8 @@ void SRAM_test(void)
 		}
 	}
 	printf("SRAM test completed with %d errors in write phase and %d errors in readphase\r\n", werrors, rerrors);
+}
+
+void RamPOST(){
+	SRAM_test();
 }

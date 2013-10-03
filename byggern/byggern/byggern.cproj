@@ -140,10 +140,17 @@
     <Compile Include="fonts\font_8x8.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="menu\menu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="menu\menu.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="drivers" />
     <Folder Include="fonts" />
+    <Folder Include="menu" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

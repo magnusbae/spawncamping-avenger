@@ -15,24 +15,57 @@
 */
 
 #include "oled.h"
+#include "uart.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "../fonts/font_4x6.h"
 
+int col_number=0;
+int line_number=0;
+
+
 void init_program();
 
-void clear_display() 
+void oled_clear_display() 
 {	
 	for(int i = 0; i < 8; i++){
 		oled_clear_line(i);
 	}
 }
 
+
+void oled_printf(char* line){
+		
+	int i = 0;
+	while((int)line[i] != EOL){
+		if(col_number >= DISPLAY_WIDTH){
+			col_number = 0;
+			line_number == 7 ? line_number = 0 : line_number++;
+			oled_goto_position(line_number, 0);
+			oled_clear_line(line_number);
+		}
+		if ((int)line[i]==NEWLINE){
+			if (line_number==7){
+				line_number=0;
+			}
+			else{
+				line_number++;
+			}			
+			oled_goto_position(line_number, 0);
+			oled_clear_line(line_number);
+		}else{
+			oled_print(line[i]);
+			col_number++;
+		}
+		i++;
+	}
+}
+
 void init_oled(){
 	init_program();
-	
-	clear_display();		
+	oled_clear_display();	
+	oled_home();	
 }
 
 void init_program()
@@ -62,13 +95,11 @@ void init_program()
 }
 
 void oled_home(){
-	//Goes to top left coordinate
-	write_command(0xB0);
-	write_command(0x00);
-	write_command(0x10);
+	oled_goto_position(0,0);
 }
 
 void oled_goto_column(int column){
+	col_number = column;
 	uint8_t lsb = column & 0x0F; 
 	uint8_t msb = (column & 0xF0) / 0b10000;
 	write_command(lsb);
@@ -81,6 +112,7 @@ void oled_goto_position(int row, int column){
 }
 
 void oled_goto_line(int line){
+	line_number = line;
 	//char-lines, 0-7
 	write_command(0xB0 + line);
 }
@@ -102,7 +134,6 @@ void oled_print(char* c){
 
 
 void write_command(char c){
-	
 	volatile char *oled = (char *) OLED_COMMAND;
 	oled[0] = c;
 }
