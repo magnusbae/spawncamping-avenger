@@ -83,12 +83,10 @@ void oled_goto_position(int row, int column){
 void oled_goto_line(int line){
 	//char-lines, 0-7
 	write_command(0xB0 + line);
-	write_command(0x00);
-	write_command(0x10);
 }
 
 void oled_clear_line(int line){
-	oled_goto_line(line);
+	oled_goto_position(line,0);
 	for(int i = 0; i < 128; i++){
 		volatile char *oled_clear = OLED_DATA;
 		oled_clear[0] = 0x00;
@@ -97,8 +95,7 @@ void oled_clear_line(int line){
 
 void oled_print(char* c){
 	volatile char *oled = (char *) OLED_DATA;
-	int i = 0;
-	for (int i = 0; i < 4; i++){
+	for (int i = 0; i < CHARACTER_WIDTH; i++){
 		oled[0] = pgm_read_byte(&font[((int)c)-32][i]);
 	}
 }
