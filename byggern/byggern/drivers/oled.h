@@ -15,6 +15,9 @@
 #define EOL 0
 #define NEWLINE 10
 #define DISPLAY_WIDTH 32
+#define RAMSTART 0x1800
+#define RAMEND 0x1BFF
+
 
 void init_oled();
 void write_command(char c);
@@ -26,6 +29,10 @@ void oled_goto_position(int row, int column);
 void oled_goto_line(int line);
 void oled_clear_char(int row, int startPos);
 void oled_printf(char* line);
+void oled_ramstore(char* line);
+void oled_ramclear();
+void oled_ramgotopos(int line, int column);
+void oled_ramtransefer();
 
 
 #endif /* OLED_H_ */

@@ -23,6 +23,7 @@
 
 int col_number=0;
 int line_number=0;
+int ramcurrent = 0x1800;
 
 
 void init_program();
@@ -138,3 +139,57 @@ void write_command(char c){
 	oled[0] = c;
 }
 
+void oled_ramstore(char* line){
+	volatile char *ext_ram = (char *) ramcurrent;
+	unsigned int endofstring=0;
+	for (int i = 0; i<(128/CHARACTER_WIDTH); i++){
+		if (line[i]==EOL){
+			endofstring=1;
+		}								
+		if (!endofstring){
+			for (int j = 0; j < CHARACTER_WIDTH; j++){
+				ext_ram[ramcurrent] = pgm_read_byte(&font[((int)line[i])-32][j]);
+				ramcurrent++;
+				if (ramcurrent==RAMEND){
+					ramcurrent = RAMSTART;
+				}
+			}
+		}
+		else{
+			for (int j = 0; j < CHARACTER_WIDTH; j++){
+				ext_ram[ramcurrent] = 0b00000000;
+				ramcurrent++;
+			}				
+			if (ramcurrent==RAMEND){
+				ramcurrent = RAMSTART;
+			}
+		}
+	}
+}											
+
+void oled_ramclear(){
+	volatile char *ext_ram = (char *) RAMSTART;
+	unsigned int ramarea = 0x400;//RAMEND-RAMSTART;
+	for (int i = 0; i < ramarea; i++){
+		ext_ram[i] = 0b00000000;
+	}
+}
+
+void oled_ramgotopos(int line, int column){
+	ramcurrent=127*line + column;
+}
+
+void oled_ramtransefer(){
+	volatile char *ext_ram = (char *) RAMSTART;
+	volatile char *oled = (char *) OLED_DATA;
+	unsigned int temp = 0b0;
+	unsigned int ramarea = 0x400;//RAMEND-RAMSTART;
+	for (int i = 0; i<(ramarea); i++){
+		if (i%124==0){
+			line_number++;
+			oled_goto_position(line_number, col_number);
+		}
+		temp = ext_ram[i];
+		oled[0] = temp;
+	}
+}

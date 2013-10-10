@@ -43,21 +43,26 @@ int main(void)
 	menu[2].name = "Menyvalg 3";
 	menu[3].name = "Menyvalg 4";
 	
-	menu_display(menu, menuLenght);
-
+	
+	//menu_display(menu, menuLenght, NULL);
+	oled_ramclear();
+	oled_ramtransefer();
+	oled_ramstore("Bygge");
+	oled_ramtransefer();
+	
 	DDRE &= ~(1<<PE0);
 	DDRD &= ~(1<<PD2); //PD2=INT0, PD3=INT1
 	cli();
 	GICR |= (1<<INT2)|(1<<INT0);
 	sei();
 	
-	SPI_MasterInit();
-	printf("%02X", (int)mcp_read(MCP_CANSTAT));
+	//SPI_MasterInit();
+	//printf("%02X", (int)mcp_read(MCP_CANSTAT));
 	
 	while(1){
 		uint8_t menuPosition = 0;
 		while(JOY_CLICK == 1){
-			oled_goto_position(5, 10);
+			oled_goto_position(5, 0);
 			if(JOY_CLICK == 1){
 				for(int i = 0; i < menuLenght; i++){
 					if(menu[i].isSelected == SELECTED){
@@ -66,17 +71,20 @@ int main(void)
 				}
 				oled_printf("Joy has been clicked, ");
 				oled_printf(menu[menuPosition].name);
-			
+				
 				JOY_CLICK = 0;
 				_delay_ms(1000);
 			}
 			oled_clear_line(5);
+			oled_clear_line(6);
 			
 		}
 		joystickPosition jp = readJoystickPosition();
 		joystickDirection jd = readJoystickDirection();
+		int displaychange = 0;
 		
 		if(jd.direction != NEUTRAL){
+			displaychange = 1;
 			if(jd.direction == UP){
 				for(int i = 0; i < menuLenght; i++){
 					if(menu[i].isSelected == SELECTED){
@@ -103,8 +111,9 @@ int main(void)
 				}
 			}
 		}
-		menu_display(menu, menuLenght);
-		_delay_ms(200);
+		//menu_display(menu, menuLenght, &displaychange);
+		_delay_ms(100);
+
 		
 		uint8_t leftSlider = readLeftSlider();
 		uint8_t rightSlider = readRightSlider();
