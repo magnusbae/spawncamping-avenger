@@ -15,12 +15,12 @@ void SRAM_test()
 	werrors = 0;
 	rerrors = 0;
 	unsigned char testvalue;
-	printf("Starting SRAM test...\r\n");
+//	printf("Starting SRAM test...\r\n");
 	for (i = 0; i < 0x800; i++) {
 		testvalue = ~(i % 256);
 		ext_ram[i] = testvalue;
 		if (ext_ram[i] != testvalue) {
-			printf("SRAM error (write phase): ext_ram[%02X] = %02X (should be %02X)\r\n", (0x1800+i), ext_ram[i], testvalue);
+			//printf("SRAM error (write phase): ext_ram[%02X] = %02X (should be %02X)\r\n", (0x1800+i), ext_ram[i], testvalue);
 			werrors++;
 		}
 		//printf("SRAM OK (write phase): ext_ram[%d] = %02X (should be %02X). Address is %02X\r\n", i, ext_ram[i], testvalue, i);  //For verifying
@@ -28,11 +28,11 @@ void SRAM_test()
 	for	(i = 0; i < 0x800; i++) {
 		testvalue = ~(i % 256);
 		if (ext_ram[i] != testvalue) {
-			printf("SRAM error (read phase): ext_ram[%02X] = %02X (should be %02X)\r\n", (0x1800+i), ext_ram[i], testvalue);
+		//	printf("SRAM error (read phase): ext_ram[%02X] = %02X (should be %02X)\r\n", (0x1800+i), ext_ram[i], testvalue);
 			rerrors++;
 		}
 	}
-	printf("SRAM test completed with %d errors in write phase and %d errors in readphase\r\n", werrors, rerrors);
+	//printf("SRAM test completed with %d errors in write phase and %d errors in readphase\r\n", werrors, rerrors);
 }
 
 void RamPOST(){

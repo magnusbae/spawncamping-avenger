@@ -59,6 +59,8 @@ void setupUartAndSendWelcomeMessage()
 {
 	setBaudRateAndInitializeUartWithCorrectBits(BAUD_RATE_4_9MHZ);
 	fdevopen(write, read_);
-	printWelcomeMessage();
-	printf("UART Initialized\r\n");
+//	printWelcomeMessage();
+//	printf("UART Initialized\r\n");
+	write('o');
+	write('k');
 }

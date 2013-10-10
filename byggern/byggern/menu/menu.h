@@ -10,6 +10,6 @@ typedef struct {
 	struct menuOption* subMenu;	
 } menuOption;
 
-void menu_display(menuOption* menu);
+void menu_display(menuOption* menu, int length);
 
 #endif /* MENU_H_ */
