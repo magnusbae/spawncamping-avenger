@@ -24,7 +24,7 @@ volatile uint8_t JOY_CLICK = 0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
-	//setupUartAndSendWelcomeMessage();
+	setupUartAndSendWelcomeMessage();
 	setupAddressBus();
 	RamPOST();
 	init_oled();
