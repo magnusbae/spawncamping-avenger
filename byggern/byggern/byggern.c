@@ -29,7 +29,7 @@ int main(void)
 	RamPOST();
 	init_oled();
 	
-	//printf("Initialization complete!\r\n\r\n");
+	printf("Initialization complete!\r\n\r\n");
 	
 	oled_printf("Something failed!"); //you shouldn't see this on the display
 	
