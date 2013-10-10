@@ -17,6 +17,8 @@
 #include "drivers/multifunction.h"
 #include "drivers/oled.h"
 #include "menu/menu.h"
+#include "drivers/MCP2515.h"
+#include "drivers/SPI.h"
 
 volatile uint8_t JOY_CLICK = 0;
 
@@ -44,10 +46,13 @@ int main(void)
 	menu_display(menu, menuLenght);
 
 	DDRE &= ~(1<<PE0);
+	DDRD &= ~(1<<PD2); //PD2=INT0, PD3=INT1
 	cli();
-	GICR |= (1<<INT2);
+	GICR |= (1<<INT2)|(1<<INT0);
 	sei();
 	
+	SPI_MasterInit();
+	printf("%02X", (int)mcp_read(MCP_CANSTAT));
 	
 	while(1){
 		uint8_t menuPosition = 0;

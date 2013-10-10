@@ -101,7 +101,19 @@
     <Compile Include="drivers\AddressBus.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\CanMessaging.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\MCP2515.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\SPI.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\crystal.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\multifunction.c">
@@ -114,6 +126,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\oled.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\SPI.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\sram.h">
