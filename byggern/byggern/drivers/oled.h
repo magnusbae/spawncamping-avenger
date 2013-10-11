@@ -32,7 +32,7 @@ void oled_printf(char* line);
 void oled_ramstore(char* line);
 void oled_ramclear();
 void oled_ramgotopos(int line, int column);
-void oled_ramtransefer();
+void oled_ramtransfer();
 
 
 #endif /* OLED_H_ */

@@ -16,6 +16,7 @@
 
 #include "oled.h"
 #include "uart.h"
+#include "sram.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/pgmspace.h>
@@ -23,7 +24,7 @@
 
 int col_number=0;
 int line_number=0;
-int ramcurrent = 0x1800;
+int ramcurrent = 0;
 
 
 void init_program();
@@ -35,6 +36,10 @@ void oled_clear_display()
 	}
 }
 
+
+void oled_ramgotopos(int line, int column){
+	ramcurrent=128*line + column;
+}
 
 void oled_printf(char* line){
 		
@@ -140,7 +145,7 @@ void write_command(char c){
 }
 
 void oled_ramstore(char* line){
-	volatile char *ext_ram = (char *) ramcurrent;
+	volatile char *ext_ram = (char *) RAMSTART;
 	unsigned int endofstring=0;
 	for (int i = 0; i<(128/CHARACTER_WIDTH); i++){
 		if (line[i]==EOL){
@@ -151,7 +156,7 @@ void oled_ramstore(char* line){
 				ext_ram[ramcurrent] = pgm_read_byte(&font[((int)line[i])-32][j]);
 				ramcurrent++;
 				if (ramcurrent==RAMEND){
-					ramcurrent = RAMSTART;
+					ramcurrent = 0;
 				}
 			}
 		}
@@ -160,8 +165,9 @@ void oled_ramstore(char* line){
 				ext_ram[ramcurrent] = 0b00000000;
 				ramcurrent++;
 			}				
-			if (ramcurrent==RAMEND){
-				ramcurrent = RAMSTART;
+			if (ramcurrent==0x400){
+				ramcurrent = 0;
+				endofstring = 0;
 			}
 		}
 	}
@@ -175,19 +181,20 @@ void oled_ramclear(){
 	}
 }
 
-void oled_ramgotopos(int line, int column){
-	ramcurrent=127*line + column;
-}
-
-void oled_ramtransefer(){
+void oled_ramtransfer(){
+	line_number=0;
+	oled_goto_position(line_number, 0);
 	volatile char *ext_ram = (char *) RAMSTART;
 	volatile char *oled = (char *) OLED_DATA;
-	unsigned int temp = 0b0;
+	uint8_t temp = 0b00000000;
 	unsigned int ramarea = 0x400;//RAMEND-RAMSTART;
-	for (int i = 0; i<(ramarea); i++){
-		if (i%124==0){
+	
+	oled_home();
+	
+	for (int i = 0; i < ramarea; i++){
+		if (i%128==0 && i !=0){
 			line_number++;
-			oled_goto_position(line_number, col_number);
+			oled_goto_position(line_number, 0);
 		}
 		temp = ext_ram[i];
 		oled[0] = temp;

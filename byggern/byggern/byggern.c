@@ -46,9 +46,8 @@ int main(void)
 	
 	//menu_display(menu, menuLenght, NULL);
 	oled_ramclear();
-	oled_ramtransefer();
-	oled_ramstore("Bygge");
-	oled_ramtransefer();
+	oled_ramtransfer();
+	
 	
 	DDRE &= ~(1<<PE0);
 	DDRD &= ~(1<<PD2); //PD2=INT0, PD3=INT1
@@ -56,10 +55,16 @@ int main(void)
 	GICR |= (1<<INT2)|(1<<INT0);
 	sei();
 	
-	//SPI_MasterInit();
-	//printf("%02X", (int)mcp_read(MCP_CANSTAT));
-	
+	SPI_MasterInit();
+	printf("%02X", (int)mcp_read(MCP_CANSTAT));
+	uint8_t displaychange = 1;
+	uint8_t joydir = NEUTRAL;
 	while(1){
+		if(displaychange){
+			menu_display_RAMV2(menu, menuLenght);
+			displaychange = 0;
+		}		
+		
 		uint8_t menuPosition = 0;
 		while(JOY_CLICK == 1){
 			oled_goto_position(5, 0);
@@ -81,40 +86,40 @@ int main(void)
 		}
 		joystickPosition jp = readJoystickPosition();
 		joystickDirection jd = readJoystickDirection();
-		int displaychange = 0;
 		
-		if(jd.direction != NEUTRAL){
-			displaychange = 1;
-			if(jd.direction == UP){
-				for(int i = 0; i < menuLenght; i++){
-					if(menu[i].isSelected == SELECTED){
-						menu[i].isSelected = UNSELECTED;
-						if(i == 0){
-							menu[menuLenght-1].isSelected = SELECTED;
-						}else{
-							menu[i-1].isSelected = SELECTED;
+		if(joydir == NEUTRAL){
+			if(jd.direction != NEUTRAL){
+				joydir = jd.direction;
+				displaychange = 1;
+				if(jd.direction == UP){
+					for(int i = 0; i < menuLenght; i++){
+						if(menu[i].isSelected == SELECTED){
+							menu[i].isSelected = UNSELECTED;
+							if(i == 0){
+								menu[menuLenght-1].isSelected = SELECTED;
+							}else{
+								menu[i-1].isSelected = SELECTED;
+							}
+							break;
 						}
-						break;
+					}
+				}else if(jd.direction == DOWN){
+					for(int i = 0; i < menuLenght; i++){
+						if(menu[i].isSelected == SELECTED){
+							menu[i].isSelected = UNSELECTED;
+							if(i == menuLenght-1){
+								menu[0].isSelected = SELECTED;
+							}else{
+								menu[i+1].isSelected = SELECTED;
+							}
+							break;
+						}
 					}
 				}
-			}else if(jd.direction == DOWN){
-				for(int i = 0; i < menuLenght; i++){
-					if(menu[i].isSelected == SELECTED){
-						menu[i].isSelected = UNSELECTED;
-						if(i == menuLenght-1){
-							menu[0].isSelected = SELECTED;
-						}else{
-							menu[i+1].isSelected = SELECTED;
-						}
-						break;
-					}
-				}
-			}
-		}
-		//menu_display(menu, menuLenght, &displaychange);
-		_delay_ms(100);
-
-		
+			}		
+		}else if(jd.direction == NEUTRAL){
+			joydir = NEUTRAL;
+		}			
 		uint8_t leftSlider = readLeftSlider();
 		uint8_t rightSlider = readRightSlider();
 		//printf("Joystick X: %d, Y: %d, direction: %d. Sliders, Left: %d, right: %d\r\n", jp.xPosition, jp.yPosition, jd.direction, leftSlider, rightSlider);

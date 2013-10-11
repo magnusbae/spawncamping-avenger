@@ -11,5 +11,6 @@ typedef struct {
 } menuOption;
 
 void menu_display(menuOption menu[], int length, int* changed);
+void menu_display_RAMV2(menuOption menu[], int length);
 
 #endif /* MENU_H_ */

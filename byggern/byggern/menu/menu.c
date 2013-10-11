@@ -24,3 +24,18 @@ void menu_display(menuOption menu[], int length, int* changed){
 	}
 }
 
+void menu_display_RAMV2(menuOption menu[], int length){
+	oled_ramclear();
+	for(int i = 0; i < length; i++){
+		if(menu[i].isSelected == SELECTED){
+			oled_ramgotopos(i, 0);
+			oled_ramstore(">");
+			oled_ramgotopos(i, 4);
+			oled_ramstore(menu[i].name);
+		}else{
+			oled_ramgotopos(i, 4);
+			oled_ramstore(menu[i].name);			
+		}
+	}
+	oled_ramtransfer();
+}
