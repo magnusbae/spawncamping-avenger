@@ -19,9 +19,11 @@
 #include "menu/menu.h"
 #include "drivers/MCP2515.h"
 #include "drivers/SPI.h"
+#include "drivers/CanMessaging.h"
 
 volatile uint8_t JOY_CLICK = 0;
-
+volatile canMessage receivedMessage;
+volatile receivedCanMessage = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void)
@@ -55,11 +57,34 @@ int main(void)
 	GICR |= (1<<INT2)|(1<<INT0);
 	sei();
 	
+	
 	SPI_MasterInit();
-	printf("%02X", (int)mcp_read(MCP_CANSTAT));
+	mcp_init();
+	printf("%02X", mcp_read(MCP_CANSTAT));
+	
+	canMessage message;
+	message.data[0] = 0xF1;
+	message.length = 1;
+	message.extendedFrame = 0;
+	message.RTR = 0;
+	message.identifier = 0xAF;
+	if(CAN_send_message(message)){
+		printf("\r\nCAN might have sent message. ");
+	}		
+	
 	uint8_t displaychange = 1;
 	uint8_t joydir = NEUTRAL;
 	while(1){
+			if(receivedCanMessage){
+				receivedCanMessage = 0;
+				printf("Received CAN message with data length %d, data[0]: %02X ", receivedMessage.length, receivedMessage.data[0]);
+				
+				message.data[0] = 0x12;
+				message.length = 8;
+				if(CAN_send_message(message)){
+					printf("\r\nCAN might have sent message. ");
+				}
+			}
 		if(displaychange){
 			menu_display_RAMV2(menu, menuLenght);
 			displaychange = 0;
@@ -133,4 +158,8 @@ ISR(INT2_vect){
 	JOY_CLICK = 1;
 }
 
-
+ISR(INT0_vect){
+	receivedMessage = CAN_read_received_message();
+	receivedCanMessage = 1;
+	mcp_clear_interrupt();
+}

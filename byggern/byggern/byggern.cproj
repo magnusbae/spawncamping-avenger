@@ -104,6 +104,9 @@
     <Compile Include="drivers\CanMessaging.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\CanMessaging.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\MCP2515.c">
       <SubType>compile</SubType>
     </Compile>
