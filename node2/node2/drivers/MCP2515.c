@@ -17,7 +17,7 @@ void deselectChip(){
 
 void setOperationModeNormal(){
 	mcp_bit_modify_instruction(MCP_CANCTRL, 0b11100000, MODE_NORMAL);
-}
+}	
 
 void mcp_init(){
 	deselectChip();

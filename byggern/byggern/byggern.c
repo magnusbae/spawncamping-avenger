@@ -23,7 +23,7 @@
 
 volatile uint8_t JOY_CLICK = 0;
 volatile canMessage receivedMessage;
-volatile receivedCanMessage = 0;
+volatile uint8_t receivedCanMessage = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void)
