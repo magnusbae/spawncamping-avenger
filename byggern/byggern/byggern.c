@@ -77,7 +77,10 @@ int main(void)
 	while(1){
 			if(receivedCanMessage){
 				receivedCanMessage = 0;
-				printf("Received CAN message with data length %d, data[0]: %02X ", receivedMessage.length, receivedMessage.data[0]);
+				printf("Received CAN message with data length %d", receivedMessage.length);
+				for (int i = 0; i < receivedMessage.length; i++){
+					printf(" %c", receivedMessage.data[i]);
+				}					
 				
 				message.data[0] = 0x12;
 				message.length = 8;

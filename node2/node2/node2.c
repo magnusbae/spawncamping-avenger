@@ -26,10 +26,13 @@ int main(void)
 	SPI_MasterInit();
 	mcp_init();
 	
+	write('o');
+	
 	//Enable some leds fosho
-	DDRF = 0xff;
-	PORTF |= ((1<<PF0) | (1<<PF2) | (1<<PF4) | (1<<PF6));
-	PORTF &= ~((1<<PF1) | (1<<PF3) | (1<<PF5) | (1<<PF7));
+	//DDRB = 0xff;
+	//PORTB = 0x00;
+	//_delay_ms(2000);
+	//PORTB = 0xfF;
 	
 	canMessage message;
 	message.data[0] = 'o';
@@ -43,7 +46,11 @@ int main(void)
 	while(1){
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
+			printf("Can message received");
+			CAN_send_message(message);
 		}			
+		printf("Waiting...\r\n");
+		_delay_ms(1000);
 	}		
 
 }
