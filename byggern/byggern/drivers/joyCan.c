@@ -1,6 +1,7 @@
 #include "joyCan.h"
 #include "multifunction.h"
 #include "CanMessaging.h"
+#include "uart.h"
 #include <avr/interrupt.h>
 
 
@@ -18,6 +19,8 @@ int sendJoystickPosition(){
 	m.data[2] = jp.yPosition;
 	m.data[3] = ifan;
 	ifan++;
+	
+	write()
 	
 	return CAN_send_message(m);
 }

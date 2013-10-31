@@ -116,6 +116,12 @@
     <Compile Include="drivers\MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\PWMdriver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\PWMdriver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\SPI.c">
       <SubType>compile</SubType>
     </Compile>
