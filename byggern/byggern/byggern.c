@@ -68,9 +68,9 @@ int main(void)
 	message.extendedFrame = 0;
 	message.RTR = 0;
 	message.identifier = 0xAF;
-	if(CAN_send_message(message)){
-		printf("\r\nCAN might have sent message. ");
-	}		
+	//if(CAN_send_message(message)){
+		//printf("\r\nCAN might have sent message. ");
+	//}		
 	
 	uint8_t displaychange = 1;
 	uint8_t joydir = NEUTRAL;

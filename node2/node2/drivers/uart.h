@@ -10,15 +10,11 @@
 #ifndef UART_H_
 #define UART_H_
 
-#define FOSC 3680000
-#define BAUD 9600
-#define MYUBRR FOSC/16/BAUD-1
-
+#define BAUD_RATE_4_9MHZ 103
 
 void write(char val);
 char read_();
 void printWelcomeMessage();
 void setupUartAndSendWelcomeMessage();
-
 
 #endif /* UART_H_ */

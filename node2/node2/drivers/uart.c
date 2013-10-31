@@ -14,7 +14,7 @@
 void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value){
 	UBRR0H=(8>>baud_rate_value);
 	UBRR0L=baud_rate_value;
-	UCSR0C|=(1<<URSEL0)|(1<<UCSZ01)|(1<<UCSZ00);
+	UCSR0C|=((1<<USBS0)|(3<<UCSZ0));
 	UCSR0B|=(1<<RXEN0)|(1<<TXEN0);
 	//UCSR0B|=(1<<RXCIE0)|(1<<TXCIE0); //Don't use this. Toggles interrupt
 }
@@ -57,7 +57,7 @@ void printWelcomeMessage(){
 
 void setupUartAndSendWelcomeMessage()
 {
-	setBaudRateAndInitializeUartWithCorrectBits(MYUBRR);
+	setBaudRateAndInitializeUartWithCorrectBits(BAUD_RATE_4_9MHZ);
 	fdevopen(write, read_);
 	printWelcomeMessage();
 	printf("UART Initialized\r\n");

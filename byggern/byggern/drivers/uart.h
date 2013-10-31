@@ -17,5 +17,4 @@ char read_();
 void printWelcomeMessage();
 void setupUartAndSendWelcomeMessage();
 
-
 #endif /* UART_H_ */
