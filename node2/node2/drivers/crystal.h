@@ -8,8 +8,8 @@
 
 #ifndef CRYSTAL_H_
 #define CRYSTAL_H_
-
-#define F_CPU 3680000UL
+			  
+#define F_CPU 8320000UL
 
 
 

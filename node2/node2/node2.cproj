@@ -104,6 +104,12 @@
     <Compile Include="drivers\crystal.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\joyCan.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\joyCan.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\MCP2515.c">
       <SubType>compile</SubType>
     </Compile>

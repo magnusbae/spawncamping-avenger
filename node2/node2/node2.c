@@ -11,28 +11,29 @@
 #include "drivers/SPI.h"
 #include "drivers/CanMessaging.h"
 #include "drivers/uart.h"
+#include "drivers/joyCan.h"
 
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
 
 int main(void)
 {	
+	setupUartAndSendWelcomeMessage();
+	
+	SPI_MasterInit();
+	mcp_init();
 	
 	DDRE &= ~(1<<PE4);
 	cli();
 	EIMSK |= (1<<INT4);
 	sei();	
-	setupUartAndSendWelcomeMessage();
-	SPI_MasterInit();
-	mcp_init();
 	
-	write('o');
 	
 	//Enable some leds fosho
 	//DDRB = 0xff;
 	//PORTB = 0x00;
 	//_delay_ms(2000);
-	//PORTB = 0xfF;
+	//PORTB = 0xf0;
 	
 	canMessage message;
 	message.data[0] = 'o';
@@ -46,11 +47,16 @@ int main(void)
 	while(1){
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
-			printf("Can message received");
+			printf("Can message received with length %d \r\n", receivedMessage.length);
+			printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
+			if(receivedMessage.length == 3 && receivedMessage.data[0] == 'j'){
+				volatile joystickPosition jp = readReceivedJoystickPosition(receivedMessage);
+				printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
+			}
 			CAN_send_message(message);
 		}			
 		printf("Waiting...\r\n");
-		_delay_ms(1000);
+		_delay_ms(3000);
 	}		
 
 }

@@ -28,6 +28,11 @@ int CAN_send_message(canMessage message){
 	return 1;
 }
 
+void clearReceivedMessageBit( uint8_t address ) 
+{
+	mcp_bit_modify_instruction(address, 0x04, 0x00); //clear received bit
+}
+
 canMessage read_message(int reg){
 	uint8_t address = 0x00;
 	address = (reg == 0 ? MCP_RXB0CTRL : MCP_RXB1CTRL);
@@ -38,7 +43,7 @@ canMessage read_message(int reg){
 	for(int i = 0; i < received.length; i++){
 		received.data[i] = mcp_read(address+6+i);
 	}
-	mcp_bit_modify_instruction(address, 0x04, 0x00); //clear received bit
+	clearReceivedMessageBit(address);
 	return received;
 }
 

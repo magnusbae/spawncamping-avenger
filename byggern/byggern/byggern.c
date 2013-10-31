@@ -20,6 +20,7 @@
 #include "drivers/MCP2515.h"
 #include "drivers/SPI.h"
 #include "drivers/CanMessaging.h"
+#include "drivers/joyCan.h"
 
 volatile uint8_t JOY_CLICK = 0;
 volatile canMessage receivedMessage;
@@ -54,6 +55,7 @@ int main(void)
 	DDRE &= ~(1<<PE0);
 	DDRD &= ~(1<<PD2); //PD2=INT0, PD3=INT1
 	cli();
+	MCUCR |= (1<<ISC01);
 	GICR |= (1<<INT2)|(1<<INT0);
 	sei();
 	
@@ -63,28 +65,31 @@ int main(void)
 	printf("%02X", mcp_read(MCP_CANSTAT));
 	
 	canMessage message;
-	message.data[0] = 0xF1;
+	message.data[0] = 'a';
 	message.length = 1;
 	message.extendedFrame = 0;
 	message.RTR = 0;
 	message.identifier = 0xAF;
-	//if(CAN_send_message(message)){
-		//printf("\r\nCAN might have sent message. ");
-	//}		
+	
+	_delay_ms(5000);
+	if(!receivedCanMessage && CAN_send_message(message)){
+		printf("\r\nCAN might have sent message. ");
+	}		
 	
 	uint8_t displaychange = 1;
 	uint8_t joydir = NEUTRAL;
 	while(1){
 			if(receivedCanMessage){
 				receivedCanMessage = 0;
+				receivedMessage = CAN_read_received_message();
+				mcp_clear_interrupt();
 				printf("Received CAN message with data length %d", receivedMessage.length);
 				for (int i = 0; i < receivedMessage.length; i++){
 					printf(" %c", receivedMessage.data[i]);
-				}					
+				}			
+				printf("\r\n");		
 				
-				message.data[0] = 0x12;
-				message.length = 8;
-				if(CAN_send_message(message)){
+				if(sendJoystickPosition()){
 					printf("\r\nCAN might have sent message. ");
 				}
 			}
@@ -162,7 +167,6 @@ ISR(INT2_vect){
 }
 
 ISR(INT0_vect){
-	receivedMessage = CAN_read_received_message();
+	
 	receivedCanMessage = 1;
-	mcp_clear_interrupt();
 }

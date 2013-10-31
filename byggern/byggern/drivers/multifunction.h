@@ -24,12 +24,13 @@
 #define DIRECTION_TRESHOLD_POSITIVE 150
 #define DIRECTION_NEUTRAL 132
 
-typedef struct  
+typedef struct
 {
-	unsigned int xPosition;
-	unsigned int yPosition;
+	char xPosition;
+	char yPosition;
 } joystickPosition;
 
+joystickPosition jp_global;
 
 typedef struct
 {

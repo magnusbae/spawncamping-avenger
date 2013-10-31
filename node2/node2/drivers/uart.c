@@ -1,8 +1,6 @@
 /*
- * uart.c
+ * uart Node 2
  *
- * Created: 19.09.2013 16:23:48
- *  Author: tommp
  */ 
 
 #include "uart.h"
@@ -16,7 +14,6 @@ void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value){
 	UBRR0L=baud_rate_value;
 	UCSR0C|=((1<<USBS0)|(3<<UCSZ0));
 	UCSR0B|=(1<<RXEN0)|(1<<TXEN0);
-	//UCSR0B|=(1<<RXCIE0)|(1<<TXCIE0); //Don't use this. Toggles interrupt
 }
 
 void Wait(int waitTime)
@@ -58,7 +55,7 @@ void printWelcomeMessage(){
 void setupUartAndSendWelcomeMessage()
 {
 	setBaudRateAndInitializeUartWithCorrectBits(MYUBRR);
-	//fdevopen(write, read_);
-	//printWelcomeMessage();
-	//printf("UART Initialized\r\n");
+	fdevopen(write, read_);
+	printWelcomeMessage();
+	printf("UART Initialized\r\n");
 }
