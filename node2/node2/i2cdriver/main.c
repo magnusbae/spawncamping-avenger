@@ -24,8 +24,8 @@
 *
 ****************************************************************************/
 
-#include <ioavr.h>
-#include <inavr.h>
+#include "avr/io.h"              
+#include "avr/interrupt.h"
 #include "TWI_Master.h"
 
 #define TWI_GEN_CALL         0x00  // The General Call address is 0
@@ -69,7 +69,7 @@ void main( void )
   DDRD  = 0x00;
 
   TWI_Master_Initialise();
-  __enable_interrupt();
+  sei();
   
   TWI_targetSlaveAddress   = 0x10;
 

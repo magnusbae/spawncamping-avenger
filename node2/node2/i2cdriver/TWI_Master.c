@@ -23,8 +23,8 @@
 *
 ****************************************************************************/
 
-#include "ioavr.h"              
-#include "inavr.h"
+#include "avr/io.h"              
+#include "avr/interrupt.h"
 #include "TWI_Master.h"
 
 static unsigned char TWI_buf[ TWI_BUFFER_SIZE ];    // Transceiver buffer
@@ -142,7 +142,7 @@ that is whenever a TWI event has occurred. This function should not be called di
 application.
 ****************************************************************************/
 #pragma vector=TWI_vect
-__interrupt void TWI_ISR(void)
+ISR(TWI_vect) 
 {
   static unsigned char TWI_bufPtr;
   
