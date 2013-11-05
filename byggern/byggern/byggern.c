@@ -72,8 +72,12 @@ int main(void)
 	message.identifier = 0xAF;
 	
 	_delay_ms(5000);
-	if(!receivedCanMessage && CAN_send_message(message)){
-		printf("\r\nCAN might have sent message. ");
+	if(!receivedCanMessage){
+		if(CAN_send_message(message)){
+			printf("\r\nCAN might have sent message. ");
+		}else{
+			printf("\r\nCAN message failed. ");
+		}			
 	}		
 	
 	uint8_t displaychange = 1;

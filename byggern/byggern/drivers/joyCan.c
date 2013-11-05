@@ -19,8 +19,7 @@ int sendJoystickPosition(){
 	m.data[2] = jp.yPosition;
 	m.data[3] = ifan;
 	ifan++;
-	
-	write()
+
 	
 	return CAN_send_message(m);
 }
