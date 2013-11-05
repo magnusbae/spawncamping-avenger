@@ -5,18 +5,28 @@
  *  Author: magnussb
  */ 
 
-#define SIGNAL_PERIOD 20000
-#define PULSE_CENTER 1500
-#define PULSE_MAX 2100
-#define PULSE_MIN 1900
-
+#include "PWMdriver.h"
+#include <avr/io.h>
+#include "joyCan.h"
 
 void initializePWM(){
-//WGM01:0 = 3 sets to PWM fast slope mode, we want non-inverting Compare Output mode (COM01:0 bits to 2) that counts from 0 to 20000 ns (20 ms, SIGNAL_PERIOD) and clears OC0  on match with adjusted joy value(OCR0), TCNT0 is the counter value
-//OC0 must be set to output
-	//TODO:Set oc0 as output,
+
+	//Compare TCNT1(H/L) with OCR1B(H/L)
 	
-	TCCR1A |= ((WGM11<<1) | (COMA1<<1));
-	TCCR1B |= ((WGM13<<1) | (WGM12<<1));
+	OCR1BL = 1500; //Initialize to neutral position
+	ICR1H = 0x4E; //Set higher top value
+	ICR1L =0x1F; //Set lower top value
+	TCCR1A |= ((1<<WGM11) | (1<<COM1B1)); //Set mode to fast PWM an set output sognal pin
+	TCCR1B |= ((1<<WGM13) | (1<<WGM12) | (1<<CS11)); //Set Mode to fast PWM and select prescaler
+	DDRB |= ((1<<DDB6)); //Set OC1B as output
 }
 
+void set_servopos(joystickPosition joypos){
+	int val=joypos.xPosition*12+900;
+	if (val<PULSE_MIN || val>PULSE_MAX){
+		printf("ERROR: Servoposition out of range! Must be between: %d and %d", PULSE_MIN, PULSE_MAX);
+	}
+	else{
+		OCR1BL=val;
+	}
+}

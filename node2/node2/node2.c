@@ -12,6 +12,7 @@
 #include "drivers/CanMessaging.h"
 #include "drivers/uart.h"
 #include "drivers/joyCan.h"
+#include "drivers/PWMdriver.h"
 
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
@@ -19,7 +20,7 @@ volatile uint8_t receivedCanMessage = 0;
 int main(void)
 {	
 	setupUartAndSendWelcomeMessage();
-	
+	initializePWM();
 	SPI_MasterInit();
 	mcp_init();
 	
@@ -52,6 +53,7 @@ int main(void)
 			if(receivedMessage.length == 3 && receivedMessage.data[0] == 'j'){
 				volatile joystickPosition jp = readReceivedJoystickPosition(receivedMessage);
 				printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
+				set_servopos(jp);
 			}
 			CAN_send_message(message);
 		}			
