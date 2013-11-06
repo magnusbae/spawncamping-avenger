@@ -13,6 +13,7 @@
 #include "drivers/uart.h"
 #include "drivers/joyCan.h"
 #include "drivers/PWMdriver.h"
+#include "drivers/ADC128.h"
 
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
@@ -20,9 +21,12 @@ volatile uint8_t receivedCanMessage = 0;
 int main(void)
 {	
 	setupUartAndSendWelcomeMessage();
-	initializePWM();
+	
 	SPI_MasterInit();
 	mcp_init();
+	
+	initializePWM();
+	initializeADC();
 	
 	DDRE &= ~(1<<PE4);
 	cli();
@@ -46,19 +50,21 @@ int main(void)
 	CAN_send_message(message);
 	
 	while(1){
+		//volatile int printme = convert();
+		//printf("%d", printme);
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
-			printf("Can message received with length %d \r\n", receivedMessage.length);
-			printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
+			//printf("Can message received with length %d \r\n", receivedMessage.length);
+			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
 			if(receivedMessage.length == 3 && receivedMessage.data[0] == 'j'){
 				volatile joystickPosition jp = readReceivedJoystickPosition(receivedMessage);
-				printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
+				//printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
 				set_servopos(jp);
 			}
 			CAN_send_message(message);
 		}			
 		printf("Waiting...\r\n");
-		_delay_ms(3000);
+		
 	}		
 
 }
@@ -68,4 +74,4 @@ ISR(INT4_vect){
 	receivedCanMessage = 1;
 	mcp_clear_interrupt();	
 	PORTF |= (1<<PF0);
-}	
+}	//grå-gul, blå-rød, gul-svart

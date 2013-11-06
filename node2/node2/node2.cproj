@@ -95,6 +95,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="drivers\ADC128.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\ADC128.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\CanMessaging.c">
       <SubType>compile</SubType>
     </Compile>

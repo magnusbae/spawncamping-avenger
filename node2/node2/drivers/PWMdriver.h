@@ -12,9 +12,8 @@
 #include "joyCan.h"
 
 #define SIGNAL_PERIOD 20000
-#define PULSE_CENTER 1500
-#define PULSE_MAX 2100
-#define PULSE_MIN 900
+#define PULSE_MAX 2184
+#define PULSE_MIN 936
 
 void initializePWM();
 void set_servopos(joystickPosition joypos);
