@@ -12,7 +12,8 @@
 #define TRIGGERVALUE 100
 
 void initializeADC();
-int convert();
+int adc_readvalue();
+int game_CheckBallDropped();
 
 
 #endif /* ADC128_H_ */

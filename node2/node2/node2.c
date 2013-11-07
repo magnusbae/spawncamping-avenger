@@ -18,8 +18,20 @@
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
 
+uint8_t ifFirstMessageSendAckWithPrintf( uint8_t firstMessageIsReceived ) 
+{
+	if (!firstMessageIsReceived){
+		printf("First message received. CAN-bus is working");
+		firstMessageIsReceived = 1;
+	}	
+	return firstMessageIsReceived;
+}
+
 int main(void)
 {	
+	uint8_t firstMessageIsReceived = 0;
+	uint8_t gameScore = 0;
+	uint8_t gameIsRunning = 0;
 	setupUartAndSendWelcomeMessage();
 	
 	SPI_MasterInit();
@@ -34,12 +46,6 @@ int main(void)
 	sei();	
 	
 	
-	//Enable some leds fosho
-	//DDRB = 0xff;
-	//PORTB = 0x00;
-	//_delay_ms(2000);
-	//PORTB = 0xf0;
-	
 	canMessage message;
 	message.data[0] = 'o';
 	message.data[1] = 'k';
@@ -48,11 +54,25 @@ int main(void)
 	message.RTR = 0;
 	message.identifier = 0x00;
 	CAN_send_message(message);
+	printf("First message sent");
 	
 	while(1){
-		//volatile int printme = convert();
-		//printf("%d", printme);
+		if(!gameIsRunning && !game_CheckBallDropped()){
+			gameIsRunning = 1;
+		}
+		if(gameIsRunning && game_CheckBallDropped()){
+			gameIsRunning = 0;
+			gameScore++;
+			printf("The ball was dropped, score now at -%i\r\n", gameScore);
+			message.data[0] = 's';
+			message.data[1] = gameScore;
+			CAN_send_message(message);
+			_delay_ms(1000);
+		}
+		
 		if(receivedCanMessage){
+			//firstMessageIsReceived = ifFirstMessageSendAckWithPrintf(firstMessageIsReceived);
+
 			receivedCanMessage = 0;
 			//printf("Can message received with length %d \r\n", receivedMessage.length);
 			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
@@ -61,10 +81,7 @@ int main(void)
 				//printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
 				set_servopos(jp);
 			}
-			CAN_send_message(message);
-		}			
-		printf("Waiting...\r\n");
-		
+		}					
 	}		
 
 }
@@ -73,5 +90,5 @@ ISR(INT4_vect){
 	receivedMessage = CAN_read_received_message();
 	receivedCanMessage = 1;
 	mcp_clear_interrupt();	
-	PORTF |= (1<<PF0);
+	//PORTF |= (1<<PF0);
 }	//grå-gul, blå-rød, gul-svart

@@ -71,7 +71,6 @@ int main(void)
 	message.RTR = 0;
 	message.identifier = 0xAF;
 	
-	_delay_ms(5000);
 	if(!receivedCanMessage){
 		if(CAN_send_message(message)){
 			printf("\r\nCAN might have sent message. ");
@@ -89,14 +88,22 @@ int main(void)
 				mcp_clear_interrupt();
 				printf("Received CAN message with data length %d", receivedMessage.length);
 				for (int i = 0; i < receivedMessage.length; i++){
-					printf(" %c", receivedMessage.data[i]);
+					printf(" %d", receivedMessage.data[i]);
 				}			
 				printf("\r\n");		
-				
-				if(sendJoystickPosition()){
-					printf("\r\nCAN might have sent message. ");
+				if(receivedMessage.data[0] == 's'){
+					oled_ramgotopos(5,0);
+					oled_ramstore("Game score: -");
+					char buffer[3];
+					sprintf( buffer, "%d", receivedMessage.data[1] );
+					oled_ramgotopos(5,13*4);
+					oled_ramstore(buffer);
+					oled_ramtransfer();
 				}
 			}
+		if(sendJoystickPosition()){
+			printf("\r\nCAN might have sent message. ");
+		}
 		if(displaychange){
 			menu_display_RAMV2(menu, menuLenght);
 			displaychange = 0;
@@ -160,7 +167,7 @@ int main(void)
 		uint8_t leftSlider = readLeftSlider();
 		uint8_t rightSlider = readRightSlider();
 		//printf("Joystick X: %d, Y: %d, direction: %d. Sliders, Left: %d, right: %d\r\n", jp.xPosition, jp.yPosition, jd.direction, leftSlider, rightSlider);
-		_delay_ms(10);
+		_delay_ms(50);
 	}	
 }
 

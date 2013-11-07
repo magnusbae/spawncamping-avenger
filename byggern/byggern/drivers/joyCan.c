@@ -6,7 +6,6 @@
 
 
 int sendJoystickPosition(){
-	int ifan = 0;
 	volatile joystickPosition jp = readJoystickPosition();
 	volatile canMessage m;
 	
@@ -17,9 +16,6 @@ int sendJoystickPosition(){
 	m.data[0] = 'j';
 	m.data[1] = jp.xPosition;
 	m.data[2] = jp.yPosition;
-	m.data[3] = ifan;
-	ifan++;
-
 	
 	return CAN_send_message(m);
 }
