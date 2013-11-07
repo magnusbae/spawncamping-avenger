@@ -14,6 +14,7 @@
 #include "drivers/joyCan.h"
 #include "drivers/PWMdriver.h"
 #include "drivers/ADC128.h"
+#include "drivers/MotorController.h"
 
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
@@ -39,6 +40,8 @@ int main(void)
 	
 	initializePWM();
 	initializeADC();
+//	initialMotorControlSetup();
+	
 	
 	DDRE &= ~(1<<PE4);
 	cli();
@@ -80,6 +83,7 @@ int main(void)
 				volatile joystickPosition jp = readReceivedJoystickPosition(receivedMessage);
 				//printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
 				set_servopos(jp);
+				setMotorPowerFromJoystickPosition(jp);
 			}
 		}					
 	}		

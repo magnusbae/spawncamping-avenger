@@ -107,6 +107,9 @@
     <Compile Include="drivers\CanMessaging.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\MotorController.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\crystal.h">
       <SubType>compile</SubType>
     </Compile>
@@ -122,6 +125,9 @@
     <Compile Include="drivers\MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\MotorController.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\PWMdriver.c">
       <SubType>compile</SubType>
     </Compile>
@@ -132,6 +138,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\SPI.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\TWI_Master.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\TWI_Master.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\uart.c">

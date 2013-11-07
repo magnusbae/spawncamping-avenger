@@ -21,6 +21,7 @@ void setOperationModeNormal(){
 
 void mcp_init(){
 	deselectChip();
+	SPI_MasterTransmit(MCP_RESET);
 	//setLoopbackOperationalMode();
 	setOperationModeNormal();
 	mcp_write(MCP_CANINTE, MCP_RX_INT);
