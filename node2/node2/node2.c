@@ -40,7 +40,7 @@ int main(void)
 	
 	initializePWM();
 	initializeADC();
-//	initialMotorControlSetup();
+	initialMotorControlSetup();
 	
 	
 	DDRE &= ~(1<<PE4);

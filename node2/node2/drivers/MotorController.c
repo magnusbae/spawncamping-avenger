@@ -6,23 +6,30 @@
 unsigned char messageBuf[4];
 uint8_t isInvertedOutput = 0;
 
-void enableMotor(uint8_t shouldEnable);
+void disableMotor();
+void enableMotor();
+void setMotorEnabledState(uint8_t shouldEnable);
 void setMotorDirection();
 void setDac0Output(uint8_t valueFrom0To255);
 uint8_t calculateByteValue(uint8_t joystickValue);
 
 void initialMotorControlSetup(){
-	DDRC = 0xFF;
+	MOTOR_CONTROLLER_DDR = MOTOR_CONTROLLER_DDR_VALUES;
+	ENCODER_DDR = ENCODER_DDR_VALUES;
 	TWI_Master_Initialise();
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_ENABLE_ACTIVE_LOW) | (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
-	enableMotor(1);
+	enableMotor();
 }
 
 void disableMotor(){
-	enableMotor(0);
+	setMotorEnabledState(0);
 }
 
-void enableMotor(uint8_t shouldEnable){
+void enableMotor(){
+	setMotorEnabledState(1);
+}
+
+void setMotorEnabledState(uint8_t shouldEnable){
 	if(shouldEnable){
 		MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENABLE);
 	}else{
@@ -40,8 +47,7 @@ void setMotorDirection(){
 
 
 void setDac0Output(uint8_t valueFrom0To255){
-   //setMotorDirection();
-   MOTOR_CONTROLLER_PORT |= (1<<MOTOR_DIRECTION);
+   setMotorDirection();
    char TWI_targetSlaveAddress = DAC_ADDRESS;
    messageBuf[0] = (TWI_targetSlaveAddress) | (FALSE<<TWI_READ_BIT); // The first byte must always consist of General Call code or the TWI slave address.
    messageBuf[1] = DAC_0_OUTPUT;             // The first byte is used for commands.
@@ -73,11 +79,11 @@ void setMotorPowerFromJoystickPosition(joystickPosition jp){
 		setDac0Output(0);
 	}else if(pos > 50){
 		pos -= 50;
-		isInvertedOutput = 1;
+		isInvertedOutput = 0;
 		setDac0Output(calculateByteValue(pos));
 	}else{
 		pos = 50-pos;
-		isInvertedOutput = 0;
+		isInvertedOutput = 1;
 		setDac0Output(calculateByteValue(pos));
 	}
 }
