@@ -2,9 +2,11 @@
 #include "joyCan.h"
 #include "TWI_Master.h"
 #include <avr/io.h>
+#include <util/delay.h>
 
 unsigned char messageBuf[4];
 uint8_t isInvertedOutput = 0;
+uint8_t time_stamp = 0; //needs to be set once a refrence change is detected
 
 void disableMotor();
 void enableMotor();
@@ -12,6 +14,9 @@ void setMotorEnabledState(uint8_t shouldEnable);
 void setMotorDirection();
 void setDac0Output(uint8_t valueFrom0To255);
 uint8_t calculateByteValue(uint8_t joystickValue);
+uint8_t readEncoderValue();
+void resetEncoder();
+void initializeEncoder();
 
 void initialMotorControlSetup(){
 	MOTOR_CONTROLLER_DDR = MOTOR_CONTROLLER_DDR_VALUES;
@@ -91,4 +96,59 @@ void setMotorPowerFromInputData(inputMessage jp){
 uint8_t calculateByteValue(uint8_t joystickValue){
 	uint8_t retval = ((float)(joystickValue)*4);
 	return retval;
+}
+
+void initializeEncoder(){
+	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_ENABLE_ACTIVE_LOW);
+	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
+	_delay_ms(1);
+	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
+}
+
+uint8_t readEncoderValue(){
+	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
+	_delay_ms(1);
+	uint8_t val_high = ENCODER_PINS;
+	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
+	_delay_ms(1);
+	uint8_t val_low = ENCODER_PINS;
+	printf("Read value: %02x %02x\r\n", val_low, val_high);
+	return val_low;
+}
+
+void resetEncoder(){
+	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
+}
+
+uint8_t convertEncoderValue(uint8_t convme){
+	//convert and return
+}
+
+void regulator(inputMessage data){
+	//might not need PID, depending on motor PI might be enought (or even P)
+	
+	uint8_t diff = 0;
+	uint8_t voltage = 0;
+	uint8_t posistion = convertEncoderValue(readEncoderValue());
+	uint8_t refrence = data.motorPosition;
+	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
+	float speed = 0; //need a function for calculating speed ((mesurement1-mesurement2)/(deltatimebetween mesurements))
+	
+	if (position>refrence+5){
+		isInvertedOutput=0;
+		diff = position-refrence;
+	}
+	else if(position<refrence-5){
+		isInvertedOutput=1;
+		diff = refrence-position;
+	}
+	else{
+		time_stamp = 0; //reset it
+	}
+	
+	voltage = Kp*diff + Ki*diff*deltatime - Kp*speed;
+	
+	
+	setMotorDirection();
+	setDac0Output(voltage);
 }

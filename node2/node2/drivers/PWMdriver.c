@@ -26,13 +26,14 @@ void initializePWM(){
 
 void set_servopos(inputMessage joypos){
 	float multiplier = (PULSE_MAX-PULSE_MIN)/100.00;
-	int val=(joypos.motorPosition*multiplier)+PULSE_MIN;
+	int val = 1524;
+	if (joypos.motorPosition>53 || joypos.motorPosition<47){
+		val=(joypos.motorPosition*multiplier)+PULSE_MIN;
+	}		
 	if (val<PULSE_MIN || val>PULSE_MAX){
 		printf("ERROR: Servoposition out of range! Must be between: %d and %d", PULSE_MIN, PULSE_MAX);
 	}
 	else{
-		OCR1BH = val / 0b100000000;
-		OCR1BL = val;
-		
+		OCR1B = val;
 	}
 }

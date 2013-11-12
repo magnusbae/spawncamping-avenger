@@ -41,6 +41,8 @@ int main(void)
 	initializePWM();
 	initializeADC();
 	initialMotorControlSetup();
+	initializeEncoder();
+
 	
 	
 	DDRE &= ~(1<<PE4);
@@ -57,9 +59,11 @@ int main(void)
 	message.RTR = 0;
 	message.identifier = 0x00;
 	CAN_send_message(message);
-	printf("First message sent");
+	printf("First message sent\r\n");
 	
 	while(1){
+		int mememe = readEncoderValue();
+		_delay_ms(1000);
 		if(!gameIsRunning && !game_CheckBallDropped()){
 			gameIsRunning = 1;
 		}
@@ -80,11 +84,11 @@ int main(void)
 			//printf("Can message received with length %d \r\n", receivedMessage.length);
 			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
 			if(receivedMessage.length == 4 && receivedMessage.data[0] == 'j'){
-				volatile inputMessage jp = readReceivedInputData(receivedMessage);
+				volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
 				//printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
-				set_servopos(jp);
-				setMotorPowerFromInputData(jp);
-				if(jp.shouldActuate){
+				set_servopos(receivedInput);
+				setMotorPowerFromInputData(receivedInput);
+				if(receivedInput.shouldActuate){
 					printf("TODO: Create relay-driver and hook up stuff\r\n");
 				}
 			}

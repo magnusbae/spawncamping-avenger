@@ -29,7 +29,7 @@
 
 #define ENCODER_DDR DDRA
 #define ENCODER_DDR_VALUES 0x00
-#define ENCODER_PORT PORTA
+#define ENCODER_PINS PINA
 
 #define ENCODER0 PA7
 #define ENCODER1 PA6
@@ -39,6 +39,11 @@
 #define ENCODER5 PA2
 #define ENCODER6 PA1
 #define ENCODER7 PA0
+
+//needs tuning (pref. ziegler nichols)
+#define Kp 1
+#define Kd 0
+#define Ki 0
 
 
 void initialMotorControlSetup();
