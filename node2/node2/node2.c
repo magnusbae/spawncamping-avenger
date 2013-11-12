@@ -79,11 +79,14 @@ int main(void)
 			receivedCanMessage = 0;
 			//printf("Can message received with length %d \r\n", receivedMessage.length);
 			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
-			if(receivedMessage.length == 3 && receivedMessage.data[0] == 'j'){
-				volatile joystickPosition jp = readReceivedJoystickPosition(receivedMessage);
+			if(receivedMessage.length == 4 && receivedMessage.data[0] == 'j'){
+				volatile inputMessage jp = readReceivedInputData(receivedMessage);
 				//printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
 				set_servopos(jp);
-				setMotorPowerFromJoystickPosition(jp);
+				setMotorPowerFromInputData(jp);
+				if(jp.shouldActuate){
+					printf("TODO: Create relay-driver and hook up stuff\r\n");
+				}
 			}
 		}					
 	}		

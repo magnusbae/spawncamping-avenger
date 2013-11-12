@@ -73,8 +73,8 @@ void setDac0Output(uint8_t valueFrom0To255){
     }
 }
 
-void setMotorPowerFromJoystickPosition(joystickPosition jp){
-	uint8_t pos = jp.xPosition;
+void setMotorPowerFromInputData(inputMessage jp){
+	uint8_t pos = jp.motorPosition;
 	if(pos == 50){
 		setDac0Output(0);
 	}else if(pos > 50){

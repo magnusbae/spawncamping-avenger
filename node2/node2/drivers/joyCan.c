@@ -2,13 +2,14 @@
 #include "CanMessaging.h"
 
 
-int sendJoyStickPosition(){
+int sendInputDataOverCan(){
 	return 1;
 }
 
-joystickPosition readReceivedJoystickPosition(canMessage messageReceived){
-	volatile joystickPosition jp;
-	jp.xPosition = messageReceived.data[1];
-	jp.yPosition = messageReceived.data[2];
-	return jp;
+inputMessage readReceivedInputData(canMessage messageReceived){
+	volatile inputMessage im;
+	im.motorPosition = messageReceived.data[1];
+	im.servoPosition = messageReceived.data[2];
+	im.shouldActuate = messageReceived.data[3];
+	return im;
 }

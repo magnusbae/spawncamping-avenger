@@ -16,7 +16,7 @@
 #define PULSE_MIN 936
 
 void initializePWM();
-void set_servopos(joystickPosition joypos);
+void set_servopos(inputMessage joypos);
 
 
 

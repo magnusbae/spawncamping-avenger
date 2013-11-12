@@ -24,9 +24,9 @@ void initializePWM(){
 	DDRB |= ((1<<PB6)); //Set OC1B as output
 }
 
-void set_servopos(joystickPosition joypos){
+void set_servopos(inputMessage joypos){
 	float multiplier = (PULSE_MAX-PULSE_MIN)/100.00;
-	int val=(joypos.xPosition*multiplier)+PULSE_MIN;
+	int val=(joypos.motorPosition*multiplier)+PULSE_MIN;
 	if (val<PULSE_MIN || val>PULSE_MAX){
 		printf("ERROR: Servoposition out of range! Must be between: %d and %d", PULSE_MIN, PULSE_MAX);
 	}

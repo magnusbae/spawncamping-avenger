@@ -42,7 +42,7 @@
 
 
 void initialMotorControlSetup();
-void setMotorPowerFromJoystickPosition(joystickPosition jp);
+void setMotorPowerFromInputData(inputMessage jp);
 void disableMotor();
 
 #endif /* MOTORCONTROLLER_H_ */

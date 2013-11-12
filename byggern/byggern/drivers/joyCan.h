@@ -9,10 +9,21 @@
 #ifndef JOYCAN_H_
 #define JOYCAN_H_
 
-#include "multifunction.h"
-#include "CanMessaging.h"
 
-int sendJoystickPosition();
-joystickPosition readReceivedJoystickPosition(canMessage messageReceived);
+#include "CanMessaging.h"
+#include <avr/io.h>
+
+uint8_t sendJoyClicked_global;
+
+typedef struct
+{
+	char motorPosition;
+	char servoPosition;
+	uint8_t shouldActuate;
+} inputMessage;
+
+
+int sendInputDataOverCan();
+inputMessage readReceivedInputData(canMessage messageReceived);
 
 #endif /* JOYCAN_H_ */

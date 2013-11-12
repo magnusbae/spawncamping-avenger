@@ -11,15 +11,17 @@
 
 
 #include "CanMessaging.h"
+#include <avr/io.h>
 
 typedef struct
 {
-	char xPosition;
-	char yPosition;
-} joystickPosition;
+	char motorPosition;
+	char servoPosition;
+	uint8_t shouldActuate;
+} inputMessage;
 
 
-int sendJoyStickPosition();
-joystickPosition readReceivedJoystickPosition(canMessage messageReceived);
+int sendInputDataOverCan();
+inputMessage readReceivedInputData(canMessage messageReceived);
 
 #endif /* JOYCAN_H_ */
