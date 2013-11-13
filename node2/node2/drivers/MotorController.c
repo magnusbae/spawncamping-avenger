@@ -6,7 +6,9 @@
 
 unsigned char messageBuf[4];
 uint8_t isInvertedOutput = 0;
-uint8_t time_stamp = 0; //needs to be set once a refrence change is detected
+int time_stamp = 0; //needs to be set once a reference change is detected
+
+
 
 void disableMotor();
 void enableMotor();
@@ -22,7 +24,7 @@ void initialMotorControlSetup(){
 	MOTOR_CONTROLLER_DDR = MOTOR_CONTROLLER_DDR_VALUES;
 	ENCODER_DDR = ENCODER_DDR_VALUES;
 	TWI_Master_Initialise();
-	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_ENABLE_ACTIVE_LOW) | (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
+	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_OUTPUT_ENABLE_ACTIVE_LOW) | (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
 	enableMotor();
 }
 
@@ -99,25 +101,25 @@ uint8_t calculateByteValue(uint8_t joystickValue){
 }
 
 void initializeEncoder(){
-	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_ENABLE_ACTIVE_LOW);
-	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
-	_delay_ms(1);
-	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
+	resetEncoder();
 }
 
 uint8_t readEncoderValue(){
-	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
+	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_OUTPUT_ENABLE_ACTIVE_LOW) | ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_ms(1);
-	uint8_t val_high = ENCODER_PINS;
+	volatile uint8_t val_high = ENCODER_PINS;
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_ms(1);
-	uint8_t val_low = ENCODER_PINS;
+	volatile uint8_t val_low = ENCODER_PINS;
+	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_OUTPUT_ENABLE_ACTIVE_LOW);
 	printf("Read value: %02x %02x\r\n", val_low, val_high);
 	return val_low;
 }
 
 void resetEncoder(){
-	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
+	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_OUTPUT_ENABLE_ACTIVE_LOW) | ~(1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
+	_delay_ms(1);
+	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW) | (1<<MOTOR_ENCODER_OUTPUT_ENABLE_ACTIVE_LOW);
 }
 
 uint8_t convertEncoderValue(uint8_t convme){
@@ -129,24 +131,24 @@ void regulator(inputMessage data){
 	
 	uint8_t diff = 0;
 	uint8_t voltage = 0;
-	uint8_t posistion = convertEncoderValue(readEncoderValue());
-	uint8_t refrence = data.motorPosition;
+	uint8_t position = convertEncoderValue(readEncoderValue());
+	uint8_t reference = data.motorPosition;
 	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
-	float speed = 0; //need a function for calculating speed ((mesurement1-mesurement2)/(deltatimebetween mesurements))
+	//float speed = 0; //need a function for calculating speed ((mesurement1-mesurement2)/(deltatimebetween mesurements))
 	
-	if (position>refrence+5){
+	if (position>reference+5){
 		isInvertedOutput=0;
-		diff = position-refrence;
+		diff = position-reference;
 	}
-	else if(position<refrence-5){
+	else if(position<reference-5){
 		isInvertedOutput=1;
-		diff = refrence-position;
+		diff = reference-position;
 	}
 	else{
 		time_stamp = 0; //reset it
 	}
 	
-	voltage = Kp*diff + Ki*diff*deltatime - Kp*speed;
+	voltage = Kp*diff + Ki*diff*deltatime; // - Kp*speed;
 	
 	
 	setMotorDirection();

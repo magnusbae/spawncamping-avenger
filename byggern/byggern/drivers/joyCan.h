@@ -13,7 +13,7 @@
 #include "CanMessaging.h"
 #include <avr/io.h>
 
-uint8_t sendJoyClicked_global;
+volatile uint8_t sendJoyClicked_global;
 
 typedef struct
 {

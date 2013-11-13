@@ -15,6 +15,7 @@
 #include "drivers/PWMdriver.h"
 #include "drivers/ADC128.h"
 #include "drivers/MotorController.h"
+#include "drivers/relayDriver.h"
 
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
@@ -42,7 +43,7 @@ int main(void)
 	initializeADC();
 	initialMotorControlSetup();
 	initializeEncoder();
-
+	initialRelaySetup();
 	
 	
 	DDRE &= ~(1<<PE4);
@@ -63,7 +64,7 @@ int main(void)
 	
 	while(1){
 		int mememe = readEncoderValue();
-		_delay_ms(1000);
+		_delay_ms(1000); //debug wait (to read terminal)
 		if(!gameIsRunning && !game_CheckBallDropped()){
 			gameIsRunning = 1;
 		}
@@ -85,11 +86,12 @@ int main(void)
 			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
 			if(receivedMessage.length == 4 && receivedMessage.data[0] == 'j'){
 				volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
-				//printf("Received joystickposition, x: %i y: %i \r\n", jp.xPosition, jp.yPosition);
+				printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
 				set_servopos(receivedInput);
 				setMotorPowerFromInputData(receivedInput);
 				if(receivedInput.shouldActuate){
-					printf("TODO: Create relay-driver and hook up stuff\r\n");
+					printf("Shoot!\r\n");
+					triggerRelay();
 				}
 			}
 		}					

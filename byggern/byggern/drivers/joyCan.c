@@ -1,17 +1,14 @@
 #include "joyCan.h"
 #include "multifunction.h"
 #include "CanMessaging.h"
-#include "uart.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-uint8_t sendJoyClicked_global = 0;
+volatile uint8_t sendJoyClicked_global = 0;
 
 void resetSendJoyClickedStateToZero() 
 {
-	if(sendJoyClicked_global){
-		sendJoyClicked_global = 0;
-	}
+	sendJoyClicked_global = 0;
 }
 
 int sendInputDataOverCan(){

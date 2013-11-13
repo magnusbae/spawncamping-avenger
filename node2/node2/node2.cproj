@@ -107,6 +107,9 @@
     <Compile Include="drivers\CanMessaging.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\relayDriver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\MotorController.c">
       <SubType>compile</SubType>
     </Compile>

@@ -101,7 +101,9 @@ int main(void)
 					oled_ramtransfer();
 				}
 			}
+		printf("\r\nJoyclick = %i", sendJoyClicked_global);
 		if(sendInputDataOverCan()){
+			
 			printf("\r\nCAN might have sent message. ");
 		}
 		if(displaychange){
@@ -111,20 +113,17 @@ int main(void)
 		
 		uint8_t menuPosition = 0;
 		if (JOY_CLICK == 1){
+			JOY_CLICK = 0;
 			sendJoyClicked_global = 1;
 			oled_goto_position(5, 0);
-			if(JOY_CLICK == 1){
-				for(int i = 0; i < menuLenght; i++){
-					if(menu[i].isSelected == SELECTED){
-						menuPosition = i;
-					}
+			
+			for(int i = 0; i < menuLenght; i++){
+				if(menu[i].isSelected == SELECTED){
+					menuPosition = i;
 				}
-				oled_printf("Joy has been clicked, ");
-				oled_printf(menu[menuPosition].name);
-				
-				JOY_CLICK = 0;
-				_delay_ms(1000);
-			}			
+			}
+			oled_printf("Joy has been clicked, ");
+			oled_printf(menu[menuPosition].name);
 		}
 		joystickPosition jp = readJoystickPosition();
 		joystickDirection jd = readJoystickDirection();
