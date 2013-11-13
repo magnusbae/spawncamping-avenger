@@ -20,6 +20,9 @@
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
 
+void testBallDetection();
+void calibrateMotor();
+
 uint8_t ifFirstMessageSendAckWithPrintf( uint8_t firstMessageIsReceived ) 
 {
 	if (!firstMessageIsReceived){
@@ -62,8 +65,14 @@ int main(void)
 	message.RTR = 0;
 	message.identifier = 0x00;
 	CAN_send_message(message);
-	printf("First message sent\r\n");
+	printf("Node 2 powered up\r\n");
 	
+	calibrateMotor();
+//	testBallDetection();
+	
+	CAN_send_message(message);
+	printf("Motor calibrated and IR is good");
+
 	while(1){
 
 		int mememe = readEncoderValue();
@@ -102,7 +111,25 @@ int main(void)
 			}
 		}				
 	}		
+}
 
+
+void testBallDetection(){
+	int shouldExit = 0;
+	uint8_t okCount = 0;
+	while(!shouldExit){
+		if(!game_CheckBallDropped()){
+			okCount++;
+		}else{
+			okCount = 0;
+		}
+
+		if(okCount >= 50){
+			shouldExit = 1;
+		}
+		_delay_ms(100);
+	}
+	return;
 }
 
 ISR(INT4_vect){
@@ -113,5 +140,5 @@ ISR(INT4_vect){
 }	//grå-gul, blå-rød, gul-svart
 
 ISR(BADISR_vect){
-	printf("BADISR!\n");
+	printf("BAD ISR! (very bad)\r\n");
 }	

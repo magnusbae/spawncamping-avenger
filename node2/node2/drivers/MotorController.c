@@ -8,13 +8,22 @@
 unsigned char messageBuf[4];
 uint8_t isInvertedOutput = 0;
 int time_stamp = 0; //needs to be set once a reference change is detected
+int lastReadEncoderValue = 0;
+int encoderMaxValue = 0;
 
+void setDirectionLeft(){
+	isInvertedOutput = 0;
+}
 
+void setDirectionRight(){
+	isInvertedOutput = 1;
+}
 
 void disableMotor();
 void enableMotor();
 void setMotorEnabledState(uint8_t shouldEnable);
 void setMotorDirection();
+
 void setDac0Output(uint8_t valueFrom0To255);
 uint8_t calculateByteValue(uint8_t joystickValue);
 void resetEncoder();
@@ -51,6 +60,35 @@ void setMotorDirection(){
 	}else{
 		MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_DIRECTION);
 	}
+}
+
+void calibrateMotor(){
+	resetEncoder();
+	setDirectionRight();
+	setDac0Output(50);
+	int encValue;
+	//Run right until we hit the wall
+	while((encValue = readEncoderValue)) < lastReadEncoderValue){
+		lastReadEncoderValue = encValue;
+	}
+	setDac0Output(0);
+	resetEncoder();
+
+	setDirectionLeft();
+	setDac0Output(50);
+	//Run left until we hit the wall
+	while((encValue = readEncoderValue)) > encoderMaxValue){
+		encoderMaxValue = encValue;
+	}
+	setDac0Output(0);//STOP! Hammertime!
+
+	setDirectionRight();
+	setDac0Output(50);
+	int target = encoderMaxValue/2;
+	while(readEncoderValue > target); //empty
+	setDac0Output(0);
+	//Motor calibrated and centered!
+
 }
 
 

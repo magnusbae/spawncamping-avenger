@@ -50,6 +50,7 @@ void initialMotorControlSetup();
 void initializeEncoder();
 void setMotorPowerFromInputData(inputMessage jp);
 void disableMotor();
+void calibrateMotor();
 int readEncoderValue();
 
 #endif /* MOTORCONTROLLER_H_ */

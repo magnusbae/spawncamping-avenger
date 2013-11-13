@@ -178,3 +178,7 @@ ISR(INT0_vect){
 	
 	receivedCanMessage = 1;
 }
+
+ISR(BADISR_vect){
+	printf("BAD ISR! (very bad)\r\n");
+}	
