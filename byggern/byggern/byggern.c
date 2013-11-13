@@ -62,7 +62,6 @@ int main(void)
 	
 	SPI_MasterInit();
 	mcp_init();
-	printf("%02X", mcp_read(MCP_CANSTAT));
 	
 	canMessage message;
 	message.data[0] = 'a';
@@ -70,6 +69,8 @@ int main(void)
 	message.extendedFrame = 0;
 	message.RTR = 0;
 	message.identifier = 0xAF;
+	
+	
 	
 	if(!receivedCanMessage){
 		if(CAN_send_message(message)){
@@ -82,30 +83,34 @@ int main(void)
 	uint8_t displaychange = 1;
 	uint8_t joydir = NEUTRAL;
 	while(1){
-			if(receivedCanMessage){
-				receivedCanMessage = 0;
-				receivedMessage = CAN_read_received_message();
-				mcp_clear_interrupt();
-				printf("Received CAN message with data length %d", receivedMessage.length);
-				for (int i = 0; i < receivedMessage.length; i++){
-					printf(" %d", receivedMessage.data[i]);
-				}			
-				printf("\r\n");		
-				if(receivedMessage.data[0] == 's'){
-					oled_ramgotopos(5,0);
-					oled_ramstore("Game score: -");
-					char buffer[3];
-					sprintf( buffer, "%d", receivedMessage.data[1] );
-					oled_ramgotopos(5,13*4);
-					oled_ramstore(buffer);
-					oled_ramtransfer();
-				}
+		int bleh = readRightSlider();
+		printf("Refrence: %i\r\n", bleh);
+		
+		if(receivedCanMessage){
+			receivedCanMessage = 0;
+			receivedMessage = CAN_read_received_message();
+			mcp_clear_interrupt();
+			printf("Received CAN message with data length %d", receivedMessage.length);
+			for (int i = 0; i < receivedMessage.length; i++){
+				printf(" %d", receivedMessage.data[i]);
 			}
-		printf("\r\nJoyclick = %i", sendJoyClicked_global);
+			printf("\r\n");
+			if(receivedMessage.data[0] == 's'){
+				oled_ramgotopos(5,0);
+				oled_ramstore("Game score: -");
+				char buffer[3];
+				sprintf( buffer, "%d", receivedMessage.data[1] );
+				oled_ramgotopos(5,13*4);
+				oled_ramstore(buffer);
+				oled_ramtransfer();
+			}
+		}
+			
 		if(sendInputDataOverCan()){
 			
 			printf("\r\nCAN might have sent message. ");
 		}
+		
 		if(displaychange){
 			menu_display_RAMV2(menu, menuLenght);
 			displaychange = 0;
@@ -125,7 +130,7 @@ int main(void)
 			oled_printf("Joy has been clicked, ");
 			oled_printf(menu[menuPosition].name);
 		}
-		joystickPosition jp = readJoystickPosition();
+		
 		joystickDirection jd = readJoystickDirection();
 		
 		if(joydir == NEUTRAL){
@@ -161,10 +166,6 @@ int main(void)
 		}else if(jd.direction == NEUTRAL){
 			joydir = NEUTRAL;
 		}			
-		uint8_t leftSlider = readLeftSlider();
-		uint8_t rightSlider = readRightSlider();
-		//printf("Joystick X: %d, Y: %d, direction: %d. Sliders, Left: %d, right: %d\r\n", jp.xPosition, jp.yPosition, jd.direction, leftSlider, rightSlider);
-		_delay_ms(50);
 	}	
 }
 
@@ -179,6 +180,3 @@ ISR(INT0_vect){
 	receivedCanMessage = 1;
 }
 
-ISR(BADISR_vect){
-	printf("BAD ISR! (very bad)\r\n");
-}	

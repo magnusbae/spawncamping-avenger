@@ -20,8 +20,8 @@ int sendInputDataOverCan(){
 	m.identifier = 10;
 	m.length = 4;
 	m.data[0] = 'j';
-	m.data[1] = jp.xPosition;
-	m.data[2] = jp.yPosition;
+	m.data[1] = readRightSlider();
+	m.data[2] = jp.xPosition;
 	m.data[3] = sendJoyClicked_global;
 	
 	resetSendJoyClickedStateToZero();

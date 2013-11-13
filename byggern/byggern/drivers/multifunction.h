@@ -24,6 +24,8 @@
 #define DIRECTION_TRESHOLD_POSITIVE 150
 #define DIRECTION_NEUTRAL 132
 
+#include <avr/io.h>
+
 typedef struct
 {
 	char xPosition;
@@ -42,7 +44,7 @@ typedef struct
 */
 joystickPosition readJoystickPosition();
 joystickDirection readJoystickDirection();
-unsigned int readLeftSlider();
-unsigned int readRightSlider();
+uint8_t readLeftSlider();
+uint8_t readRightSlider();
 
 #endif /* MULTIFUNCTION_H_ */

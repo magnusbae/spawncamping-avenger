@@ -176,11 +176,12 @@ void resetEncoder(){
 }
 
 uint8_t convertEncoderValue(int convme){
-	 uint8_t returnme = convme/35;
+	int factor = encoderMaxValue / 255;
+	uint8_t returnme = convme/factor;
 	if (returnme>255){
 		return (uint8_t)255;
 	}
-	else if(returnme>0){
+	else if(returnme<0){
 		return (uint8_t)0;
 	}
 	else{
@@ -190,9 +191,9 @@ uint8_t convertEncoderValue(int convme){
 
 float calculateSpeed(){
 	float mesurement_1=abs(readEncoderValue());
-	_delay_ms(100);
+	_delay_ms(10);
 	float mesurement_2=abs(readEncoderValue());
-	return (abs(mesurement_2-mesurement_1))/100.00;
+	return (abs(mesurement_2-mesurement_1))/10.00;
 }
 
 void regulator(inputMessage data){
@@ -201,24 +202,29 @@ void regulator(inputMessage data){
 	uint8_t diff = 0;
 	uint8_t voltage = 0;
 	uint8_t position = convertEncoderValue(readEncoderValue());
-	uint8_t reference = data.motorPosition;
+	uint8_t reference = 255-data.motorPosition;
 	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
 	float speed = calculateSpeed();
 	
 	if (position>reference+5){
-		isInvertedOutput=0;
+		setDirectionRight();
 		diff = position-reference;
 	}
 	else if(position<reference-5){
-		isInvertedOutput=1;
+		setDirectionLeft();
 		diff = reference-position;
+		printf("diff =%d", diff);
 	}
 	else{
 		time_stamp = 0; //reset it
+		diff = 0;
 	}
 	
-	voltage = Kp*diff + Ki*diff*deltatime - Kp*speed;
+	voltage = Kp*diff + Ki*diff*deltatime - Kd*speed;
 	
-	setMotorDirection();
+	if(voltage>255){
+		voltage = 255;
+	}
+	
 	setDac0Output(voltage);
 }

@@ -103,7 +103,7 @@ int main(void)
 				volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
 				//printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
 				set_servopos(receivedInput);
-				setMotorPowerFromInputData(receivedInput);
+				regulator(receivedInput);
 				if(receivedInput.shouldActuate){
 					printf("Shoot!\r\n");
 					triggerRelay();

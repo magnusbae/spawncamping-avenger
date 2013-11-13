@@ -12,15 +12,15 @@
 
 joystickPosition getJoystickPosition();
 
-unsigned int readAdcInput(uint8_t input){
+uint8_t readAdcInput(uint8_t input){
 	volatile char *adc = (char *) ADC_ADRESS;
 	adc[0] = input;
 	_delay_ms(1);
 	return adc[0];	
 }
 
-unsigned int calculateJoystickDirection(joystickPosition jp){
-	unsigned int direction = NEUTRAL;
+uint8_t calculateJoystickDirection(joystickPosition jp){
+	uint8_t direction = NEUTRAL;
 	
 	uint8_t xpos = jp.xPosition;
 	uint8_t ypos = jp.yPosition;
@@ -45,7 +45,7 @@ unsigned int calculateJoystickDirection(joystickPosition jp){
 	return direction;
 }
 
-unsigned int findJoystickDirection(){
+uint8_t findJoystickDirection(){
 	joystickPosition jp = getJoystickPosition();
 	return calculateJoystickDirection(jp);
 }
@@ -77,10 +77,10 @@ joystickPosition readJoystickPosition(){
 	return jp;
 }
 
-unsigned int readLeftSlider(){
+uint8_t readLeftSlider(){
 	return readAdcInput(TOUCH_LEFT);
 }
 
-unsigned int readRightSlider(){
+uint8_t readRightSlider(){
 	return readAdcInput(TOUCH_RIGHT);
 }
