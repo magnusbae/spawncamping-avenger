@@ -1,12 +1,12 @@
 
 
 
+#include "drivers/crystal.h"
 #include <util/delay.h>
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
 
-#include "drivers/crystal.h"
 #include "drivers/MCP2515.h"
 #include "drivers/SPI.h"
 #include "drivers/CanMessaging.h"
@@ -35,6 +35,7 @@ int main(void)
 	uint8_t gameScore = 0;
 	uint8_t gameIsRunning = 0;
 	setupUartAndSendWelcomeMessage();
+
 	
 	SPI_MasterInit();
 	mcp_init();
@@ -43,6 +44,7 @@ int main(void)
 	initializeADC();
 	initialMotorControlSetup();
 	initializeEncoder();
+
 	initialRelaySetup();
 	
 	
@@ -63,12 +65,16 @@ int main(void)
 	printf("First message sent\r\n");
 	
 	while(1){
+
 		int mememe = readEncoderValue();
-		_delay_ms(1000); //debug wait (to read terminal)
+		printf("Encoder value: %i\r\n", mememe);
+		_delay_ms(100); //debug wait (to read terminal)
+		//printf("ADC value: %i\r\n", adc_readvalue());
 		if(!gameIsRunning && !game_CheckBallDropped()){
 			gameIsRunning = 1;
 		}
 		if(gameIsRunning && game_CheckBallDropped()){
+			
 			gameIsRunning = 0;
 			gameScore++;
 			printf("The ball was dropped, score now at -%i\r\n", gameScore);
@@ -86,7 +92,7 @@ int main(void)
 			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
 			if(receivedMessage.length == 4 && receivedMessage.data[0] == 'j'){
 				volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
-				printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
+				//printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
 				set_servopos(receivedInput);
 				setMotorPowerFromInputData(receivedInput);
 				if(receivedInput.shouldActuate){
@@ -94,7 +100,7 @@ int main(void)
 					triggerRelay();
 				}
 			}
-		}					
+		}				
 	}		
 
 }
@@ -105,3 +111,7 @@ ISR(INT4_vect){
 	mcp_clear_interrupt();	
 	//PORTF |= (1<<PF0);
 }	//grå-gul, blå-rød, gul-svart
+
+ISR(BADISR_vect){
+	printf("BADISR!\n");
+}	

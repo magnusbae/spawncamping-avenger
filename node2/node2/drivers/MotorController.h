@@ -17,7 +17,7 @@
 #define DAC_OUTPUT_REGISTER_RESET 0b00010000
 
 #define MOTOR_CONTROLLER_DDR DDRC
-#define MOTOR_CONTROLLER_DDR_VALUES 0b00011111
+#define MOTOR_CONTROLLER_DDR_VALUES 0xff
 #define MOTOR_CONTROLLER_PORT PORTC
 
 #define MOTOR_ENABLE PC4
@@ -47,7 +47,9 @@
 
 
 void initialMotorControlSetup();
+void initializeEncoder();
 void setMotorPowerFromInputData(inputMessage jp);
 void disableMotor();
+int readEncoderValue();
 
 #endif /* MOTORCONTROLLER_H_ */

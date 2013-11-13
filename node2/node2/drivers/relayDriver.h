@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <avr/delay.h>
 
-#define RELAY_PIN PF1
+#define RELAY_PIN PF2
 #define RELAY_PORT PORTF
 #define RELAY_PORT_DDR DDRF
 
