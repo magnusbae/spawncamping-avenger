@@ -46,6 +46,9 @@
 #define Ki 0
 
 
+#define MOTOR_SLOW_SPEED 100
+
+
 void initialMotorControlSetup();
 void initializeEncoder();
 void setMotorPowerFromInputData(inputMessage jp);

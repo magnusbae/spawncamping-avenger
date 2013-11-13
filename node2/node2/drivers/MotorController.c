@@ -66,7 +66,7 @@ void setMotorDirection(){
 void calibrateMotor(){
 	resetEncoder();
 	setDirectionRight();
-	setDac0Output(100);
+	setDac0Output(MOTOR_SLOW_SPEED);
 	int encValue;
 	_delay_ms(50);
 	//Run right until we hit the wall
@@ -77,7 +77,7 @@ void calibrateMotor(){
 	resetEncoder();
 
 	setDirectionLeft();
-	setDac0Output(100);
+	setDac0Output(MOTOR_SLOW_SPEED);
 	//Run left until we hit the wall
 	while(calculateSpeed()>15){
 		encoderMaxValue = readEncoderValue();
@@ -85,7 +85,7 @@ void calibrateMotor(){
 	setDac0Output(0);//STOP! Hammertime!
 
 	setDirectionRight();
-	setDac0Output(100);
+	setDac0Output(MOTOR_SLOW_SPEED);
 	int target = encoderMaxValue/2;
 	while(readEncoderValue() > target); //empty
 	setDac0Output(0);
