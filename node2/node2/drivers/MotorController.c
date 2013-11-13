@@ -29,6 +29,7 @@ uint8_t calculateByteValue(uint8_t joystickValue);
 void resetEncoder();
 uint8_t readEncoderPins();
 unsigned char bitReverse(unsigned char x);
+float calculateSpeed();
 
 void initialMotorControlSetup(){
 	MOTOR_CONTROLLER_DDR = MOTOR_CONTROLLER_DDR_VALUES;
@@ -65,27 +66,28 @@ void setMotorDirection(){
 void calibrateMotor(){
 	resetEncoder();
 	setDirectionRight();
-	setDac0Output(50);
+	setDac0Output(100);
 	int encValue;
+	_delay_ms(50);
 	//Run right until we hit the wall
-	while((encValue = readEncoderValue)) < lastReadEncoderValue){
-		lastReadEncoderValue = encValue;
+	while(calculateSpeed()>15){
+		lastReadEncoderValue = readEncoderValue();
 	}
 	setDac0Output(0);
 	resetEncoder();
 
 	setDirectionLeft();
-	setDac0Output(50);
+	setDac0Output(100);
 	//Run left until we hit the wall
-	while((encValue = readEncoderValue)) > encoderMaxValue){
-		encoderMaxValue = encValue;
+	while(calculateSpeed()>15){
+		encoderMaxValue = readEncoderValue();
 	}
 	setDac0Output(0);//STOP! Hammertime!
 
 	setDirectionRight();
-	setDac0Output(50);
+	setDac0Output(100);
 	int target = encoderMaxValue/2;
-	while(readEncoderValue > target); //empty
+	while(readEncoderValue() > target); //empty
 	setDac0Output(0);
 	//Motor calibrated and centered!
 
@@ -173,8 +175,24 @@ void resetEncoder(){
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
 }
 
-uint8_t convertEncoderValue(uint8_t convme){
-	//convert and return
+uint8_t convertEncoderValue(int convme){
+	 uint8_t returnme = convme/35;
+	if (returnme>255){
+		return (uint8_t)255;
+	}
+	else if(returnme>0){
+		return (uint8_t)0;
+	}
+	else{
+		return (uint8_t)returnme;
+	}
+}
+
+float calculateSpeed(){
+	float mesurement_1=abs(readEncoderValue());
+	_delay_ms(100);
+	float mesurement_2=abs(readEncoderValue());
+	return (abs(mesurement_2-mesurement_1))/100.00;
 }
 
 void regulator(inputMessage data){
@@ -185,7 +203,7 @@ void regulator(inputMessage data){
 	uint8_t position = convertEncoderValue(readEncoderValue());
 	uint8_t reference = data.motorPosition;
 	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
-	//float speed = 0; //need a function for calculating speed ((mesurement1-mesurement2)/(deltatimebetween mesurements))
+	float speed = calculateSpeed();
 	
 	if (position>reference+5){
 		isInvertedOutput=0;
@@ -199,8 +217,7 @@ void regulator(inputMessage data){
 		time_stamp = 0; //reset it
 	}
 	
-	voltage = Kp*diff + Ki*diff*deltatime; // - Kp*speed;
-	
+	voltage = Kp*diff + Ki*diff*deltatime - Kp*speed;
 	
 	setMotorDirection();
 	setDac0Output(voltage);

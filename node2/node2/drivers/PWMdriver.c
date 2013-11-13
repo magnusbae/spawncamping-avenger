@@ -15,7 +15,6 @@ void initializePWM(){
 	TCCR1A &= ~((1<<COM1B0) | (1<<WGM10));
 	TCCR1B |= ((1<<WGM13) | (1<<WGM12) | (1<<CS11)); //Set Mode to fast PWM and select prescaler(8)
 	TCCR1B &= ~((1<<CS12) | (1<<CS10));
-	
 
 	OCR1BH = 1524/0b100000000;
 	OCR1BL = 1524; //Initialize to neutral position
