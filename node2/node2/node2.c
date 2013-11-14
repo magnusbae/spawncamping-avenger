@@ -75,7 +75,7 @@ int main(void)
 	printf("Motor calibrated and IR is good ");
 
 	while(1){
-
+		checkEncoder();
 		int mememe = readEncoderValue();
 		int metoo = adc_readvalue();
 		printf("Encoder value: %i\r\n IR Value: %i ", mememe, metoo);

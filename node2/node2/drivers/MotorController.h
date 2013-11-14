@@ -40,10 +40,10 @@
 #define ENCODER6 PA1
 #define ENCODER7 PA0
 
-//needs tuning (pref. ziegler nichols)
-#define Kp 3
-#define Kd 2
-#define Ki 2
+//needs tuning
+#define Kp 1
+#define Kd 0
+#define Ki 0
 
 
 #define MOTOR_SLOW_SPEED 100
@@ -55,5 +55,19 @@ void setMotorPowerFromInputData(inputMessage jp);
 void disableMotor();
 void calibrateMotor();
 int readEncoderValue();
+void disableMotor();
+void enableMotor();
+void setMotorEnabledState(uint8_t shouldEnable);
+void setMotorDirection();
+
+void setDac0Output(uint8_t valueFrom0To255);
+uint8_t calculateByteValue(uint8_t joystickValue);
+void resetEncoder();
+uint8_t readEncoderPins();
+unsigned char bitReverse(unsigned char x);
+float calculateSpeed();
+void regulator(inputMessage data);
+float calculateErrorSpeed(inputMessage data);
+void checkEncoder();
 
 #endif /* MOTORCONTROLLER_H_ */

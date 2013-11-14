@@ -7,10 +7,10 @@
 
 unsigned char messageBuf[4];
 uint8_t isInvertedOutput = 0;
-int time_stamp = 0; //needs to be set once a reference change is detected
 int lastReadEncoderValue = 0;
 int encoderMaxValue = 0;
-uint8_t prev_voltage = 0;
+uint8_t errorPile = 0;
+uint8_t encoderInv = 0;
 
 void setDirectionLeft(){
 	isInvertedOutput = 0;
@@ -20,19 +20,7 @@ void setDirectionRight(){
 	isInvertedOutput = 1;
 }
 
-void disableMotor();
-void enableMotor();
-void setMotorEnabledState(uint8_t shouldEnable);
-void setMotorDirection();
 
-void setDac0Output(uint8_t valueFrom0To255);
-uint8_t calculateByteValue(uint8_t joystickValue);
-void resetEncoder();
-uint8_t readEncoderPins();
-unsigned char bitReverse(unsigned char x);
-float calculateSpeed();
-void regulator(inputMessage data);
-float calculateErrorSpeed(inputMessage data);
 
 void initialMotorControlSetup(){
 	MOTOR_CONTROLLER_DDR = MOTOR_CONTROLLER_DDR_VALUES;
@@ -169,7 +157,13 @@ int readEncoderValue(){
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_us(25);
 	volatile uint8_t val_low = readEncoderPins(); //ENCODER_PINS;
-	return (val_high*0b100000000) + val_low;
+	volatile ENCODERVALUE = (val_high*0b100000000) + val_low;
+	if (encoderInv){
+		return encoderMaxValue+ENCODERVALUE;
+	}
+	else{
+		return ENCODERVALUE;
+	}
 }
 
 void resetEncoder(){
@@ -202,10 +196,10 @@ float calculateSpeed(){
 float calculateErrorSpeed(inputMessage data){
 	uint8_t refr = 255-data.motorPosition;
 	float error1 = abs(convertEncoderValue(readEncoderValue()))-refr;
-	_delay_ms(50);
+	_delay_ms(5);
 	float error2 = abs(convertEncoderValue(readEncoderValue()))-refr;
 	
-	return (abs(error2-error1))/50.00;
+	return ((abs(error2-error1))/5.00)*200;
 	
 }
 
@@ -227,17 +221,35 @@ void regulator(inputMessage data){
 		error = reference-position;
 	}
 	else{
-		time_stamp = 0; //reset it
+		errorPile = 0;
 		error = 0;
 	}
+	
 	uint8_t errorSpeed = calculateErrorSpeed(data);
 	
-	voltage = Kp*errorSpeed + Ki*error;
-	prev_voltage=voltage;
+	errorPile += error;
+	
+	voltage = Kp*error +Ki*errorPile - Kd*errorSpeed;
+	
 	//printf("Volt: %d Diff: %d ", prev_voltage, diff);
-	if(prev_voltage>255){
-		prev_voltage = 255;
+	if(voltage>255){
+		voltage = 255;
+	}
+	
+	if (voltage<0){
+		voltage = 0;
 	}
 	
 	setDac0Output(voltage);
+}
+
+void checkEncoder(){
+	if (readEncoderValue()>=encoderMaxValue-100){
+		resetEncoder();
+		encoderInv = 1;
+	}
+	if (readEncoderValue()<=100){
+		resetEncoder();
+		encoderInv = 0;
+	}
 }
