@@ -1,8 +1,10 @@
 /*
  * ADC128.c
  *
- * Created: 06.11.2013 13:49:21
- *  Author: tommp
+ * Doesn't work with our STK500/501! Don't use
+ * Setting an internal VREF creates overvoltage on the STK, makes the motorbox beep and 
+ * in general makes everybody have a very bad day. Use the free ADC-port on node 1 instead.
+ * 
  */ 
 
 #include "ADC128.h"

@@ -13,15 +13,15 @@
 #include "drivers/uart.h"
 #include "drivers/joyCan.h"
 #include "drivers/PWMdriver.h"
-#include "drivers/ADC128.h"
 #include "drivers/MotorController.h"
 #include "drivers/relayDriver.h"
 
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
 
-void testBallDetection();
+
 void calibrateMotor();
+void followInputs(canMessage receivedMessage);
 
 uint8_t ifFirstMessageSendAckWithPrintf( uint8_t firstMessageIsReceived ) 
 {
@@ -45,7 +45,6 @@ int main(void)
 	mcp_init();
 	
 	initializePWM();
-	//initializeADC();
 	initialMotorControlSetup();
 	initializeEncoder();
 
@@ -54,7 +53,7 @@ int main(void)
 	
 	DDRE &= ~(1<<PE4);
 	cli();
-	EIMSK |= (1<<INT4);
+	EIMSK |= (1<<INT4); //Interrupt on received CAN-message.
 	sei();	
 	
 	
@@ -69,73 +68,67 @@ int main(void)
 	printf("Node 2 powered up\r\n");
 	
 	calibrateMotor();
-//	testBallDetection();
 	
 	CAN_send_message(message);
-	printf("Motor calibrated and IR is good ");
+	printf("Motor calibrated and centered. Node 2 ready to play!");
 
 	while(1){
 		checkEncoder();
 		int mememe = readEncoderValue();
-		int metoo = adc_readvalue();
-		printf("Encoder value: %i\r\n IR Value: %i ", mememe, metoo);
+		printf("Encoder value: %i\r\n", mememe);
 		_delay_ms(100); //debug wait (to read terminal)
-		//printf("ADC value: %i\r\n", adc_readvalue());
-		if(!gameIsRunning && !game_CheckBallDropped()){
-			gameIsRunning = 1;
-		}
-		if(gameIsRunning && game_CheckBallDropped()){
-			
-			gameIsRunning = 0;
-			gameScore++;
-			printf("The ball was dropped, score now at -%i\r\n", gameScore);
-			message.data[0] = 's';
-			message.data[1] = gameScore;
-			CAN_send_message(message);
-			_delay_ms(1000);
-		}
 		
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
 			//printf("Can message received with length %d \r\n", receivedMessage.length);
 			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
-			if(receivedMessage.length == 4 && receivedMessage.data[0] == 'j'){
-				volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
-				//printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
-				set_servopos(receivedInput);
-				if (receivedInput.motorPosition>lastMotorRefrence+15 || receivedInput.motorPosition<lastMotorRefrence-15){
-					lastMotorRefrence=receivedInput.motorPosition;
+			
+			if(receivedMessage.length == 1){
+				switch (receivedMessage.data[0]){
+					case 'S':
+						gameIsRunning = 1;
+						break;
+					case 'H':
+						gameIsRunning = 0;
+						break;
+					case 'C':
+						calibrateMotor();
+						break;
+					case 'P'
+						//TODO Make some noise or something.
+						break;
+					default:
+						printf("Unknown command received on CAN, value: %c.\r\n", receivedMessage.data[0]);
+						//Maybe handle more gracefully if we need to. This should work for now.
 				}
-				
-				regulator(receivedInput);
-				
-				if(receivedInput.shouldActuate){
-					printf("Shoot!\r\n");
-					triggerRelay();
-				}
+				CAN_send_message(message);
 			}
+			if(gameIsRunning){
+				followInputs(receivedMessage);
+			}
+		   
 		}				
 	}		
 }
 
-
-void testBallDetection(){
-	int shouldExit = 0;
-	uint8_t okCount = 0;
-	while(!shouldExit){
-		if(!game_CheckBallDropped()){
-			okCount++;
-		}else{
-			okCount = 0;
+void followInputs(canMessage receivedMessage){
+	if (receivedMessage.length == 4 && receivedMessage.data[0] == 'j'){
+		volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
+		//printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
+		set_servopos(receivedInput);
+		if (receivedInput.motorPosition>lastMotorRefrence+15 || receivedInput.motorPosition<lastMotorRefrence-15){
+			lastMotorRefrence=receivedInput.motorPosition;
 		}
-
-		if(okCount >= 50){
-			shouldExit = 1;
+		
+		regulator(receivedInput);
+		
+		if(receivedInput.shouldActuate){
+			triggerRelay();
 		}
-		_delay_ms(100);
 	}
 	return;
 }
+
 
 ISR(INT4_vect){
 	receivedMessage = CAN_read_received_message();

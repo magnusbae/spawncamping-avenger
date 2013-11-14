@@ -26,6 +26,8 @@ volatile uint8_t JOY_CLICK = 0;
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
 
+void testBallDetection();
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
@@ -167,6 +169,24 @@ int main(void)
 		_delay_ms(100);		
 	}	
 	
+}
+
+void testBallDetection(){
+	int shouldExit = 0;
+	uint8_t okCount = 0;
+	while(!shouldExit){
+		if(!game_CheckBallDropped()){
+			okCount++;
+		}else{
+			okCount = 0;
+		}
+
+		if(okCount >= 50){
+			shouldExit = 1;
+		}
+		_delay_ms(100);
+	}
+	return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
