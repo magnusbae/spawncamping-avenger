@@ -94,7 +94,7 @@ int main(void)
 	
 	DDRE &= ~(1<<PE0);
 	DDRD &= ~(1<<PD2); //PD2=INT0, PD3=INT1
-	cli();
+	//cli();
 	GICR |= (1<<INT2)|(1<<INT0);
 	MCUCR |= (1<<ISC01); //Falling edge on INT0
 	EMCUCR &= ~(1<<ISC2); //Make sure that falling edge is sat on INT2
@@ -113,13 +113,14 @@ int main(void)
 	
 	
 	
-	if(!receivedCanMessage){
+	if(receivedCanMessage==0){
 		if(CAN_send_message(controlMessage)){
 			printf("\r\nCAN might have sent message. ");
-		}else{
+		}
+		else{
 			printf("\r\nCAN message failed. ");
 		}			
-	}		
+	}	
 
 	oled_home();
 	if(isBallDropped()){
@@ -128,7 +129,7 @@ int main(void)
 		oled_clear_line(0);
 	}		
 	oled_printf("IR seems to be good");
-	_delay_ms(1500);
+	_delay_ms(500);
 
 	uint8_t joydir = NEUTRAL;
 	while(1){
@@ -191,7 +192,7 @@ int main(void)
 					}
 				}
 				handlePauseMenuSelection(menuPosition);
-			}						
+			}
 			
 			
 		}
@@ -204,7 +205,7 @@ int main(void)
 			joydir = handlePauseMenuTraversal(joydir, &jd, pauseMenuLength, pauseMenu);
 		}			
 
-		_delay_ms(10);		
+		_delay_ms(100);		
 	}	
 	
 }
@@ -352,7 +353,6 @@ void testBallDetection(){
 		if(okCount >= 50){
 			shouldExit = 1;
 		}
-		_delay_ms(100);
 	}
 	return;
 }
@@ -364,7 +364,6 @@ ISR(INT2_vect){
 }
 
 ISR(INT0_vect){
-	
 	receivedCanMessage = 1;
 }
 

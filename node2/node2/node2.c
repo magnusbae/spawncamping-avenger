@@ -40,7 +40,6 @@ int main(void)
 	uint8_t gameIsRunning = 0;
 	
 	setupUartAndSendWelcomeMessage();
-
 	
 	SPI_MasterInit();
 	mcp_init();
@@ -48,7 +47,6 @@ int main(void)
 	initializePWM();
 	initialMotorControlSetup();
 	initializeEncoder();
-
 	initialRelaySetup();
 	
 	
@@ -58,23 +56,14 @@ int main(void)
 	sei();	
 	
 	
-	canMessage message;
-	message.data[0] = 'o';
-	message.data[1] = 'k';
-	message.length = 2;
-	message.extendedFrame = 0;
-	message.RTR = 0;
-	message.identifier = 0x00;
-	CAN_send_message(message);
 	printf("Node 2 powered up\r\n");
 	
 	calibrateMotor();
 	
-	CAN_send_message(message);
 	printf("Motor calibrated and centered. Node 2 ready to play!");
 
 	while(1){
-		//checkEncoder();
+		checkEncoder();
 		int mememe = readEncoderValue();
 		printf("Encoder value: %i\r\n", mememe);
 		
@@ -102,7 +91,6 @@ int main(void)
 						printf("Unknown command received on CAN, value: %c.\r\n", receivedMessage.data[0]);
 						//Maybe handle more gracefully if we need to. This should work for now.
 				}
-				CAN_send_message(message);
 			}
 			if(gameIsRunning){
 				followInputs(receivedMessage);

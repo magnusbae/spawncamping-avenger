@@ -10,7 +10,7 @@ volatile uint8_t isInvertedOutput = 0;
 volatile int lastReadEncoderValue = 0;
 volatile int encoderMaxValue = 0;
 uint8_t errorPile = 0;
-uint8_t encoderInv = 0;
+volatile uint8_t encoderInv = 0;
 
 void setDirectionLeft(){
 	isInvertedOutput = 0;
@@ -59,7 +59,6 @@ void calibrateMotor(){
 	resetEncoder();
 	setDirectionRight();
 	setDac0Output(MOTOR_SLOW_SPEED);
-	int encValue;
 	_delay_ms(50);
 	//Run right until we hit the wall
 	while(calculateSpeed()>15){
@@ -78,8 +77,10 @@ void calibrateMotor(){
 
 	setDirectionRight();
 	setDac0Output(MOTOR_SLOW_SPEED);
-	int target = encoderMaxValue/2;
-	while(readEncoderValue() > target); //empty
+	volatile int target = encoderMaxValue/2;
+	while(readEncoderValue() > target){
+		
+		} //empty
 	setDac0Output(0);
 	//Motor calibrated and centered!
 
@@ -160,7 +161,7 @@ int readEncoderValue(){
 	_delay_us(50);
 	volatile uint8_t val_low = readEncoderPins(); //ENCODER_PINS;
 	volatile currentEncoderValue = (val_high*0b100000000) + val_low;
-	if (encoderInv){
+	if (encoderInv==1){
 		return encoderMaxValue+currentEncoderValue;
 	}
 	else{
@@ -170,7 +171,7 @@ int readEncoderValue(){
 
 void resetEncoder(){
 	MOTOR_CONTROLLER_PORT &=  ~(1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
-	_delay_ms(1);
+	_delay_ms(10);
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
 }
 
@@ -192,7 +193,7 @@ float calculateSpeed(){
 	float mesurement_1=abs(readEncoderValue());
 	_delay_ms(5);
 	float mesurement_2=abs(readEncoderValue());
-	return (abs(mesurement_2-mesurement_1))/5.00;
+	return (abs(mesurement_2-mesurement_1))/205.00;
 }
 
 float calculateErrorSpeed(inputMessage data){
@@ -201,7 +202,7 @@ float calculateErrorSpeed(inputMessage data){
 	_delay_ms(5);
 	float error2 = abs(convertEncoderValue(readEncoderValue()))-refr;
 	
-	return ((abs(error2-error1))/5.00)*200;
+	return ((abs(error2-error1))/205.00)*200;
 	
 }
 
