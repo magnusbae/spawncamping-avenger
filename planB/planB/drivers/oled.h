@@ -9,8 +9,8 @@
 #ifndef OLED_H_
 #define OLED_H_
 
-#define OLED_COMMAND 0x1000
-#define OLED_DATA 0x1200
+#define OLED_COMMAND 0x8000
+#define OLED_DATA 0x8200
 #define CHARACTER_WIDTH 4
 #define EOL 0
 #define NEWLINE 10

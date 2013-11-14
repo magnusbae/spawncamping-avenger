@@ -3,7 +3,7 @@
  *
  * Created: 19.09.2013 16:23:48
  *  Author: tommp
- */ 
+  
 
 #include "uart.h"
 #include <avr/io.h>
@@ -12,7 +12,7 @@
 #include <util/delay.h>
 
 void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value){
-	UBRR0H=(8>>baud_rate_value);
+	//UBRR0H=(8>>baud_rate_value);
 	UBRR0L=baud_rate_value;
 	UCSR0C|=(1<<URSEL0)|(1<<UCSZ01)|(1<<UCSZ00);
 	UCSR0B|=(1<<RXEN0)|(1<<TXEN0);
@@ -62,3 +62,4 @@ void setupUartAndSendWelcomeMessage()
 	printWelcomeMessage();
 	printf("UART Initialized\r\n");
 }
+*/

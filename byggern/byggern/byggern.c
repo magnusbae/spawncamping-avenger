@@ -38,6 +38,7 @@ int main(void)
 	
 	oled_printf("Something failed!"); //you shouldn't see this on the display
 	
+	
 	uint8_t menuLenght = 4;
 	menuOption menu[menuLenght];
 	menu[0].isSelected = SELECTED;

@@ -2,6 +2,7 @@
 #include "SPI.h"
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 void setLoopbackOperationalMode(){
 	mcp_bit_modify_instruction(MCP_CANCTRL, 0b11100000, 0b01011000);
@@ -20,10 +21,15 @@ void setOperationModeNormal(){
 }
 
 void mcp_init(){
+	cli();
+	EIMSK |= (1<<INT1); //Activate interrupt for INT1 (PD1)
+	EICRA |= (1<<ISC11); //Set interrupt for falling edge
+	sei();
+	
 	deselectChip();
 	SPI_MasterTransmit(MCP_RESET);
-	//setLoopbackOperationalMode();
-	setOperationModeNormal();
+	setLoopbackOperationalMode();
+	//setOperationModeNormal();
 	mcp_write(MCP_CANINTE, MCP_RX_INT);
 	mcp_bit_modify_instruction(MCP_RXB0CTRL, 0b01100000, 0xFF);
 }
