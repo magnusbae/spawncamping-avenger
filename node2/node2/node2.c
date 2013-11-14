@@ -44,7 +44,7 @@ int main(void)
 	mcp_init();
 	
 	initializePWM();
-	initializeADC();
+	//initializeADC();
 	initialMotorControlSetup();
 	initializeEncoder();
 
@@ -76,7 +76,8 @@ int main(void)
 	while(1){
 
 		int mememe = readEncoderValue();
-		printf("Encoder value: %i\r\n", mememe);
+		int metoo = adc_readvalue();
+		printf("Encoder value: %i\r\nIR Value: %i", mememe, metoo);
 		_delay_ms(100); //debug wait (to read terminal)
 		//printf("ADC value: %i\r\n", adc_readvalue());
 		if(!gameIsRunning && !game_CheckBallDropped()){

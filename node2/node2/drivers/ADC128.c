@@ -11,7 +11,7 @@
 
 void initializeADC(){
 	DDRF &= ~(1<<PF0) | ~(1<<PF1);
-	//ADMUX |= (1<<REFS0); // | (1<<REFS1);
+	ADMUX |= (1<<REFS0); // | (1<<REFS1);
 	//ADMUX &= ~((1<<MUX0) | (1<<MUX1) | (1<<MUX2) | (1<<MUX3) | (1<<MUX4)); //change these for different pin and gain, REF => refrence voltage equal to AREF
 	ADMUX |= 0b00010000 & 0b00011111;
 	ADCSRA |= ((1<<ADEN) | (1<<ADPS0)); //enables the adc and interrupts TODO: set SREG!, sets prescaler to 2 
