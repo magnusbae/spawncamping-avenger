@@ -22,34 +22,71 @@
 #include "drivers/CanMessaging.h"
 #include "drivers/joyCan.h"
 
+#define START_GAME_COMMAND 'S'
+#define STOP_GAME_COMMAND 'H'
+#define CALIBRATE_GAME_COMMAND 'C'
+#define SHOWBOAT_GAME_COMMAND 'P'
+
 volatile uint8_t JOY_CLICK = 0;
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
+volatile canMessage controlMessage;
+
+volatile uint8_t displaychange = 1;
+volatile uint8_t gameIsRunning = 0;
+volatile uint8_t gameIsPaused = 0;
+volatile uint8_t ackExpectedFromNode2 = 0;
+volatile uint8_t ackReceivedFromNode2 = 0;
 
 void testBallDetection();
+uint8_t isBallDropped();
+void sendControlMessage(char command);
+void setControlMessageCommand(char command);
+
+void handleMenuSelection(uint8_t menuPosition);
+void handlePauseMenuSelection( uint8_t menuPosition );
+uint8_t handleMainMenuTraversal( uint8_t joydir, joystickDirection *jd, uint8_t mainMenuLenght, menuOption * mainMenu );
+uint8_t handlePauseMenuTraversal( uint8_t joydir, joystickDirection *jd, uint8_t MenuLenght, menuOption * Menu );
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
+	cli();
 	setupUartAndSendWelcomeMessage();
+
 	setupAddressBus();
 	RamPOST();
+	_delay_ms(250); //wait for oled to start
 	init_oled();
 	
-	printf("Initialization complete!\r\n\r\n");
-	
 	oled_printf("Something failed!"); //you shouldn't see this on the display
+
+	_delay_ms(100);
 	
 	
-	uint8_t menuLenght = 4;
-	menuOption menu[menuLenght];
-	menu[0].isSelected = SELECTED;
-	menu[0].name = "Menyvalg 1";
-	menu[1].name = "Menyvalg 2";
-	menu[2].name = "Menyvalg 3";
-	menu[3].name = "Menyvalg 4";
+	printf("Initialization complete!\r\n\r\n");
+
+	uint8_t mainMenuLenght = 4;
+	menuOption mainMenu[mainMenuLenght];
+	mainMenu[0].isSelected = SELECTED;
+	mainMenu[0].name = "Start new game";
+	mainMenu[1].name = "Recalibrate motor";
+	mainMenu[2].name = "Showboat";
+	mainMenu[3].name = "Highscores";
 	
+	uint8_t pauseMenuLength = 3;
+	menuOption pauseMenu[pauseMenuLength];
+	pauseMenu[0].name = "The ball was dropped";
+	pauseMenu[1].isSelected = SELECTED;
+	pauseMenu[1].name = "Continue playing";
+	pauseMenu[2].name = "Quit game";
 	
+	uint8_t playMenuLength = 1;
+	menuOption playMenu[playMenuLength];
+	playMenu[0].isSelected = SELECTED;
+	playMenu[0].name = "Click joystick to shoot";
+		
 	//menu_display(menu, menuLenght, NULL);
 	oled_ramclear();
 	oled_ramtransfer();
@@ -58,124 +95,255 @@ int main(void)
 	DDRE &= ~(1<<PE0);
 	DDRD &= ~(1<<PD2); //PD2=INT0, PD3=INT1
 	cli();
-	MCUCR |= (1<<ISC01);
 	GICR |= (1<<INT2)|(1<<INT0);
+	MCUCR |= (1<<ISC01); //Falling edge on INT0
+	EMCUCR &= ~(1<<ISC2); //Make sure that falling edge is sat on INT2
 	sei();
 	
 	
 	SPI_MasterInit();
 	mcp_init();
 	
-	canMessage message;
-	message.data[0] = 'a';
-	message.length = 1;
-	message.extendedFrame = 0;
-	message.RTR = 0;
-	message.identifier = 0xAF;
+	
+	controlMessage.data[0] = 'a';
+	controlMessage.length = 1;
+	controlMessage.extendedFrame = 0;
+	controlMessage.RTR = 0;
+	controlMessage.identifier = 0xAF;
 	
 	
 	
 	if(!receivedCanMessage){
-		if(CAN_send_message(message)){
+		if(CAN_send_message(controlMessage)){
 			printf("\r\nCAN might have sent message. ");
 		}else{
 			printf("\r\nCAN message failed. ");
 		}			
 	}		
-	
-	uint8_t displaychange = 1;
+
+	oled_home();
+	if(isBallDropped()){
+		oled_printf("Adjust IR as needed!");
+		testBallDetection();
+		oled_clear_line(0);
+	}		
+	oled_printf("IR seems to be good");
+	_delay_ms(1500);
+
 	uint8_t joydir = NEUTRAL;
 	while(1){
-		int bleh = readRightSlider();
-		printf("Reference: %i\r\n", bleh);
-		
+		if(isBallDropped() && gameIsPaused == 0){
+			gameIsPaused = 1;
+			setControlMessageCommand(STOP_GAME_COMMAND);
+			CAN_send_message(controlMessage);
+			displaychange = 1;
+		}			
+				
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
 			receivedMessage = CAN_read_received_message();
 			mcp_clear_interrupt();
-			printf("Received CAN message with data length %d", receivedMessage.length);
-			for (int i = 0; i < receivedMessage.length; i++){
-				printf(" %d", receivedMessage.data[i]);
-			}
-			printf("\r\n");
-			if(receivedMessage.data[0] == 's'){
-				oled_ramgotopos(5,0);
-				oled_ramstore("Game score: -");
-				char buffer[3];
-				sprintf( buffer, "%d", receivedMessage.data[1] );
-				oled_ramgotopos(5,13*4);
-				oled_ramstore(buffer);
-				oled_ramtransfer();
+			if(receivedMessage.data[0] == 'o' && receivedMessage.data[1] == 'k'){
+				if(ackExpectedFromNode2){
+					//TODO handle it
+				}
+			}else{
+				//TODO resend-last controlMessage
 			}
 		}
 			
-		sendInputDataOverCan();
+		if(gameIsRunning && !gameIsPaused){	
+			sendInputDataOverCan();
+		}			
 		
 		if(displaychange){
-			menu_display_RAMV2(menu, menuLenght);
+			if(!gameIsRunning){
+				menu_display_RAMV2(mainMenu, mainMenuLenght);
+			}else if(gameIsPaused){
+				menu_display_RAMV2(pauseMenu, pauseMenuLength);
+			}else{
+				menu_display_RAMV2(playMenu, playMenuLength);
+			}				
 			displaychange = 0;
 		}		
 		
 		uint8_t menuPosition = 0;
 		if (JOY_CLICK == 1){
 			JOY_CLICK = 0;
-			sendJoyClicked_global = 1;
-			oled_goto_position(5, 0);
 			
-			for(int i = 0; i < menuLenght; i++){
-				if(menu[i].isSelected == SELECTED){
-					menuPosition = i;
-				}
+			if(gameIsRunning && !gameIsPaused){
+				sendJoyClicked_global = 1;
+			}else{
+				displaychange = 1;
 			}
-			oled_printf("Joy has been clicked, ");
-			oled_printf(menu[menuPosition].name);
+			
+			if(!gameIsRunning){
+				for(int i = 0; i < mainMenuLenght; i++){
+					if(mainMenu[i].isSelected == SELECTED){
+						menuPosition = i;
+					}
+				}
+				handleMenuSelection(menuPosition);
+			}else if(gameIsPaused){
+				for(int i = 0; i < pauseMenuLength; i++){
+					if(pauseMenu[i].isSelected == SELECTED){
+						menuPosition = i;
+					}
+				}
+				handlePauseMenuSelection(menuPosition);
+			}						
+			
+			
 		}
 		
 		joystickDirection jd = readJoystickDirection();
 		
+		if(!gameIsRunning){
+			joydir = handleMainMenuTraversal(joydir, &jd, mainMenuLenght, mainMenu);
+		}else if(gameIsPaused){			
+			joydir = handlePauseMenuTraversal(joydir, &jd, pauseMenuLength, pauseMenu);
+		}			
+
+		_delay_ms(10);		
+	}	
+	
+}
+
+void setControlMessageCommand(char command){
+	controlMessage.data[0] = command;
+}
+
+void handleMenuSelection(uint8_t menuPosition){
+	uint8_t dontSkip = 1;
+	switch (menuPosition){
+		case 0:
+			setControlMessageCommand(START_GAME_COMMAND);
+			gameIsRunning = 1;
+			break;
+		case 1:
+			setControlMessageCommand(CALIBRATE_GAME_COMMAND);
+			break;
+		case 2:
+			setControlMessageCommand(SHOWBOAT_GAME_COMMAND);
+			break;
+		case 3:
+			//todo show highscore
+		default:
+			dontSkip = 0;
+			break;		
+	}
+	if(dontSkip){
+		CAN_send_message(controlMessage);
+	}			
+}
+
+void handlePauseMenuSelection( uint8_t menuPosition ) 
+{
+	switch(menuPosition){
+		case 1:
+			setControlMessageCommand(START_GAME_COMMAND);
+			CAN_send_message(controlMessage);
+			gameIsPaused = 0;
+			break;
+		case 2:
+			gameIsPaused = 0;
+			gameIsRunning = 0;
+			break;
+		default:
+			gameIsPaused = 0;
+			gameIsRunning = 0;
+			break;
+	}	
+}
+
+
+uint8_t handleMainMenuTraversal( uint8_t joydir, joystickDirection *jd, uint8_t mainMenuLenght, menuOption * mainMenu ) 
+{
 		if(joydir == NEUTRAL){
-			if(jd.direction != NEUTRAL){
-				joydir = jd.direction;
+			if(jd->direction != NEUTRAL){
+				joydir = jd->direction;
 				displaychange = 1;
-				if(jd.direction == UP){
-					for(int i = 0; i < menuLenght; i++){
-						if(menu[i].isSelected == SELECTED){
-							menu[i].isSelected = UNSELECTED;
+				if(jd->direction == UP){
+					for(int i = 0; i < mainMenuLenght; i++){
+						if(mainMenu[i].isSelected == SELECTED){
+							mainMenu[i].isSelected = UNSELECTED;
 							if(i == 0){
-								menu[menuLenght-1].isSelected = SELECTED;
+								mainMenu[mainMenuLenght-1].isSelected = SELECTED;
 							}else{
-								menu[i-1].isSelected = SELECTED;
+								mainMenu[i-1].isSelected = SELECTED;
 							}
 							break;
 						}
 					}
-				}else if(jd.direction == DOWN){
-					for(int i = 0; i < menuLenght; i++){
-						if(menu[i].isSelected == SELECTED){
-							menu[i].isSelected = UNSELECTED;
-							if(i == menuLenght-1){
-								menu[0].isSelected = SELECTED;
+				}else if(jd->direction == DOWN){
+					for(int i = 0; i < mainMenuLenght; i++){
+						if(mainMenu[i].isSelected == SELECTED){
+							mainMenu[i].isSelected = UNSELECTED;
+							if(i == mainMenuLenght-1){
+								mainMenu[0].isSelected = SELECTED;
 							}else{
-								menu[i+1].isSelected = SELECTED;
+								mainMenu[i+1].isSelected = SELECTED;
 							}
 							break;
 						}
 					}
 				}
 			}		
-		}else if(jd.direction == NEUTRAL){
+		}else if(jd->direction == NEUTRAL){
 			joydir = NEUTRAL;
-		}	
-		_delay_ms(100);		
-	}	
-	
+		}		return joydir;
+}
+
+uint8_t handlePauseMenuTraversal( uint8_t joydir, joystickDirection *jd, uint8_t MenuLenght, menuOption * Menu ) 
+{
+		if(joydir == NEUTRAL){
+			if(jd->direction != NEUTRAL){
+				joydir = jd->direction;
+				displaychange = 1;
+				if(jd->direction == UP){
+					for(int i = 1; i < MenuLenght; i++){
+						if(Menu[i].isSelected == SELECTED){
+							Menu[i].isSelected = UNSELECTED;
+							if(i == 1){
+								Menu[MenuLenght-1].isSelected = SELECTED;
+							}else{
+								Menu[i-1].isSelected = SELECTED;
+							}
+							break;
+						}
+					}
+				}else if(jd->direction == DOWN){
+					for(int i = 1; i < MenuLenght; i++){
+						if(Menu[i].isSelected == SELECTED){
+							Menu[i].isSelected = UNSELECTED;
+							if(i == MenuLenght-1){
+								Menu[1].isSelected = SELECTED;
+							}else{
+								Menu[i+1].isSelected = SELECTED;
+							}
+							break;
+						}
+					}
+				}
+			}		
+		}else if(jd->direction == NEUTRAL){
+			joydir = NEUTRAL;
+		}		return joydir;
+}
+
+
+uint8_t isBallDropped(){
+	if(readIrDiode() < 30){
+		return 1;
+	}
+	return 0;
 }
 
 void testBallDetection(){
 	int shouldExit = 0;
 	uint8_t okCount = 0;
 	while(!shouldExit){
-		if(!game_CheckBallDropped()){
+		if(!isBallDropped()){
 			okCount++;
 		}else{
 			okCount = 0;

@@ -18,6 +18,7 @@
 
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessage = 0;
+uint8_t lastMotorReference = 127;
 
 
 void calibrateMotor();
@@ -37,7 +38,7 @@ int main(void)
 	uint8_t firstMessageIsReceived = 0;
 	uint8_t gameScore = 0;
 	uint8_t gameIsRunning = 0;
-	uint8_t lastMotorRefrence = 127;
+	
 	setupUartAndSendWelcomeMessage();
 
 	
@@ -73,10 +74,9 @@ int main(void)
 	printf("Motor calibrated and centered. Node 2 ready to play!");
 
 	while(1){
-		checkEncoder();
+		//checkEncoder();
 		int mememe = readEncoderValue();
 		printf("Encoder value: %i\r\n", mememe);
-		_delay_ms(100); //debug wait (to read terminal)
 		
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
@@ -94,8 +94,9 @@ int main(void)
 					case 'C':
 						calibrateMotor();
 						break;
-					case 'P'
+					case 'P':
 						//TODO Make some noise or something.
+						
 						break;
 					default:
 						printf("Unknown command received on CAN, value: %c.\r\n", receivedMessage.data[0]);
@@ -116,8 +117,8 @@ void followInputs(canMessage receivedMessage){
 		volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
 		//printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
 		set_servopos(receivedInput);
-		if (receivedInput.motorPosition>lastMotorRefrence+15 || receivedInput.motorPosition<lastMotorRefrence-15){
-			lastMotorRefrence=receivedInput.motorPosition;
+		if (receivedInput.motorPosition>lastMotorReference+15 || receivedInput.motorPosition<lastMotorReference-15){
+			lastMotorReference=receivedInput.motorPosition;
 		}
 		
 		regulator(receivedInput);

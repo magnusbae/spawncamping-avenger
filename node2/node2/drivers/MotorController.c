@@ -6,9 +6,9 @@
 #include <util/delay.h>
 
 unsigned char messageBuf[4];
-uint8_t isInvertedOutput = 0;
-int lastReadEncoderValue = 0;
-int encoderMaxValue = 0;
+volatile uint8_t isInvertedOutput = 0;
+volatile int lastReadEncoderValue = 0;
+volatile int encoderMaxValue = 0;
 uint8_t errorPile = 0;
 uint8_t encoderInv = 0;
 
@@ -55,6 +55,7 @@ void setMotorDirection(){
 }
 
 void calibrateMotor(){
+	encoderInv = 0;
 	resetEncoder();
 	setDirectionRight();
 	setDac0Output(MOTOR_SLOW_SPEED);
@@ -144,6 +145,7 @@ uint8_t readEncoderPins(){
 
 unsigned char bitReverse( unsigned char x )
 {
+	//Copied from the internet (somewhere)
 	x = ((x >> 1) & 0x55) | ((x << 1) & 0xaa);
 	x = ((x >> 2) & 0x33) | ((x << 2) & 0xcc);
 	x = ((x >> 4) & 0x0f) | ((x << 4) & 0xf0);
@@ -152,17 +154,17 @@ unsigned char bitReverse( unsigned char x )
 
 int readEncoderValue(){
 	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
-	_delay_us(25);
+	_delay_us(50);
 	volatile uint8_t val_high = readEncoderPins();
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
-	_delay_us(25);
+	_delay_us(50);
 	volatile uint8_t val_low = readEncoderPins(); //ENCODER_PINS;
-	volatile ENCODERVALUE = (val_high*0b100000000) + val_low;
+	volatile currentEncoderValue = (val_high*0b100000000) + val_low;
 	if (encoderInv){
-		return encoderMaxValue+ENCODERVALUE;
+		return encoderMaxValue+currentEncoderValue;
 	}
 	else{
-		return ENCODERVALUE;
+		return currentEncoderValue;
 	}
 }
 

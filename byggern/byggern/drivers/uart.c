@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "crystal.h"
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 void setBaudRateAndInitializeUartWithCorrectBits(uint8_t baud_rate_value){
 	UBRR0H=(8>>baud_rate_value);
@@ -38,7 +39,6 @@ char read_(){
 }
 
 void write(char val){
-	
 	while(!(UCSR0A & (1<<UDRE0))){
 	}
 	

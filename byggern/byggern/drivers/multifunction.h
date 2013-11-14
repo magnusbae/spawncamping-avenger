@@ -17,7 +17,7 @@
 
 #define JOYSTICK_X ADC_CHANNEL1
 #define JOYSTICK_Y ADC_CHANNEL2
-#define TOUCH_LEFT ADC_CHANNEL3
+#define IR_DIODE ADC_CHANNEL3
 #define TOUCH_RIGHT ADC_CHANNEL4
 
 #define DIRECTION_TRESHOLD_NEGATIVE 110
@@ -44,7 +44,7 @@ typedef struct
 */
 joystickPosition readJoystickPosition();
 joystickDirection readJoystickDirection();
-uint8_t readLeftSlider();
+uint8_t readIrDiode();
 uint8_t readRightSlider();
 uint8_t readAdcInput(uint8_t input);
 

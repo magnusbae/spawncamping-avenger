@@ -77,8 +77,8 @@ joystickPosition readJoystickPosition(){
 	return jp;
 }
 
-uint8_t readLeftSlider(){
-	return readAdcInput(TOUCH_LEFT);
+uint8_t readIrDiode(){
+	return readAdcInput(IR_DIODE);
 }
 
 uint8_t readRightSlider(){
