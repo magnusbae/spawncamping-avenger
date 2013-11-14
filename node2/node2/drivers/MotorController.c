@@ -10,6 +10,7 @@ uint8_t isInvertedOutput = 0;
 int time_stamp = 0; //needs to be set once a reference change is detected
 int lastReadEncoderValue = 0;
 int encoderMaxValue = 0;
+uint8_t prev_voltage = 0;
 
 void setDirectionLeft(){
 	isInvertedOutput = 0;
@@ -30,6 +31,8 @@ void resetEncoder();
 uint8_t readEncoderPins();
 unsigned char bitReverse(unsigned char x);
 float calculateSpeed();
+void regulator(inputMessage data);
+float calculateErrorSpeed(inputMessage data);
 
 void initialMotorControlSetup(){
 	MOTOR_CONTROLLER_DDR = MOTOR_CONTROLLER_DDR_VALUES;
@@ -191,39 +194,49 @@ uint8_t convertEncoderValue(int convme){
 
 float calculateSpeed(){
 	float mesurement_1=abs(readEncoderValue());
-	_delay_ms(10);
+	_delay_ms(5);
 	float mesurement_2=abs(readEncoderValue());
-	return (abs(mesurement_2-mesurement_1))/10.00;
+	return (abs(mesurement_2-mesurement_1))/5.00;
+}
+
+float calculateErrorSpeed(inputMessage data){
+	uint8_t refr = 255-data.motorPosition;
+	float error1 = abs(convertEncoderValue(readEncoderValue()))-refr;
+	_delay_ms(50);
+	float error2 = abs(convertEncoderValue(readEncoderValue()))-refr;
+	
+	return (abs(error2-error1))/50.00;
+	
 }
 
 void regulator(inputMessage data){
 	//might not need PID, depending on motor PI might be enought (or even P)
 	
-	uint8_t diff = 0;
+	uint8_t error = 0;
 	uint8_t voltage = 0;
 	uint8_t position = convertEncoderValue(readEncoderValue());
 	uint8_t reference = 255-data.motorPosition;
 	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
-	float speed = calculateSpeed();
 	
 	if (position>reference+5){
 		setDirectionRight();
-		diff = position-reference;
+		error = position-reference;
 	}
 	else if(position<reference-5){
 		setDirectionLeft();
-		diff = reference-position;
-		printf("diff = %d ", diff);
+		error = reference-position;
 	}
 	else{
 		time_stamp = 0; //reset it
-		diff = 0;
+		error = 0;
 	}
+	uint8_t errorSpeed = calculateErrorSpeed(data);
 	
-	voltage = Kp*diff + Ki*diff*deltatime - Kd*speed;
-	
-	if(voltage>255){
-		voltage = 255;
+	voltage = Kp*errorSpeed + Ki*error;
+	prev_voltage=voltage;
+	//printf("Volt: %d Diff: %d ", prev_voltage, diff);
+	if(prev_voltage>255){
+		prev_voltage = 255;
 	}
 	
 	setDac0Output(voltage);

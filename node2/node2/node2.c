@@ -37,6 +37,7 @@ int main(void)
 	uint8_t firstMessageIsReceived = 0;
 	uint8_t gameScore = 0;
 	uint8_t gameIsRunning = 0;
+	uint8_t lastMotorRefrence = 127;
 	setupUartAndSendWelcomeMessage();
 
 	
@@ -77,7 +78,7 @@ int main(void)
 
 		int mememe = readEncoderValue();
 		int metoo = adc_readvalue();
-		printf("Encoder value: %i\r\nIR Value: %i", mememe, metoo);
+		printf("Encoder value: %i\r\n IR Value: %i ", mememe, metoo);
 		_delay_ms(100); //debug wait (to read terminal)
 		//printf("ADC value: %i\r\n", adc_readvalue());
 		if(!gameIsRunning && !game_CheckBallDropped()){
@@ -102,7 +103,12 @@ int main(void)
 				volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
 				//printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
 				set_servopos(receivedInput);
+				if (receivedInput.motorPosition>lastMotorRefrence+15 || receivedInput.motorPosition<lastMotorRefrence-15){
+					lastMotorRefrence=receivedInput.motorPosition;
+				}
+				
 				regulator(receivedInput);
+				
 				if(receivedInput.shouldActuate){
 					printf("Shoot!\r\n");
 					triggerRelay();

@@ -41,9 +41,9 @@
 #define ENCODER7 PA0
 
 //needs tuning (pref. ziegler nichols)
-#define Kp 1
-#define Kd 0
-#define Ki 0
+#define Kp 3
+#define Kd 2
+#define Ki 2
 
 
 #define MOTOR_SLOW_SPEED 100

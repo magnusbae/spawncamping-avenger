@@ -107,10 +107,7 @@ int main(void)
 			}
 		}
 			
-		if(sendInputDataOverCan()){
-			
-			printf("\r\nCAN might have sent message. ");
-		}
+		sendInputDataOverCan();
 		
 		if(displaychange){
 			menu_display_RAMV2(menu, menuLenght);
@@ -166,8 +163,10 @@ int main(void)
 			}		
 		}else if(jd.direction == NEUTRAL){
 			joydir = NEUTRAL;
-		}			
+		}	
+		_delay_ms(100);		
 	}	
+	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

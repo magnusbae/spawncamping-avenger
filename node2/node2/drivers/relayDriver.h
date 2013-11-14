@@ -23,10 +23,10 @@ void initialRelaySetup(){
 
 void triggerRelay(){
 	RELAY_PORT &= ~(1<<RELAY_PIN);
-	printf("active, waiting");
+	//printf("active, waiting");
 	_delay_ms(100);
 	RELAY_PORT |= (1<<RELAY_PIN);
-	printf("done, back to normal");
+	//printf("done, back to normal");
 }
 
 
