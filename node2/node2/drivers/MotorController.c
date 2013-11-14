@@ -213,7 +213,7 @@ void regulator(inputMessage data){
 	else if(position<reference-5){
 		setDirectionLeft();
 		diff = reference-position;
-		printf("diff =%d", diff);
+		printf("diff = %d ", diff);
 	}
 	else{
 		time_stamp = 0; //reset it

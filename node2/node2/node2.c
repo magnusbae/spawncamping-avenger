@@ -71,7 +71,7 @@ int main(void)
 //	testBallDetection();
 	
 	CAN_send_message(message);
-	printf("Motor calibrated and IR is good");
+	printf("Motor calibrated and IR is good ");
 
 	while(1){
 
@@ -94,8 +94,6 @@ int main(void)
 		}
 		
 		if(receivedCanMessage){
-			//firstMessageIsReceived = ifFirstMessageSendAckWithPrintf(firstMessageIsReceived);
-
 			receivedCanMessage = 0;
 			//printf("Can message received with length %d \r\n", receivedMessage.length);
 			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
@@ -138,7 +136,3 @@ ISR(INT4_vect){
 	mcp_clear_interrupt();	
 	//PORTF |= (1<<PF0);
 }	//grå-gul, blå-rød, gul-svart
-
-ISR(BADISR_vect){
-	printf("BAD ISR! (very bad)\r\n");
-}	

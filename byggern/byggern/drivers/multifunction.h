@@ -46,5 +46,6 @@ joystickPosition readJoystickPosition();
 joystickDirection readJoystickDirection();
 uint8_t readLeftSlider();
 uint8_t readRightSlider();
+uint8_t readAdcInput(uint8_t input);
 
 #endif /* MULTIFUNCTION_H_ */

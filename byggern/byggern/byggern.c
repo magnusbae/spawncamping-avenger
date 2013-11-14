@@ -84,7 +84,7 @@ int main(void)
 	uint8_t joydir = NEUTRAL;
 	while(1){
 		int bleh = readRightSlider();
-		printf("Refrence: %i\r\n", bleh);
+		printf("Reference: %i\r\n", bleh);
 		
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
