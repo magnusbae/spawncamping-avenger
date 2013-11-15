@@ -77,7 +77,6 @@ int main(void)
 	printf("Motor calibrated and centered. Node 2 ready to play!\r\n");
 
 	while(1){
-		checkEncoder();
 // 		int mememe = readEncoderValue();
 // 		printf("Encoder value: %i\r\n", mememe);
 		
@@ -124,7 +123,7 @@ void followInputs(canMessage receivedMessage){
 			lastMotorReference=receivedInput.motorPosition;
 		}
 		
-		regulator(receivedInput);
+		setReceivedInputDataMessage(receivedInput);
 		
 		if(receivedInput.shouldActuate){
 			triggerRelay();

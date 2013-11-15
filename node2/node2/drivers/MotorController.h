@@ -53,21 +53,16 @@ void initialMotorControlSetup();
 void initializeEncoder();
 void setMotorPowerFromInputData(inputMessage jp);
 void disableMotor();
+void enableMotor();
 void calibrateMotor();
 int readEncoderValue();
-void disableMotor();
-void enableMotor();
-void setMotorEnabledState(uint8_t shouldEnable);
 void setMotorDirection();
-
+void regulator();
 void setDac0Output(uint8_t valueFrom0To255);
-uint8_t calculateByteValue(uint8_t joystickValue);
 void resetEncoder();
-uint8_t readEncoderPins();
-unsigned char bitReverse(unsigned char x);
-float calculateSpeed();
-void regulator(inputMessage data);
-float calculateErrorSpeed(inputMessage data);
-void checkEncoder();
+
+void setReceivedInputDataMessage(inputMessage nextObjective);
+
+
 
 #endif /* MOTORCONTROLLER_H_ */

@@ -6,22 +6,51 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+//"private" methods
+unsigned char bitReverse(unsigned char x);
+uint8_t readEncoderPins();
+uint8_t calculateByteValue(uint8_t joystickValue);
+float calculateSpeed();
+float calculateErrorSpeed(inputMessage data);
+void setMotorEnabledState(uint8_t shouldEnable);
+void setupTimer();
+void destroyTimer();
+
+//--
 unsigned char messageBuf[4];
-volatile uint8_t isInvertedOutput = 0;
+volatile uint8_t isDirectionRight = 0;
 volatile int lastReadEncoderValue = 0;
 volatile int encoderMaxValue = 0;
-uint8_t errorPile = 0;
-volatile uint8_t encoderInv = 0;
+uint8_t errorPile = 0; //Will we actually use this one?
+
+uint8_t isTimerSetUp = 0;
+uint8_t assumedMotorPosition = 0;
+inputMessage inputCommand;
+
+void setupTimer(){
+	isTimerSetUp = 1;
+	TCCR3B |= (1<<CS32) | (1<<CS30); //Start timer 3, f(clk_io)/1024 prescaling
+	ETIMSK |= (1<<TOIE3); //Enables interrupt on timer 3
+}
+
+void destroyTimer(){
+	isTimerSetUp = 0;
+	TCCR3B &= ~(1<<CS32) | ~(1<<CS30); //Stop timer 3
+	ETIMSK &= ~(1<<TOIE3); //Disables interrupt on timer 3
+	
+}
+
+void setReceivedInputDataMessage(inputMessage nextObjective){
+	inputCommand = nextObjective;
+}
 
 void setDirectionLeft(){
-	isInvertedOutput = 0;
+	isDirectionRight = 0;
 }
 
 void setDirectionRight(){
-	isInvertedOutput = 1;
+	isDirectionRight = 1;
 }
-
-
 
 void initialMotorControlSetup(){
 	MOTOR_CONTROLLER_DDR = MOTOR_CONTROLLER_DDR_VALUES;
@@ -48,7 +77,7 @@ void setMotorEnabledState(uint8_t shouldEnable){
 }
 
 void setMotorDirection(){
-	if(isInvertedOutput){
+	if(isDirectionRight){
 		MOTOR_CONTROLLER_PORT |= (1<<MOTOR_DIRECTION);
 	}else{
 		MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_DIRECTION);
@@ -56,7 +85,8 @@ void setMotorDirection(){
 }
 
 void calibrateMotor(){
-	encoderInv = 0;
+	cli();
+	
 	resetEncoder();
 	setDirectionRight();
 	setDac0Output(MOTOR_SLOW_SPEED);
@@ -121,11 +151,11 @@ void setMotorPowerFromInputData(inputMessage jp){
 		setDac0Output(0);
 	}else if(pos > 50){
 		pos -= 50;
-		isInvertedOutput = 0;
+		isDirectionRight = 0;
 		setDac0Output(calculateByteValue(pos));
 	}else{
 		pos = 50-pos;
-		isInvertedOutput = 1;
+		isDirectionRight = 1;
 		setDac0Output(calculateByteValue(pos));
 	}
 }
@@ -157,19 +187,13 @@ unsigned char bitReverse( unsigned char x )
 int readEncoderValue(){
 	cli();
 	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
-	_delay_us(50);
+	_delay_us(25);
 	volatile uint8_t val_high = readEncoderPins();
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
-	_delay_us(50);
+	_delay_us(25);
 	volatile uint8_t val_low = readEncoderPins(); //ENCODER_PINS;
 	sei();
-	volatile currentEncoderValue = (val_high*0b100000000) + val_low;
-	if (encoderInv==1){
-		return encoderMaxValue+currentEncoderValue;
-	}
-	else{
-		return currentEncoderValue;
-	}
+	return (val_high*0b100000000) + val_low;
 }
 
 void resetEncoder(){
@@ -209,13 +233,13 @@ float calculateErrorSpeed(inputMessage data){
 	
 }
 
-void regulator(inputMessage data){
+void regulator(){
 	//might not need PID, depending on motor PI might be enought (or even P)
 	
 	uint8_t error = 0;
 	uint8_t voltage = 0;
 	uint8_t position = convertEncoderValue(readEncoderValue());
-	uint8_t reference = 255-data.motorPosition;
+	uint8_t reference = 255-inputCommand.motorPosition;
 	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
 	
 	if (position>reference+5){
@@ -231,7 +255,7 @@ void regulator(inputMessage data){
 		error = 0;
 	}
 	
-	uint8_t errorSpeed = calculateErrorSpeed(data);
+	uint8_t errorSpeed = calculateErrorSpeed(inputCommand);
 	
 	errorPile += error;
 	
@@ -249,13 +273,5 @@ void regulator(inputMessage data){
 	setDac0Output(voltage);
 }
 
-void checkEncoder(){
-	if (readEncoderValue()>=encoderMaxValue-100){
-		resetEncoder();
-		encoderInv = 1;
-	}
-	if (readEncoderValue()<=100){
-		resetEncoder();
-		encoderInv = 0;
-	}
-}
+
+//ISR(TOIE3_vect) TODO find right vector and implement
