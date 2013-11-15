@@ -150,20 +150,20 @@ int main(void)
 			receivedMessage = CAN_read_received_message();
 			mcp_clear_interrupt();
 			if(receivedMessage.length == 1){
-				if(ackExpectedFromNode2 != NO_ACK_EXPECTED){
+				if(receivedMessage.data[0] == NODE2_REQUEST_FOR_STATUS){
+					if(gameIsRunning && !gameIsPaused){
+						ackExpectedFromNode2 = START_GAME_COMMAND;
+						sendControlMessage(START_GAME_COMMAND);
+					}else{
+						ackExpectedFromNode2 = STOP_GAME_COMMAND;
+						sendControlMessage(STOP_GAME_COMMAND);
+					}
+				}else if (ackExpectedFromNode2 != NO_ACK_EXPECTED){
 					if(receivedMessage.data[0] != ackExpectedFromNode2){
 						sendControlMessage(ackExpectedFromNode2);
 					}else{
 						ackExpectedFromNode2 = NO_ACK_EXPECTED;
 						simpleNoAckReceivedCounter = 0;
-					}
-				}
-			}else{
-				if(receivedMessage.length == 1 && receivedMessage.data[0] == NODE2_REQUEST_FOR_STATUS){
-					if(gameIsRunning && !gameIsPaused){
-						sendControlMessage(START_GAME_COMMAND);
-					}else{
-						sendControlMessage(STOP_GAME_COMMAND);
 					}
 				}
 			}
