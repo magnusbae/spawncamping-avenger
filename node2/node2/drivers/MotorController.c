@@ -4,6 +4,7 @@
 #include "TWI_Master.h"
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 unsigned char messageBuf[4];
 volatile uint8_t isInvertedOutput = 0;
@@ -154,12 +155,14 @@ unsigned char bitReverse( unsigned char x )
 }
 
 int readEncoderValue(){
+	cli();
 	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_us(50);
 	volatile uint8_t val_high = readEncoderPins();
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_us(50);
 	volatile uint8_t val_low = readEncoderPins(); //ENCODER_PINS;
+	sei();
 	volatile currentEncoderValue = (val_high*0b100000000) + val_low;
 	if (encoderInv==1){
 		return encoderMaxValue+currentEncoderValue;

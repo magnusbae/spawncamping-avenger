@@ -22,6 +22,10 @@
 #include "drivers/CanMessaging.h"
 #include "drivers/joyCan.h"
 
+#define RESEND_COMMAND_WAIT_CYCLE_THRESHOLD 3
+
+#define NO_ACK_EXPECTED '0'
+#define NODE2_REQUEST_FOR_STATUS 'a'
 #define START_GAME_COMMAND 'S'
 #define STOP_GAME_COMMAND 'H'
 #define CALIBRATE_GAME_COMMAND 'C'
@@ -29,14 +33,14 @@
 
 volatile uint8_t JOY_CLICK = 0;
 volatile canMessage receivedMessage;
-volatile uint8_t receivedCanMessage = 0;
+volatile uint8_t receivedCanMessageFlag = 0;
 volatile canMessage controlMessage;
 
 volatile uint8_t displaychange = 1;
 volatile uint8_t gameIsRunning = 0;
 volatile uint8_t gameIsPaused = 0;
-volatile uint8_t ackExpectedFromNode2 = 0;
-volatile uint8_t ackReceivedFromNode2 = 0;
+char ackExpectedFromNode2 = NO_ACK_EXPECTED;
+uint8_t simpleNoAckReceivedCounter = 0;
 
 void testBallDetection();
 uint8_t isBallDropped();
@@ -97,7 +101,7 @@ int main(void)
 	//cli();
 	GICR |= (1<<INT2)|(1<<INT0);
 	MCUCR |= (1<<ISC01); //Falling edge on INT0
-	EMCUCR &= ~(1<<ISC2); //Make sure that falling edge is sat on INT2
+	EMCUCR &= ~(1<<ISC2); //Make sure that falling edge is set on INT2
 	sei();
 	
 	
@@ -105,7 +109,7 @@ int main(void)
 	mcp_init();
 	
 	
-	controlMessage.data[0] = 'a';
+	controlMessage.data[0] = START_GAME_COMMAND;
 	controlMessage.length = 1;
 	controlMessage.extendedFrame = 0;
 	controlMessage.RTR = 0;
@@ -113,7 +117,7 @@ int main(void)
 	
 	
 	
-	if(receivedCanMessage==0){
+	if(!receivedCanMessageFlag){
 		if(CAN_send_message(controlMessage)){
 			printf("\r\nCAN might have sent message. ");
 		}
@@ -135,23 +139,44 @@ int main(void)
 	while(1){
 		if(isBallDropped() && gameIsPaused == 0){
 			gameIsPaused = 1;
+			ackExpectedFromNode2 = STOP_GAME_COMMAND;
 			setControlMessageCommand(STOP_GAME_COMMAND);
 			CAN_send_message(controlMessage);
 			displaychange = 1;
 		}			
 				
-		if(receivedCanMessage){
-			receivedCanMessage = 0;
+		if(receivedCanMessageFlag){
+			receivedCanMessageFlag = 0;
 			receivedMessage = CAN_read_received_message();
 			mcp_clear_interrupt();
-			if(receivedMessage.data[0] == 'o' && receivedMessage.data[1] == 'k'){
-				if(ackExpectedFromNode2){
-					//TODO handle it
+			if(receivedMessage.length == 1){
+				if(ackExpectedFromNode2 != NO_ACK_EXPECTED){
+					if(receivedMessage.data[0] != ackExpectedFromNode2){
+						sendControlMessage(ackExpectedFromNode2);
+					}else{
+						ackExpectedFromNode2 = NO_ACK_EXPECTED;
+						simpleNoAckReceivedCounter = 0;
+					}
 				}
 			}else{
-				//TODO resend-last controlMessage
+				if(receivedMessage.length == 1 && receivedMessage.data[0] == NODE2_REQUEST_FOR_STATUS){
+					if(gameIsRunning && !gameIsPaused){
+						sendControlMessage(START_GAME_COMMAND);
+					}else{
+						sendControlMessage(STOP_GAME_COMMAND);
+					}
+				}
 			}
 		}
+		
+		//If no ack received increment counter to treshold and resend command
+		if(ackExpectedFromNode2 != NO_ACK_EXPECTED){
+			simpleNoAckReceivedCounter++;
+			if(simpleNoAckReceivedCounter > RESEND_COMMAND_WAIT_CYCLE_THRESHOLD){
+				simpleNoAckReceivedCounter = 0;
+				sendControlMessage(ackExpectedFromNode2);
+			}
+		}			
 			
 		if(gameIsRunning && !gameIsPaused){	
 			sendInputDataOverCan();
@@ -214,34 +239,37 @@ void setControlMessageCommand(char command){
 	controlMessage.data[0] = command;
 }
 
+void sendControlMessage(char command){
+	setControlMessageCommand(command);
+	CAN_send_message(controlMessage);
+}
+
 void handleMenuSelection(uint8_t menuPosition){
-	uint8_t dontSkip = 1;
 	switch (menuPosition){
 		case 0:
-			setControlMessageCommand(START_GAME_COMMAND);
+			ackExpectedFromNode2 = START_GAME_COMMAND;
+			sendControlMessage(START_GAME_COMMAND);
 			gameIsRunning = 1;
 			break;
 		case 1:
-			setControlMessageCommand(CALIBRATE_GAME_COMMAND);
+			sendControlMessage(CALIBRATE_GAME_COMMAND);
 			break;
 		case 2:
-			setControlMessageCommand(SHOWBOAT_GAME_COMMAND);
+			sendControlMessage(SHOWBOAT_GAME_COMMAND);
 			break;
 		case 3:
 			//todo show highscore
 		default:
-			dontSkip = 0;
 			break;		
 	}
-	if(dontSkip){
-		CAN_send_message(controlMessage);
-	}			
+				
 }
 
 void handlePauseMenuSelection( uint8_t menuPosition ) 
 {
 	switch(menuPosition){
 		case 1:
+			ackExpectedFromNode2 = START_GAME_COMMAND;
 			setControlMessageCommand(START_GAME_COMMAND);
 			CAN_send_message(controlMessage);
 			gameIsPaused = 0;
@@ -364,6 +392,6 @@ ISR(INT2_vect){
 }
 
 ISR(INT0_vect){
-	receivedCanMessage = 1;
+	receivedCanMessageFlag = 1;
 }
 

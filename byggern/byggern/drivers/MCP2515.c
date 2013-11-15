@@ -22,7 +22,7 @@ void setOperationModeNormal(){
 void mcp_init(){
 	deselectChip();
 	SPI_MasterTransmit(MCP_RESET);
-	//setLoopbackOperationalMode();
+	//setLoopbackOperationalMode(); //debug or single node only
 	setOperationModeNormal();
 	mcp_write(MCP_CANINTE, MCP_RX_INT);
 	mcp_bit_modify_instruction(MCP_RXB0CTRL, 0b01100000, 0xFF);

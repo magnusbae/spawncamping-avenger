@@ -16,13 +16,21 @@
 #include "drivers/MotorController.h"
 #include "drivers/relayDriver.h"
 
+#define NODE2_REQUEST_FOR_STATUS 'a'
+#define START_GAME_COMMAND 'S'
+#define STOP_GAME_COMMAND 'H'
+#define CALIBRATE_GAME_COMMAND 'C'
+#define SHOWBOAT_GAME_COMMAND 'P'
+
 volatile canMessage receivedMessage;
+volatile canMessage message; //Message stub used for com.
 volatile uint8_t receivedCanMessage = 0;
 uint8_t lastMotorReference = 127;
 
 
 void calibrateMotor();
 void followInputs(canMessage receivedMessage);
+void sendCommandAck(char currentState);
 
 uint8_t ifFirstMessageSendAckWithPrintf( uint8_t firstMessageIsReceived ) 
 {
@@ -55,48 +63,55 @@ int main(void)
 	EIMSK |= (1<<INT4); //Interrupt on received CAN-message.
 	sei();	
 	
-	
+	 
+	message.data[0] = NODE2_REQUEST_FOR_STATUS;
+	message.length = 1;
+	message.extendedFrame = 0;
+	message.RTR = 0;
+	message.identifier = 0x00;
+	CAN_send_message(message);
 	printf("Node 2 powered up\r\n");
 	
 	calibrateMotor();
 	
-	printf("Motor calibrated and centered. Node 2 ready to play!");
+	printf("Motor calibrated and centered. Node 2 ready to play!\r\n");
 
 	while(1){
 		checkEncoder();
-		int mememe = readEncoderValue();
-		printf("Encoder value: %i\r\n", mememe);
+// 		int mememe = readEncoderValue();
+// 		printf("Encoder value: %i\r\n", mememe);
 		
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
 			//printf("Can message received with length %d \r\n", receivedMessage.length);
-			//printf("Received data: %c, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2]);
+			//printf("Received data: %c, %i, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2], receivedMessage.data[3]);
 			
 			if(receivedMessage.length == 1){
 				switch (receivedMessage.data[0]){
-					case 'S':
+					case START_GAME_COMMAND:
 						gameIsRunning = 1;
+						sendCommandAck(START_GAME_COMMAND);
 						break;
-					case 'H':
+					case STOP_GAME_COMMAND:
 						gameIsRunning = 0;
+						setDac0Output(0);
+						sendCommandAck(STOP_GAME_COMMAND);
 						break;
-					case 'C':
+					case CALIBRATE_GAME_COMMAND:
 						calibrateMotor();
 						break;
-					case 'P':
-						//TODO Make some noise or something.
-						
+					case SHOWBOAT_GAME_COMMAND:
+						//TODO Make some noise or something.				
 						break;
 					default:
 						printf("Unknown command received on CAN, value: %c.\r\n", receivedMessage.data[0]);
 						//Maybe handle more gracefully if we need to. This should work for now.
 				}
-			}
-			if(gameIsRunning){
-				followInputs(receivedMessage);
-			}
-		   
-		}				
+			}		   
+		}	
+		if(gameIsRunning){
+			followInputs(receivedMessage);
+		}			
 	}		
 }
 
@@ -113,15 +128,19 @@ void followInputs(canMessage receivedMessage){
 		
 		if(receivedInput.shouldActuate){
 			triggerRelay();
+			receivedInput.shouldActuate = 0;
 		}
 	}
 	return;
 }
 
+void sendCommandAck(char currentState){
+	message.data[0] = currentState;
+	CAN_send_message(message);
+}
 
 ISR(INT4_vect){
 	receivedMessage = CAN_read_received_message();
 	receivedCanMessage = 1;
 	mcp_clear_interrupt();	
-	//PORTF |= (1<<PF0);
 }	//grå-gul, blå-rød, gul-svart
