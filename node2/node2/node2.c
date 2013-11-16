@@ -32,19 +32,9 @@ void calibrateMotor();
 void followInputs(canMessage receivedMessage);
 void sendCommandAck(char currentState);
 
-uint8_t ifFirstMessageSendAckWithPrintf( uint8_t firstMessageIsReceived ) 
-{
-	if (!firstMessageIsReceived){
-		printf("First message received. CAN-bus is working");
-		firstMessageIsReceived = 1;
-	}	
-	return firstMessageIsReceived;
-}
 
 int main(void)
 {	
-	uint8_t firstMessageIsReceived = 0;
-	uint8_t gameScore = 0;
 	uint8_t gameIsRunning = 0;
 	
 	setupUartAndSendWelcomeMessage();

@@ -47,7 +47,7 @@
 
 
 #define MOTOR_SLOW_SPEED 100
-
+#define MOTOR_POSITION_CENTER 127
 
 void initialMotorControlSetup();
 void initializeEncoder();

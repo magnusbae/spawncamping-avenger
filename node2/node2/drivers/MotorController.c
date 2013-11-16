@@ -15,6 +15,7 @@ float calculateErrorSpeed(inputMessage data);
 void setMotorEnabledState(uint8_t shouldEnable);
 void setupTimer();
 void destroyTimer();
+void resetTimer();
 
 //--
 unsigned char messageBuf[4];
@@ -25,6 +26,7 @@ uint8_t errorPile = 0; //Will we actually use this one?
 
 uint8_t isTimerSetUp = 0;
 uint8_t assumedMotorPosition = 0;
+int decoderMovementTo8bitFactor;
 inputMessage inputCommand;
 
 void setupTimer(){
@@ -37,7 +39,11 @@ void destroyTimer(){
 	isTimerSetUp = 0;
 	TCCR3B &= ~(1<<CS32) | ~(1<<CS30); //Stop timer 3
 	ETIMSK &= ~(1<<TOIE3); //Disables interrupt on timer 3
-	
+}
+
+void resetTimer(){
+	TCNT3 = 0X0000; //Resetting counter registers (TCNT3H and TCNT3L)
+	ETIFR |= (1<<TOV3); //making sure the interrupt flag is cleared.
 }
 
 void setReceivedInputDataMessage(inputMessage nextObjective){
@@ -86,6 +92,9 @@ void setMotorDirection(){
 
 void calibrateMotor(){
 	cli();
+	if(!isTimerSetUp){
+		setupTimer();
+	}
 	
 	resetEncoder();
 	setDirectionRight();
@@ -105,15 +114,15 @@ void calibrateMotor(){
 		encoderMaxValue = readEncoderValue();
 	}
 	setDac0Output(0);//STOP! Hammertime!
+	decoderMovementTo8bitFactor = encoderMaxValue / 255;
 
-	setDirectionRight();
-	setDac0Output(MOTOR_SLOW_SPEED);
-	volatile int target = encoderMaxValue/2;
-	while(readEncoderValue() > target){
-		
-		} //empty
-	setDac0Output(0);
-	//Motor calibrated and centered!
+	//Set target and expect timerdriven regulator to handle it.
+	inputCommand.motorPosition = MOTOR_POSITION_CENTER;
+	assumedMotorPosition = 0; //make sure to reset this. 
+	resetEncoder(); //and this
+	//lets play!
+	sei();
+
 
 }
 
@@ -185,20 +194,18 @@ unsigned char bitReverse( unsigned char x )
 }
 
 int readEncoderValue(){
-	cli();
 	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_us(25);
 	volatile uint8_t val_high = readEncoderPins();
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_us(25);
 	volatile uint8_t val_low = readEncoderPins(); //ENCODER_PINS;
-	sei();
 	return (val_high*0b100000000) + val_low;
 }
 
 void resetEncoder(){
 	MOTOR_CONTROLLER_PORT &=  ~(1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
-	_delay_ms(10);
+	_delay_us(10);
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_RESET_ACTIVE_LOW);
 }
 
@@ -238,8 +245,8 @@ void regulator(){
 	
 	uint8_t error = 0;
 	uint8_t voltage = 0;
-	uint8_t position = convertEncoderValue(readEncoderValue());
-	uint8_t reference = 255-inputCommand.motorPosition;
+	uint8_t position = assumedMotorPosition; //convertEncoderValue(readEncoderValue());
+	uint8_t reference = inputCommand.motorPosition;
 	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
 	
 	if (position>reference+5){
@@ -255,7 +262,7 @@ void regulator(){
 		error = 0;
 	}
 	
-	uint8_t errorSpeed = calculateErrorSpeed(inputCommand);
+	uint8_t errorSpeed = calculateErrorSpeed(inputCommand); //We might need to remove this?
 	
 	errorPile += error;
 	
@@ -273,5 +280,39 @@ void regulator(){
 	setDac0Output(voltage);
 }
 
+// ********** Interrupt Handlers ********** //
+/****************************************************************************
+This function is the Interrupt Service Routine (ISR), and called when the  interrupt is triggered;
+that is whenever an event has occurred. This function should not be called directly from the main
+application.
+****************************************************************************/
 
-//ISR(TOIE3_vect) TODO find right vector and implement
+//Timer interrupt for decoder-reading and motor-control
+ISR(TIMER3_OVF){ // TODO Check that this is actually the right vector according to the header file.
+	cli();
+	//Is it too much to do this on EVERY interrupt? How about every other, every three. fclk_io / 1024 is max prescaler.
+	int motorMovement = readEncoderValue();
+	resetEncoder();
+	uint8_t relativeMovement = abs(motorMovement)/decoderMovementTo8bitFactor;
+
+	if(motorMovement < 0){ 
+		//going right
+		if(255 - assumedMotorPosition > relativeMovement){
+			assumedMotorPosition += relativeMovement;
+		}else{
+			//reached end
+			assumedMotorPosition = 255;
+		}
+	}else{
+		//going left
+		if(assumedMotorPosition > relativeMovement){
+			assumedMotorPosition -= relativeMovement;
+		}else{
+			//reached end
+			assumedMotorPosition = 0;
+		}
+	}
+	regulator();
+	resetTimer(); //set counter to zero and clear flags (if it has fired during execution)
+	sei();
+}
