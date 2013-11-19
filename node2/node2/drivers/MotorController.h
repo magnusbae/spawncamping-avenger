@@ -42,8 +42,8 @@
 
 //needs tuning
 #define Kp 3
-#define Kd 72
-#define Ki 1
+#define Kd 18
+#define Ki 3
 
 
 #define MOTOR_SLOW_SPEED 100

@@ -248,24 +248,26 @@ void regulator(){
 	uint8_t voltage = 0;
 	uint8_t position = assumedMotorPosition; //convertEncoderValue(readEncoderValue());
 	uint8_t reference = inputCommand.motorPosition;
+	uint8_t motorSpeed = relativeMovement;
 	
-	if (position<reference+5){
+	if (position<reference-5){
 		setDirectionRight();
 		error = reference-position;
 	}
-	else if(position>reference-5){
+	else if(position>reference+5){
 		setDirectionLeft();
 		error = position-reference;
 	}
 	else{
 		errorCounter = 0;
 		error = 0;
+		motorSpeed = 0;
 	}
 	if(errorCounter > 255){
 		errorCounter = 255;
 	}
 	
-	voltage = Kp*error +Ki*errorCounter*error - Kd*relativeMovement;
+	voltage = Kp*error +Ki*errorCounter*error - Kd*motorSpeed;
 	
 	//printf("Volt: %d Diff: %d ", prev_voltage, diff);
 	if(voltage>255){
