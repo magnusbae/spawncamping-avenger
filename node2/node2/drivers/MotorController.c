@@ -25,11 +25,13 @@ volatile float lastReadError = 0.00;
 volatile int encoderMaxValue = 0;
 uint8_t errorCounter = 0;
 uint8_t errorSpeed = 0;
+uint8_t lastInputPosition = 0;
 
 uint8_t isTimerSetUp = 0;
 uint8_t assumedMotorPosition = 0;
 int decoderMovementTo8bitFactor;
 inputMessage inputCommand;
+uint8_t relativeMovement = 0;
 
 void setupTimer(){
 	isTimerSetUp = 1;
@@ -249,18 +251,21 @@ void regulator(){
 	
 	if (position<reference+5){
 		setDirectionRight();
-		error = position-reference;
+		error = reference-position;
 	}
 	else if(position>reference-5){
 		setDirectionLeft();
-		error = reference-position;
+		error = position-reference;
 	}
 	else{
 		errorCounter = 0;
 		error = 0;
 	}
+	if(errorCounter > 255){
+		errorCounter = 255;
+	}
 	
-	voltage = Kp*error +Ki*errorCounter/50; // - Kd*errorSpeed;
+	voltage = Kp*error +Ki*errorCounter*error - Kd*relativeMovement;
 	
 	//printf("Volt: %d Diff: %d ", prev_voltage, diff);
 	if(voltage>255){
@@ -283,17 +288,13 @@ application.
 
 //Timer interrupt for decoder-reading and motor-control
 ISR(TIMER3_OVF_vect){ // TODO Check that this is actually the right vector according to the header file.
-// 	cli();
-// 	destroyTimer();
-// 	sei();
-	//Is it too much to do this on EVERY interrupt? How about every other, every three. fclk_io / 1024 is max prescaler.
+	if(abs(inputCommand.motorPosition - lastInputPosition) > 10){
+		errorCounter = 0;
+	}
+	lastInputPosition = inputCommand.motorPosition;
 	int motorMovement = readEncoderValue();
-	lastReadError = abs(convertEncoderValue(motorMovement))-inputCommand.motorPosition;
-	//_delay_ms(5);
-	//float newReadError = abs(convertEncoderValue(readEncoderValue()))-inputCommand.motorPosition;
-	uint8_t relativeMovement = abs(motorMovement)/decoderMovementTo8bitFactor;
+	relativeMovement = abs(motorMovement)/decoderMovementTo8bitFactor;
 	resetEncoder();								
-	//errorSpeed = ((abs(newReadError-lastReadError))/75.00);
 	
 	if(motorMovement < 0){ 
 		//going right
@@ -316,9 +317,4 @@ ISR(TIMER3_OVF_vect){ // TODO Check that this is actually the right vector accor
 	}
 	errorCounter += 1;
 	regulator();
-	//resetTimer(); //set counter to zero and clear flags (if it has fired during execution)
-	
-// 	cli();
-// 	setupTimer();
-// 	sei();
 }

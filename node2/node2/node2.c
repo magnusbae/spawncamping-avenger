@@ -72,22 +72,32 @@ int main(void)
 		
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
-			//printf("Can message received with length %d \r\n", receivedMessage.length);
+		//	printf("Can message received with length %d \r\n", receivedMessage.length);
 			//printf("Received data: %c, %i, %i, %i\r\n", receivedMessage.data[0], receivedMessage.data[1], receivedMessage.data[2], receivedMessage.data[3]);
 			
 			if(receivedMessage.length == 1){
 				switch (receivedMessage.data[0]){
 					case START_GAME_COMMAND:
+						cli();
+						setupTimer();
+						sei();
 						gameIsRunning = 1;
 						sendCommandAck(START_GAME_COMMAND);
 						break;
 					case STOP_GAME_COMMAND:
 						gameIsRunning = 0;
+						cli();
+						destroyTimer();
+						sei();
 						setDac0Output(0);
 						sendCommandAck(STOP_GAME_COMMAND);
 						break;
 					case CALIBRATE_GAME_COMMAND:
 						calibrateMotor();
+						_delay_ms(3000);
+						cli();
+						destroyTimer();
+						sei();
 						break;
 					case SHOWBOAT_GAME_COMMAND:
 						//TODO Make some noise or something.				
@@ -109,9 +119,6 @@ void followInputs(canMessage receivedMessage){
 		volatile inputMessage receivedInput = readReceivedInputData(receivedMessage);
 		//printf("Received message shouldActuate: %i", receivedInput.shouldActuate);
 		set_servopos(receivedInput);
-		if (receivedInput.motorPosition>lastMotorReference+15 || receivedInput.motorPosition<lastMotorReference-15){
-			lastMotorReference=receivedInput.motorPosition;
-		}
 		
 		setReceivedInputDataMessage(receivedInput);
 		

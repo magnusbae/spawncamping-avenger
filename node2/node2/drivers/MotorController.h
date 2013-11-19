@@ -41,9 +41,9 @@
 #define ENCODER7 PA0
 
 //needs tuning
-#define Kp 0.8
-#define Kd 0
-#define Ki 0
+#define Kp 3
+#define Kd 72
+#define Ki 1
 
 
 #define MOTOR_SLOW_SPEED 100
