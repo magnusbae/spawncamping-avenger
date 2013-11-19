@@ -17,6 +17,8 @@ void setMotorEnabledState(uint8_t shouldEnable);
 void setupTimer();
 void destroyTimer();
 void resetTimer();
+void setMotorDirection();
+void regulator();
 
 //--
 unsigned char messageBuf[4];

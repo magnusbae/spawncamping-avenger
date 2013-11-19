@@ -202,14 +202,69 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define CHIP_SELECT PB0
 #define SPI_REGISTER PORTB
 
+/**
+Initialization method for the MCP2515 circuit over SPI. 
+Requires SPI_MasterInit to have been called beforehand.
+*/
 void mcp_init();
+
+/**
+Read register in the CAN controller
+@param [in] reg The 8-bit address of the register to read
+@retval char the 8-bit value read from the register
+*/
 char mcp_read(char reg);
+
+/**
+Write an 8-bit value to the addressed register
+@param [in] reg The 8-bit address of the register to read
+@param [in] byte The 8-bit value to write to the register
+*/
 void mcp_write(char reg, char byte);
+
+/**
+Modify a bit in a register in the CAN-controller
+@param [in] reg The 8-bit address of the register to read
+@param [in] mask The bitmask that selects which bits to modify
+@param [in] data The 8-bit value to write to the register
+
+@code
+	//Example:
+	//Updates bit 6 and 7 in the MCP_RXB0CTRL, sets them both to one.
+	//Leaves all other bits untouched
+	mcp_bit_modify_instruction(MCP_RXB0CTRL, 0b01100000, 0xFF); 
+@endcode
+*/
 void mcp_bit_modify_instruction(char reg, char mask, char data);
+
+/**
+Resets the CAN-controller
+*/
 void mcp_reset();
+
+/**
+Reads the statusregister on the CAN-controller
+@retval char The bit values of the status register
+*/
 char mcp_read_status();
+
+/**
+Tells the CAN-controller to send (if possible) the data located in the given register
+@param [in] reg The register to transmit from (from 0 trough 2)
+*/
 void mcp_request_to_send(int reg);
+
+/**
+Checks if the CAN-controller is ready to send the desired register
+@param [in] reg The register to check the status of (from 0 trough 2)
+@retval TRUE if ready to send
+@retval FALSE if not ready. 
+*/
 int mcp_ready_to_send(int reg);
+
+/**
+Clear the interrupt pin on the MCP2515 controller
+*/
 void mcp_clear_interrupt();
 
 #endif

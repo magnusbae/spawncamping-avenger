@@ -13,8 +13,21 @@
 
 #define TRIGGERVALUE 100
 
+/**
+Initializes the ADC on the STK501 top board. 
+Also increases the board voltage to between 5,6 and 5,9 volts depending on which internal (infernal?) 
+voltage refernce is chosen
+*/
 void initializeADC();
+
+/**
+Pretends to read an ADC value, but if we want to keep components alive it really doesn't 
+*/
 int adc_readvalue();
+
+/**
+Should return 1 if the ball is dropped. See node1 instead
+*/
 int game_CheckBallDropped();
 
 

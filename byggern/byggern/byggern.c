@@ -45,18 +45,67 @@ volatile uint8_t gameIsPaused = 0;
 char ackExpectedFromNode2 = NO_ACK_EXPECTED;
 uint8_t simpleNoAckReceivedCounter = 0;
 
+/**
+* Tests if balldetection is operational
+*/
 void testBallDetection();
+
+/**
+* Tests if ball is dropped
+* @retval TRUE Ball is dropped/IR beam broken
+* @retval FALSE IR beam is not broken
+*/
 uint8_t isBallDropped();
+
+/**
+* Sends a control message to Node2
+* @param [in] command  Control command char for node 2 
+*/
 void sendControlMessage(char command);
+/**
+* Sets command character for control message
+* @param [in] command  Control command char for node 2 
+*/
 void setControlMessageCommand(char command);
 
+/**
+* Handles joystick click if main menu was active when clicked
+* @param [in] menuPosition The SELECTED menu items index
+*/
 void handleMenuSelection(uint8_t menuPosition);
+
+/**
+* Handles joystick click if pause menu was active when clicked
+* @param [in] menuPosition The SELECTED menu items index
+*/
 void handlePauseMenuSelection( uint8_t menuPosition );
+
+/**
+* Handles traversal of main menu (joystick up or down)
+* @param [in,out] joydir  The direction of the joystick on last cycle
+* @param [in] joystickDirection The direction of the joystick when polled
+* @param [in] mainMenuLength The length of the menu array
+* @param [in] mainMenu 	The menuOption array
+*/
 uint8_t handleMainMenuTraversal( uint8_t joydir, joystickDirection *jd, uint8_t mainMenuLenght, menuOption * mainMenu );
+
+/**
+* Handles traversal of pause menu (joystick up or down).
+* Unlike the main menu method, the first item in the list is not selectable. Not ideal solution to problem, but was quick and fast
+* to implement.
+* @param [in,out] joydir  The direction of the joystick on last cycle
+* @param [in] joystickDirection The direction of the joystick when polled
+* @param [in] MenuLenght The length of the menu array
+* @param [in] menuOption 	The menuOption array
+*/
 uint8_t handlePauseMenuTraversal( uint8_t joydir, joystickDirection *jd, uint8_t MenuLenght, menuOption * Menu );
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+* @name Node 1
+* @ingroup Node1
+*/
 int main(void)
 {
 	cli();
@@ -389,10 +438,17 @@ void testBallDetection(){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+* Interrupt routine to catch timer1 overflowing.
+* Allows for joystick interrupts to be caught in the main code
+*/
 ISR(TIMER1_OVF_vect){
 		joyCounter = 1;		
 }
 
+/**
+* Allows main loop to handle the click, but only if a certain time has passed.
+*/
 ISR(INT2_vect){
 	if (joyCounter){
 		JOY_CLICK = 1;
@@ -400,6 +456,9 @@ ISR(INT2_vect){
 	}
 }
 
+/**
+* Sets active flag when receiving a CAN message
+*/
 ISR(INT0_vect){
 	receivedCanMessageFlag = 1;
 }

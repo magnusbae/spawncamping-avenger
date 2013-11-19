@@ -9,7 +9,9 @@
 #ifndef ADDRESSBUS_H_
 #define ADDRESSBUS_H_
 
-
+/**
+Sets up the address bus for standard node 1 configuration.
+*/
 void setupAddressBus(){
 	MCUCR|=(1<<SRE);
 	SFIOR |= (1<<XMM2);

@@ -9,8 +9,20 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-void resetTimer();
-void destroyTimer();
+/**
+Sets up timer1 on the Atmel 162 MCU
+*/
 void setupTimer();
+
+/**
+Resets timer1 on the Atmel 162 MCU
+*/
+void resetTimer();
+
+/**
+Disables timer1 on the Atmel 162 MCU
+*/
+void destroyTimer();
+
 
 #endif /* TIMER_H_ */

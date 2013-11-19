@@ -17,7 +17,16 @@
 #define RELAY_PORT PORTF
 #define RELAY_PORT_DDR DDRF
 
+
+/**
+Turns the relay on for 100ms
+Should fire the actuator (solenoid) on the game board
+*/
 void triggerRelay();
+
+/**
+Set up the output port for relay control 
+*/
 void initialRelaySetup();
 
 

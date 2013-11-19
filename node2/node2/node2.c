@@ -27,12 +27,22 @@ volatile canMessage message; //Message stub used for com.
 volatile uint8_t receivedCanMessage = 0;
 uint8_t lastMotorReference = 127;
 
-
-void calibrateMotor();
+/**
+Sets all internal states according to received inputMessage
+@param [in] receivedMessage The received canMessage containing inputs for gameplay
+*/
 void followInputs(canMessage receivedMessage);
+
+/**
+Sends an ack-message to sender with the given state
+@param [in] currentState The received/assumed state.
+*/
 void sendCommandAck(char currentState);
 
-
+/**
+@name Node 2
+@group node2
+*/
 int main(void)
 {	
 	uint8_t gameIsRunning = 0;
@@ -134,6 +144,10 @@ void sendCommandAck(char currentState){
 	CAN_send_message(message);
 }
 
+
+/**
+Interrupt routine that receives and reads in a CAN-message
+*/
 ISR(INT4_vect){
 	receivedMessage = CAN_read_received_message();
 	receivedCanMessage = 1;

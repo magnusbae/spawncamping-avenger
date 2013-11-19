@@ -10,6 +10,10 @@
 #define INCFILE1_H_
 
 
+/**
+Tests if the SRAM is working 
+Lots of printf's if it isn't :P
+*/
 void RamPOST();
 
 
