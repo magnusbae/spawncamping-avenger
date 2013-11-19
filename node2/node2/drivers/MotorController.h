@@ -9,7 +9,11 @@
 #ifndef MOTORCONTROLLER_H_
 #define MOTORCONTROLLER_H_
 
+
+
 #include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
 #include "joyCan.h"
 
 #define DAC_ADDRESS	0b01011110
@@ -60,6 +64,8 @@ void setMotorDirection();
 void regulator();
 void setDac0Output(uint8_t valueFrom0To255);
 void resetEncoder();
+void setMotorDirectionInput(uint8_t right);
+void showboat();
 
 void setReceivedInputDataMessage(inputMessage nextObjective);
 

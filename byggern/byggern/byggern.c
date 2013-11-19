@@ -21,6 +21,7 @@
 #include "drivers/SPI.h"
 #include "drivers/CanMessaging.h"
 #include "drivers/joyCan.h"
+#include "drivers/Timer.h"
 
 #define RESEND_COMMAND_WAIT_CYCLE_THRESHOLD 3
 
@@ -35,6 +36,8 @@ volatile uint8_t JOY_CLICK = 0;
 volatile canMessage receivedMessage;
 volatile uint8_t receivedCanMessageFlag = 0;
 volatile canMessage controlMessage;
+volatile uint8_t joyCounter = 6;
+
 
 volatile uint8_t displaychange = 1;
 volatile uint8_t gameIsRunning = 0;
@@ -58,26 +61,21 @@ int main(void)
 {
 	cli();
 	setupUartAndSendWelcomeMessage();
-
 	setupAddressBus();
 	RamPOST();
 	_delay_ms(250); //wait for oled to start
 	init_oled();
-	
-	oled_printf("Something failed!"); //you shouldn't see this on the display
-
 	_delay_ms(100);
 	
 	
-	printf("Initialization complete!\r\n\r\n");
+	//printf("Initialization complete!\r\n\r\n");
 
-	uint8_t mainMenuLenght = 4;
+	uint8_t mainMenuLenght = 3;
 	menuOption mainMenu[mainMenuLenght];
 	mainMenu[0].isSelected = SELECTED;
 	mainMenu[0].name = "Start new game";
 	mainMenu[1].name = "Recalibrate motor";
 	mainMenu[2].name = "Showboat";
-	mainMenu[3].name = "Highscores";
 	
 	uint8_t pauseMenuLength = 3;
 	menuOption pauseMenu[pauseMenuLength];
@@ -98,7 +96,6 @@ int main(void)
 	
 	DDRE &= ~(1<<PE0);
 	DDRD &= ~(1<<PD2); //PD2=INT0, PD3=INT1
-	//cli();
 	GICR |= (1<<INT2)|(1<<INT0);
 	MCUCR |= (1<<ISC01); //Falling edge on INT0
 	EMCUCR &= ~(1<<ISC2); //Make sure that falling edge is set on INT2
@@ -119,10 +116,10 @@ int main(void)
 	
 	if(!receivedCanMessageFlag){
 		if(CAN_send_message(controlMessage)){
-			printf("\r\nCAN might have sent message. ");
+			//printf("\r\nCAN might have sent message. ");
 		}
 		else{
-			printf("\r\nCAN message failed. ");
+			//printf("\r\nCAN message failed. ");
 		}			
 	}	
 
@@ -134,9 +131,13 @@ int main(void)
 	}		
 	oled_printf("IR seems to be good");
 	_delay_ms(500);
+	
+	setupTimer();
 
 	uint8_t joydir = NEUTRAL;
+	
 	while(1){
+		
 		if(isBallDropped() && gameIsPaused == 0){
 			gameIsPaused = 1;
 			ackExpectedFromNode2 = STOP_GAME_COMMAND;
@@ -385,13 +386,20 @@ void testBallDetection(){
 	return;
 }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+ISR(TIMER1_OVF_vect){
+		joyCounter = 1;		
+}
+
 ISR(INT2_vect){
-	JOY_CLICK = 1;
+	if (joyCounter){
+		JOY_CLICK = 1;
+		joyCounter = 0;
+	}
 }
 
 ISR(INT0_vect){
 	receivedCanMessageFlag = 1;
 }
-

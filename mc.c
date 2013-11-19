@@ -2,7 +2,6 @@
 #include "MotorController.h"
 #include "joyCan.h"
 #include "TWI_Master.h"
-#include "relayDriver.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -26,13 +25,11 @@ volatile float lastReadError = 0.00;
 volatile int encoderMaxValue = 0;
 uint8_t errorCounter = 0;
 uint8_t errorSpeed = 0;
-uint8_t lastInputPosition = 0;
 
 uint8_t isTimerSetUp = 0;
 uint8_t assumedMotorPosition = 0;
 int decoderMovementTo8bitFactor;
-inputMessage inputCommand;
-uint8_t relativeMovement = 0;
+volatile inputMessage inputCommand;
 
 void setupTimer(){
 	isTimerSetUp = 1;
@@ -89,14 +86,6 @@ void setMotorEnabledState(uint8_t shouldEnable){
 
 void setMotorDirection(){
 	if(isDirectionRight){
-		MOTOR_CONTROLLER_PORT |= (1<<MOTOR_DIRECTION);
-	}else{
-		MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_DIRECTION);
-	}
-}
-
-void setMotorDirectionInput(uint8_t right){
-	if(right){
 		MOTOR_CONTROLLER_PORT |= (1<<MOTOR_DIRECTION);
 	}else{
 		MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_DIRECTION);
@@ -226,8 +215,8 @@ void resetEncoder(){
 }
 
 uint8_t convertEncoderValue(int convme){
-	int factor = encoderMaxValue / 255;
-	uint8_t returnme = convme/factor;
+	float factor = 255/encoderMaxValue;
+	uint8_t returnme = convme*factor;
 	if (returnme>255){
 		return (uint8_t)255;
 	}
@@ -257,26 +246,22 @@ void regulator(){
 	uint8_t voltage = 0;
 	uint8_t position = assumedMotorPosition; //convertEncoderValue(readEncoderValue());
 	uint8_t reference = inputCommand.motorPosition;
-	uint8_t motorSpeed = relativeMovement;
 	
-	if (position<reference-10){
+	if (position<reference+5){
 		setDirectionRight();
 		error = reference-position;
 	}
-	else if(position>reference+10){
+	else if(position>reference-5){
 		setDirectionLeft();
 		error = position-reference;
 	}
 	else{
 		errorCounter = 0;
 		error = 0;
-		motorSpeed = 0;
-	}
-	if(errorCounter > 255){
-		errorCounter = 255;
 	}
 	
-	voltage = Kp*error +Ki*errorCounter*error - Kd*motorSpeed;
+	voltage = Kp*error +Ki*errorCounter/50; // - Kd*errorSpeed;
+	
 	
 	//printf("Volt: %d Diff: %d ", prev_voltage, diff);
 	if(voltage>255){
@@ -290,81 +275,6 @@ void regulator(){
 	setDac0Output(voltage);
 }
 
-void dancemove(uint8_t right, uint8_t speed){
-	printf("About to move it!\r\n");
-	isDirectionRight = right;
-	printf("Ready to move!\r\n");
-	setDac0Output(speed);
-	printf("Moved it\r\n");
-}
-
-void showboat(){
-	printf("Digg them moves!\r\n");
-	dancemove(1, 200);
-	_delay_ms(100);
-	dancemove(0, 200);
-	_delay_ms(100);
-	dancemove(1, 200);
-	_delay_ms(100);
-	dancemove(0, 200);
-	_delay_ms(100);
-	dancemove(1, 100);
-	_delay_ms(30);
-	dancemove(0, 100);
-	dancemove(0, 90);
-	_delay_ms(20);
-	
-	dancemove(1, 200);
-	_delay_ms(20);
-	dancemove(0, 200);
-	_delay_ms(20);
-	dancemove(1, 200);
-	_delay_ms(20);
-	dancemove(0, 200);
-	_delay_ms(20);
-	dancemove(1, 200);
-	_delay_ms(20);
-	dancemove(1, 200);
-	_delay_ms(20);
-	dancemove(0, 200);
-	_delay_ms(20);
-	dancemove(1, 200);
-	_delay_ms(20);
-	dancemove(0, 200);
-	_delay_ms(20);
-	dancemove(1, 200);
-	_delay_ms(20);
-	dancemove(0, 200);
-	_delay_ms(20);
-	dancemove(1, 200);
-	_delay_ms(20);
-	
-	dancemove(0, 150);
-	_delay_ms(200);
-	dancemove(1, 150);
-	_delay_ms(200);
-	dancemove(0, 150);
-	_delay_ms(200);
-	
-	
-	dancemove(1, 0);
-	
-	RELAY_PORT &= ~(1<<RELAY_PIN);
-	_delay_ms(60);
-	RELAY_PORT |= (1<<RELAY_PIN);
-	_delay_ms(60);
-	RELAY_PORT &= ~(1<<RELAY_PIN);
-	_delay_ms(60);
-	RELAY_PORT |= (1<<RELAY_PIN);
-	_delay_ms(60);
-	RELAY_PORT &= ~(1<<RELAY_PIN);
-	_delay_ms(60);
-	RELAY_PORT |= (1<<RELAY_PIN);
-	_delay_ms(60);
-	calibrateMotor();
-
-}
-
 // ********** Interrupt Handlers ********** //
 /****************************************************************************
 This function is the Interrupt Service Routine (ISR), and called when the  interrupt is triggered;
@@ -374,33 +284,46 @@ application.
 
 //Timer interrupt for decoder-reading and motor-control
 ISR(TIMER3_OVF_vect){ // TODO Check that this is actually the right vector according to the header file.
-	if(abs(inputCommand.motorPosition - lastInputPosition) > 10){
-		errorCounter = 0;
-	}
-	lastInputPosition = inputCommand.motorPosition;
+// 	cli();
+// 	destroyTimer();
+// 	sei();
+	//Is it too much to do this on EVERY interrupt? How about every other, every three. fclk_io / 1
 	int motorMovement = readEncoderValue();
-	relativeMovement = abs(motorMovement)/decoderMovementTo8bitFactor;
+	//lastReadError = abs(convertEncoderValue(motorMovement)-inputCommand.motorPosition);
+	//_delay_ms(5);
+	//float newReadError = abs(convertEncoderValue(readEncoderValue()))-inputCommand.motorPosition;
+	uint8_t relativeMovement = motorMovement/decoderMovementTo8bitFactor;
 	resetEncoder();								
+	//errorSpeed = ((abs(newReadError-lastReadError))/75.00);
+	assumedMotorPosition += relativeMovement;
 	
 	if(motorMovement < 0){ 
 		//going right
-		if(255 - assumedMotorPosition > relativeMovement){
-			assumedMotorPosition += relativeMovement;
-		}else{
+		if(assumedMotorPosition>255){
 			//reached end
 			assumedMotorPosition = 255;
 		}
-	} else if(motorMovement == 0){
+	}
+	else if(motorMovement == 0){
 		//do nothing. Assumed motorposition is the same.
-	} else{
+	} 
+	else{
 		//going left
-		if(assumedMotorPosition > relativeMovement){
-			assumedMotorPosition -= relativeMovement;
-		}else{
+		if(assumedMotorPosition < 0){
+			assumedMotorPosition = 0;
+		}
+		else{
 			//reached end
 			assumedMotorPosition = 0;
 		}
 	}
+	
+	
 	errorCounter += 1;
 	regulator();
+	//resetTimer(); //set counter to zero and clear flags (if it has fired during execution)
+	
+// 	cli();
+// 	setupTimer();
+// 	sei();
 }

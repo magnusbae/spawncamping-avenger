@@ -21,6 +21,7 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "../fonts/font_4x6.h"
+#include "../fonts/Anim.h"
 
 int col_number=0;
 int line_number=0;
@@ -199,4 +200,23 @@ void oled_ramtransfer(){
 		temp = ext_ram[i];
 		oled[0] = temp;
 	}
+}
+
+/////////////////////////////////////////
+
+void animate(unsigned int pos, unsigned int shooting){
+	
+		volatile char *ext_ram = (char *) RAMEND-128;
+		for( int k = 0; k<127; k++){
+			ext_ram[k] = 0b00000000;
+		}
+		uint8_t start = pos;
+		for (int j = 0; j < 5; j++){
+			if(!shooting){
+				ext_ram[RAMEND-127+pos] = pgm_read_byte(&puncher[0][j]);
+			}
+			else{
+				ext_ram[RAMEND-127+pos] = pgm_read_byte(&puncher[1][j]);
+			}				
+		}
 }

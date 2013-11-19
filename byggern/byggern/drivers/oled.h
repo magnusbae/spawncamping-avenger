@@ -33,6 +33,7 @@ void oled_ramstore(char* line);
 void oled_ramclear();
 void oled_ramgotopos(int line, int column);
 void oled_ramtransfer();
+void animate(unsigned int pos, unsigned int shooting);
 
 
 #endif /* OLED_H_ */

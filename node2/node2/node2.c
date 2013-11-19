@@ -63,13 +63,12 @@ int main(void)
 	printf("Node 2 powered up\r\n");
 	
 	calibrateMotor();
+	_delay_ms(1000);
 	
 	printf("Motor calibrated and centered. Node 2 ready to play!\r\n");
 
 	while(1){
-// 		int mememe = readEncoderValue();
-// 		printf("Encoder value: %i\r\n", mememe);
-		
+
 		if(receivedCanMessage){
 			receivedCanMessage = 0;
 		//	printf("Can message received with length %d \r\n", receivedMessage.length);
@@ -100,7 +99,7 @@ int main(void)
 						sei();
 						break;
 					case SHOWBOAT_GAME_COMMAND:
-						//TODO Make some noise or something.				
+						showboat();			
 						break;
 					default:
 						printf("Unknown command received on CAN, value: %c.\r\n", receivedMessage.data[0]);

@@ -11,23 +11,14 @@
 
 #include <avr/io.h>
 #include <avr/delay.h>
+#include <avr/interrupt.h>
 
 #define RELAY_PIN PF2
 #define RELAY_PORT PORTF
 #define RELAY_PORT_DDR DDRF
 
-void initialRelaySetup(){
-	RELAY_PORT_DDR |= (1<<RELAY_PIN);
-	RELAY_PORT |= (1<<RELAY_PIN);
-}
-
-void triggerRelay(){
-	cli();
-	RELAY_PORT &= ~(1<<RELAY_PIN);
-	_delay_ms(100);
-	RELAY_PORT |= (1<<RELAY_PIN);
-	sei();
-}
+void triggerRelay();
+void initialRelaySetup();
 
 
 #endif /* INCFILE1_H_ */
