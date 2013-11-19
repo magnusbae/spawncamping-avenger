@@ -1,0 +1,5 @@
+<map id="Wait" name="Wait">
+<area shape="rect" id="node2" href="$uart_8h.html#a19d8d4fbccae7a3fed6e7a51d0e366f3" title="read_" alt="" coords="102,5,157,33"/>
+<area shape="rect" id="node3" href="$uart_8h.html#a18e8b553935967ff0231b35207891208" title="setupUartAndSendWelcomeMessage" alt="" coords="206,5,450,33"/>
+<area shape="rect" id="node4" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="499,5,549,33"/>
+</map>

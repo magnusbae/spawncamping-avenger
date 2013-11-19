@@ -1,0 +1,5 @@
+<map id="oled_print" name="oled_print">
+<area shape="rect" id="node2" href="$oled_8h.html#ad096743c9c7d76602a49080d5cbab4c5" title="oled_printf" alt="" coords="134,31,218,59"/>
+<area shape="rect" id="node3" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="294,5,344,33"/>
+<area shape="rect" id="node4" href="$menu_8h.html#a731d9f22694c4ee561beae3fd7cc8ce8" title="menu_display" alt="" coords="267,57,370,85"/>
+</map>

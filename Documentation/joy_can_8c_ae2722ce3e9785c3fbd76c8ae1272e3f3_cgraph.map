@@ -1,0 +1,17 @@
+<map id="sendInputDataOverCan" name="sendInputDataOverCan">
+<area shape="rect" id="node2" href="$multifunction_8c.html#a3752b73272d348022469bd6396e860db" title="readJoystickPosition" alt="" coords="234,5,377,33"/>
+<area shape="rect" id="node5" href="$multifunction_8c.html#ac1c8c055408a35cc43f89b7278c6a361" title="readRightSlider" alt="" coords="458,57,571,85"/>
+<area shape="rect" id="node6" href="$joy_can_8c.html#a112a5ed35427ca377a858b752c93ec2d" title="resetSendJoyClickedState\lToZero" alt="" coords="216,109,394,153"/>
+<area shape="rect" id="node7" href="$_can_messaging_8c.html#a5587a9a0d89f650f45ca9e355eecf5b6" title="CAN_send_message" alt="" coords="232,177,379,205"/>
+<area shape="rect" id="node3" href="$multifunction_8c.html#ac5fcfada29beeaeb96e049119941bc37" title="getJoystickPosition" alt="" coords="447,5,582,33"/>
+<area shape="rect" id="node4" href="$multifunction_8c.html#a83c63bafc5beb3e38358977aa3936858" title="readAdcInput" alt="" coords="676,30,777,58"/>
+<area shape="rect" id="node8" href="$_m_c_p2515_8c.html#a62a8d57b8fe850c612c4d92abb9a3f64" title="mcp_ready_to_send" alt="" coords="444,263,586,291"/>
+<area shape="rect" id="node14" href="$_m_c_p2515_8c.html#a342498942ca4e1fa0fb37caa3f9de5ea" title="mcp_bit_modify_instruction" alt="" coords="635,211,818,239"/>
+<area shape="rect" id="node15" href="$_m_c_p2515_8c.html#ae1ee790cc3a3a1ef2116b01d2f8c12a7" title="mcp_write" alt="" coords="686,107,768,135"/>
+<area shape="rect" id="node16" href="$_m_c_p2515_8c.html#a6ca8946b1b46b51ec8cb4be12d9c07bc" title="mcp_request_to_send" alt="" coords="650,159,803,187"/>
+<area shape="rect" id="node9" href="$_m_c_p2515_8c.html#a3bacc1a9512e49a87037835a7978aefd" title="mcp_read" alt="" coords="686,263,767,291"/>
+<area shape="rect" id="node10" href="$_m_c_p2515_8c.html#ae192ef2a229f40c115c9058de736e27c" title="selectChip" alt="" coords="897,211,980,239"/>
+<area shape="rect" id="node11" href="$_s_p_i_8c.html#af61d14e9a83dbb3d99978a4cdd9e6787" title="SPI_MasterTransmit" alt="" coords="867,107,1010,135"/>
+<area shape="rect" id="node12" href="$_m_c_p2515_8c.html#a33f05c7de0dc7ba3376f7baba58cd302" title="deselectChip" alt="" coords="889,159,988,187"/>
+<area shape="rect" id="node13" href="$_s_p_i_8c.html#a87287c8477a1b4251fb531c0b93626f9" title="SPI_MasterRead" alt="" coords="877,263,1000,291"/>
+</map>

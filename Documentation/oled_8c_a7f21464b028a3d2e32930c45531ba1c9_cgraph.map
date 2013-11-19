@@ -1,0 +1,6 @@
+<map id="oled_clear_line" name="oled_clear_line">
+<area shape="rect" id="node2" href="$oled_8c.html#aad3bd7bdbd074b6660549f7b5169cc64" title="oled_goto_position" alt="" coords="165,31,299,59"/>
+<area shape="rect" id="node3" href="$oled_8c.html#a92b72a426516bed15ec9ed3e7745e03f" title="oled_goto_line" alt="" coords="358,5,466,33"/>
+<area shape="rect" id="node5" href="$oled_8c.html#a95e197851798fefbc941053c410e7eca" title="oled_goto_column" alt="" coords="347,57,477,85"/>
+<area shape="rect" id="node4" href="$oled_8c.html#aefcabb9f9987bf38cea55bcd9b0d892d" title="write_command" alt="" coords="526,31,642,59"/>
+</map>

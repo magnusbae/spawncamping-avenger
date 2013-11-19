@@ -1,0 +1,12 @@
+<map id="readAdcInput" name="readAdcInput">
+<area shape="rect" id="node2" href="$multifunction_8c.html#ac5fcfada29beeaeb96e049119941bc37" title="getJoystickPosition" alt="" coords="155,57,290,85"/>
+<area shape="rect" id="node8" href="$multifunction_8h.html#a8dfe996b334544f39dc2bebec45423b7" title="readIrDiode" alt="" coords="177,161,268,189"/>
+<area shape="rect" id="node11" href="$multifunction_8h.html#ac1c8c055408a35cc43f89b7278c6a361" title="readRightSlider" alt="" coords="166,109,279,137"/>
+<area shape="rect" id="node3" href="$multifunction_8c.html#a8b135c3955130a571d65f315a2ffde9c" title="findJoystickDirection" alt="" coords="339,5,482,33"/>
+<area shape="rect" id="node6" href="$multifunction_8h.html#a3752b73272d348022469bd6396e860db" title="readJoystickPosition" alt="" coords="339,57,482,85"/>
+<area shape="rect" id="node4" href="$multifunction_8h.html#a7b8bad39757d2338d7c4726db93e7c25" title="readJoystickDirection" alt="" coords="538,5,686,33"/>
+<area shape="rect" id="node5" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="742,83,792,111"/>
+<area shape="rect" id="node7" href="$joy_can_8h.html#ae2722ce3e9785c3fbd76c8ae1272e3f3" title="sendInputDataOverCan" alt="" coords="531,57,693,85"/>
+<area shape="rect" id="node9" href="$byggern_8c.html#a09e9e76d950eff11145f15dcafc8294c" title="isBallDropped" alt="" coords="358,161,463,189"/>
+<area shape="rect" id="node10" href="$byggern_8c.html#a8a7063331b48a728dc0925b0f8f30d61" title="testBallDetection" alt="" coords="551,161,673,189"/>
+</map>

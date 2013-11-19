@@ -1,0 +1,5 @@
+<map id="oled_clear_display" name="oled_clear_display">
+<area shape="rect" id="node2" href="$oled_8h.html#a7146bcf63d6f02cf65be385af76565ed" title="init_oled" alt="" coords="203,5,274,33"/>
+<area shape="rect" id="node4" href="$menu_8h.html#a731d9f22694c4ee561beae3fd7cc8ce8" title="menu_display" alt="" coords="187,57,290,85"/>
+<area shape="rect" id="node3" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="339,5,389,33"/>
+</map>

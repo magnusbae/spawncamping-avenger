@@ -1,0 +1,7 @@
+<map id="mcp_ready_to_send" name="mcp_ready_to_send">
+<area shape="rect" id="node2" href="$_m_c_p2515_8c.html#a3bacc1a9512e49a87037835a7978aefd" title="mcp_read" alt="" coords="197,83,278,111"/>
+<area shape="rect" id="node3" href="$_m_c_p2515_8c.html#ae192ef2a229f40c115c9058de736e27c" title="selectChip" alt="" coords="356,5,439,33"/>
+<area shape="rect" id="node4" href="$_s_p_i_8c.html#af61d14e9a83dbb3d99978a4cdd9e6787" title="SPI_MasterTransmit" alt="" coords="326,57,469,85"/>
+<area shape="rect" id="node5" href="$_m_c_p2515_8c.html#a33f05c7de0dc7ba3376f7baba58cd302" title="deselectChip" alt="" coords="348,109,447,137"/>
+<area shape="rect" id="node6" href="$_s_p_i_8c.html#a87287c8477a1b4251fb531c0b93626f9" title="SPI_MasterRead" alt="" coords="336,161,459,189"/>
+</map>

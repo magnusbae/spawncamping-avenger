@@ -1,0 +1,11 @@
+<map id="oled_goto_position" name="oled_goto_position">
+<area shape="rect" id="node2" href="$oled_8h.html#ad096743c9c7d76602a49080d5cbab4c5" title="oled_printf" alt="" coords="372,5,455,33"/>
+<area shape="rect" id="node5" href="$oled_8h.html#a363f6227a2153e03f9b5d7cea5a856f9" title="oled_home" alt="" coords="199,211,286,239"/>
+<area shape="rect" id="node7" href="$oled_8h.html#ae6492dc1c73e2ac0fbfd4e0a34c4529c" title="oled_ramtransfer" alt="" coords="352,314,474,342"/>
+<area shape="rect" id="node9" href="$oled_8h.html#a7f21464b028a3d2e32930c45531ba1c9" title="oled_clear_line" alt="" coords="187,95,298,123"/>
+<area shape="rect" id="node3" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="734,237,784,265"/>
+<area shape="rect" id="node4" href="$menu_8h.html#a731d9f22694c4ee561beae3fd7cc8ce8" title="menu_display" alt="" coords="555,109,658,137"/>
+<area shape="rect" id="node6" href="$oled_8h.html#a7146bcf63d6f02cf65be385af76565ed" title="init_oled" alt="" coords="571,210,642,238"/>
+<area shape="rect" id="node8" href="$menu_8h.html#ae2c36f670cd83f9cb79afa8dea9c454b" title="menu_display_RAMV2" alt="" coords="528,365,685,393"/>
+<area shape="rect" id="node10" href="$oled_8h.html#aa9b7f1fd3f9898e7beb5503d084f7dfd" title="oled_clear_display" alt="" coords="347,109,479,137"/>
+</map>

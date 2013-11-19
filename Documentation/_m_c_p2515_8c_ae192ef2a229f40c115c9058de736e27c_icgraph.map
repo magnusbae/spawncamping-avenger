@@ -1,0 +1,22 @@
+<map id="selectChip" name="selectChip">
+<area shape="rect" id="node2" href="$_m_c_p2515_8h.html#a3bacc1a9512e49a87037835a7978aefd" title="mcp_read" alt="" coords="190,108,271,136"/>
+<area shape="rect" id="node12" href="$_m_c_p2515_8h.html#a342498942ca4e1fa0fb37caa3f9de5ea" title="mcp_bit_modify_instruction" alt="" coords="139,316,322,344"/>
+<area shape="rect" id="node17" href="$_m_c_p2515_8h.html#ae1ee790cc3a3a1ef2116b01d2f8c12a7" title="mcp_write" alt="" coords="430,314,512,342"/>
+<area shape="rect" id="node19" href="$_m_c_p2515_8h.html#a78ea1065553242882b0738db80d53598" title="mcp_read_status" alt="" coords="630,5,754,33"/>
+<area shape="rect" id="node20" href="$_m_c_p2515_8h.html#a6ca8946b1b46b51ec8cb4be12d9c07bc" title="mcp_request_to_send" alt="" coords="154,212,307,240"/>
+<area shape="rect" id="node21" href="$_m_c_p2515_8h.html#acc36729b8b5481c89446f30f030e86f9" title="mcp_reset" alt="" coords="189,368,272,396"/>
+<area shape="rect" id="node3" href="$_can_messaging_8c.html#a391edde8fc7769053156b4a7306795e3" title="read_message" alt="" coords="637,57,747,85"/>
+<area shape="rect" id="node6" href="$_m_c_p2515_8h.html#a62a8d57b8fe850c612c4d92abb9a3f64" title="mcp_ready_to_send" alt="" coords="400,108,542,136"/>
+<area shape="rect" id="node4" href="$_can_messaging_8h.html#ad0c5931af71b5e5f62b7fd48113278f8" title="CAN_read_received_message" alt="" coords="813,56,1016,84"/>
+<area shape="rect" id="node5" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="1302,237,1352,265"/>
+<area shape="rect" id="node7" href="$_can_messaging_8h.html#a5587a9a0d89f650f45ca9e355eecf5b6" title="CAN_send_message" alt="" coords="618,262,766,290"/>
+<area shape="rect" id="node8" href="$byggern_8c.html#af53f4fd28b379208d277bf2770be1ec2" title="sendControlMessage" alt="" coords="841,158,988,186"/>
+<area shape="rect" id="node10" href="$byggern_8c.html#a2ba47c4ef170c7de63e087ea02e85d6c" title="handlePauseMenuSelection" alt="" coords="1065,210,1252,238"/>
+<area shape="rect" id="node11" href="$joy_can_8h.html#ae2722ce3e9785c3fbd76c8ae1272e3f3" title="sendInputDataOverCan" alt="" coords="1078,262,1239,290"/>
+<area shape="rect" id="node9" href="$byggern_8c.html#a1ea773012f81690ed7d67b1eadd8eb34" title="handleMenuSelection" alt="" coords="1084,158,1233,186"/>
+<area shape="rect" id="node13" href="$_can_messaging_8c.html#a542060f3d0988f71ed8e72158c729b8e" title="clearReceivedMessageBit" alt="" coords="383,160,558,188"/>
+<area shape="rect" id="node14" href="$_m_c_p2515_8c.html#af8e7c803b87722f944a95196cb5836a3" title="setLoopbackOperationalMode" alt="" coords="371,366,570,394"/>
+<area shape="rect" id="node15" href="$_m_c_p2515_8c.html#ae6767a068bd52990c0fd1070f9e4bd3c" title="setOperationModeNormal" alt="" coords="384,470,558,498"/>
+<area shape="rect" id="node16" href="$_m_c_p2515_8h.html#a5043851dda97269fcf8834f1be265aad" title="mcp_init" alt="" coords="657,418,727,446"/>
+<area shape="rect" id="node18" href="$_m_c_p2515_8h.html#a2a7a7ab7b88c5eabe235b8acf11db82a" title="mcp_clear_interrupt" alt="" coords="845,366,984,394"/>
+</map>

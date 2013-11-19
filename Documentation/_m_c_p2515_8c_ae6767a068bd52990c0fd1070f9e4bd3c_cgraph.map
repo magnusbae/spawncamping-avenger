@@ -1,0 +1,6 @@
+<map id="setOperationModeNormal" name="setOperationModeNormal">
+<area shape="rect" id="node2" href="$_m_c_p2515_8c.html#a342498942ca4e1fa0fb37caa3f9de5ea" title="mcp_bit_modify_instruction" alt="" coords="227,57,410,85"/>
+<area shape="rect" id="node3" href="$_m_c_p2515_8c.html#ae192ef2a229f40c115c9058de736e27c" title="selectChip" alt="" coords="489,5,572,33"/>
+<area shape="rect" id="node4" href="$_s_p_i_8c.html#af61d14e9a83dbb3d99978a4cdd9e6787" title="SPI_MasterTransmit" alt="" coords="459,57,602,85"/>
+<area shape="rect" id="node5" href="$_m_c_p2515_8c.html#a33f05c7de0dc7ba3376f7baba58cd302" title="deselectChip" alt="" coords="481,109,580,137"/>
+</map>

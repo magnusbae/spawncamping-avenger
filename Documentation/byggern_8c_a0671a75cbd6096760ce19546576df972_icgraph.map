@@ -1,0 +1,6 @@
+<map id="setControlMessageCommand" name="setControlMessageCommand">
+<area shape="rect" id="node2" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="683,42,733,70"/>
+<area shape="rect" id="node3" href="$byggern_8c.html#af53f4fd28b379208d277bf2770be1ec2" title="sendControlMessage" alt="" coords="250,29,398,57"/>
+<area shape="rect" id="node5" href="$byggern_8c.html#a2ba47c4ef170c7de63e087ea02e85d6c" title="handlePauseMenuSelection" alt="" coords="446,119,634,147"/>
+<area shape="rect" id="node4" href="$byggern_8c.html#a1ea773012f81690ed7d67b1eadd8eb34" title="handleMenuSelection" alt="" coords="465,67,615,95"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="menu_display" name="menu_display">
+<area shape="rect" id="node2" href="$oled_8c.html#aa9b7f1fd3f9898e7beb5503d084f7dfd" title="oled_clear_display" alt="" coords="158,78,290,106"/>
+<area shape="rect" id="node8" href="$oled_8c.html#a363f6227a2153e03f9b5d7cea5a856f9" title="oled_home" alt="" coords="351,130,438,158"/>
+<area shape="rect" id="node9" href="$oled_8c.html#ad096743c9c7d76602a49080d5cbab4c5" title="oled_printf" alt="" coords="182,26,266,54"/>
+<area shape="rect" id="node3" href="$oled_8c.html#a7f21464b028a3d2e32930c45531ba1c9" title="oled_clear_line" alt="" coords="339,78,450,106"/>
+<area shape="rect" id="node4" href="$oled_8c.html#aad3bd7bdbd074b6660549f7b5169cc64" title="oled_goto_position" alt="" coords="499,78,632,106"/>
+<area shape="rect" id="node5" href="$oled_8c.html#a92b72a426516bed15ec9ed3e7745e03f" title="oled_goto_line" alt="" coords="691,51,799,79"/>
+<area shape="rect" id="node7" href="$oled_8c.html#a95e197851798fefbc941053c410e7eca" title="oled_goto_column" alt="" coords="680,103,810,131"/>
+<area shape="rect" id="node6" href="$oled_8c.html#aefcabb9f9987bf38cea55bcd9b0d892d" title="write_command" alt="" coords="860,78,975,106"/>
+<area shape="rect" id="node10" href="$oled_8c.html#a9bd24ae3cb521163bdb7c164ee9e0735" title="oled_print" alt="" coords="355,26,435,54"/>
+</map>

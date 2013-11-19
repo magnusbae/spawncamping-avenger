@@ -1,0 +1,8 @@
+<map id="mcp_init" name="mcp_init">
+<area shape="rect" id="node2" href="$_m_c_p2515_8c.html#a33f05c7de0dc7ba3376f7baba58cd302" title="deselectChip" alt="" coords="601,70,700,98"/>
+<area shape="rect" id="node3" href="$_s_p_i_8c.html#af61d14e9a83dbb3d99978a4cdd9e6787" title="SPI_MasterTransmit" alt="" coords="579,174,722,202"/>
+<area shape="rect" id="node4" href="$_m_c_p2515_8c.html#ae6767a068bd52990c0fd1070f9e4bd3c" title="setOperationModeNormal" alt="" coords="125,46,299,74"/>
+<area shape="rect" id="node5" href="$_m_c_p2515_8c.html#a342498942ca4e1fa0fb37caa3f9de5ea" title="mcp_bit_modify_instruction" alt="" coords="347,95,530,123"/>
+<area shape="rect" id="node7" href="$_m_c_p2515_8c.html#ae1ee790cc3a3a1ef2116b01d2f8c12a7" title="mcp_write" alt="" coords="398,147,480,175"/>
+<area shape="rect" id="node6" href="$_m_c_p2515_8c.html#ae192ef2a229f40c115c9058de736e27c" title="selectChip" alt="" coords="609,122,692,150"/>
+</map>

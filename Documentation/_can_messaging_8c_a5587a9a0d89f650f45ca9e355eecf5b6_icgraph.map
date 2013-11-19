@@ -1,0 +1,7 @@
+<map id="CAN_send_message" name="CAN_send_message">
+<area shape="rect" id="node2" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="648,68,698,96"/>
+<area shape="rect" id="node3" href="$byggern_8c.html#af53f4fd28b379208d277bf2770be1ec2" title="sendControlMessage" alt="" coords="208,68,355,96"/>
+<area shape="rect" id="node5" href="$byggern_8c.html#a2ba47c4ef170c7de63e087ea02e85d6c" title="handlePauseMenuSelection" alt="" coords="412,120,599,148"/>
+<area shape="rect" id="node6" href="$joy_can_8h.html#ae2722ce3e9785c3fbd76c8ae1272e3f3" title="sendInputDataOverCan" alt="" coords="201,172,362,200"/>
+<area shape="rect" id="node4" href="$byggern_8c.html#a1ea773012f81690ed7d67b1eadd8eb34" title="handleMenuSelection" alt="" coords="431,68,580,96"/>
+</map>

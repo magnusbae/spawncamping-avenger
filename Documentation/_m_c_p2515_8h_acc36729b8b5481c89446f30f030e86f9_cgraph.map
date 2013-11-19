@@ -1,0 +1,5 @@
+<map id="mcp_reset" name="mcp_reset">
+<area shape="rect" id="node2" href="$_m_c_p2515_8c.html#ae192ef2a229f40c115c9058de736e27c" title="selectChip" alt="" coords="169,5,252,33"/>
+<area shape="rect" id="node3" href="$_s_p_i_8c.html#af61d14e9a83dbb3d99978a4cdd9e6787" title="SPI_MasterTransmit" alt="" coords="139,57,282,85"/>
+<area shape="rect" id="node4" href="$_m_c_p2515_8c.html#a33f05c7de0dc7ba3376f7baba58cd302" title="deselectChip" alt="" coords="161,109,260,137"/>
+</map>

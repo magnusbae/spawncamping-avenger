@@ -1,0 +1,7 @@
+<map id="getJoystickPosition" name="getJoystickPosition">
+<area shape="rect" id="node2" href="$multifunction_8c.html#a8b135c3955130a571d65f315a2ffde9c" title="findJoystickDirection" alt="" coords="190,5,333,33"/>
+<area shape="rect" id="node5" href="$multifunction_8h.html#a3752b73272d348022469bd6396e860db" title="readJoystickPosition" alt="" coords="190,57,333,85"/>
+<area shape="rect" id="node3" href="$multifunction_8h.html#a7b8bad39757d2338d7c4726db93e7c25" title="readJoystickDirection" alt="" coords="389,5,537,33"/>
+<area shape="rect" id="node4" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="592,31,642,59"/>
+<area shape="rect" id="node6" href="$joy_can_8h.html#ae2722ce3e9785c3fbd76c8ae1272e3f3" title="sendInputDataOverCan" alt="" coords="382,57,543,85"/>
+</map>

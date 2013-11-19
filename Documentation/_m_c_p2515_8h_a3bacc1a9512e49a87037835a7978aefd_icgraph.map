@@ -1,0 +1,11 @@
+<map id="mcp_read" name="mcp_read">
+<area shape="rect" id="node2" href="$_can_messaging_8c.html#a391edde8fc7769053156b4a7306795e3" title="read_message" alt="" coords="151,33,260,61"/>
+<area shape="rect" id="node5" href="$_m_c_p2515_8h.html#a62a8d57b8fe850c612c4d92abb9a3f64" title="mcp_ready_to_send" alt="" coords="134,135,276,163"/>
+<area shape="rect" id="node3" href="$_can_messaging_8h.html#ad0c5931af71b5e5f62b7fd48113278f8" title="CAN_read_received_message" alt="" coords="731,6,933,34"/>
+<area shape="rect" id="node4" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="982,135,1032,163"/>
+<area shape="rect" id="node6" href="$_can_messaging_8h.html#a5587a9a0d89f650f45ca9e355eecf5b6" title="CAN_send_message" alt="" coords="325,149,472,177"/>
+<area shape="rect" id="node7" href="$byggern_8c.html#af53f4fd28b379208d277bf2770be1ec2" title="sendControlMessage" alt="" coords="528,149,675,177"/>
+<area shape="rect" id="node9" href="$byggern_8c.html#a2ba47c4ef170c7de63e087ea02e85d6c" title="handlePauseMenuSelection" alt="" coords="738,213,926,241"/>
+<area shape="rect" id="node10" href="$joy_can_8h.html#ae2722ce3e9785c3fbd76c8ae1272e3f3" title="sendInputDataOverCan" alt="" coords="521,253,682,281"/>
+<area shape="rect" id="node8" href="$byggern_8c.html#a1ea773012f81690ed7d67b1eadd8eb34" title="handleMenuSelection" alt="" coords="757,161,907,189"/>
+</map>

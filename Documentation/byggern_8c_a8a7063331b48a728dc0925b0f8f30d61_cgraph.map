@@ -1,0 +1,5 @@
+<map id="testBallDetection" name="testBallDetection">
+<area shape="rect" id="node2" href="$byggern_8c.html#a09e9e76d950eff11145f15dcafc8294c" title="isBallDropped" alt="" coords="176,5,280,33"/>
+<area shape="rect" id="node3" href="$multifunction_8c.html#a8dfe996b334544f39dc2bebec45423b7" title="readIrDiode" alt="" coords="328,5,419,33"/>
+<area shape="rect" id="node4" href="$multifunction_8c.html#a83c63bafc5beb3e38358977aa3936858" title="readAdcInput" alt="" coords="467,5,568,33"/>
+</map>

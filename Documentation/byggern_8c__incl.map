@@ -1,0 +1,14 @@
+<map id="/Users/magnus/code/byggern/spawncamping&#45;avenger/byggern/byggern/byggern.c" name="/Users/magnus/code/byggern/spawncamping&#45;avenger/byggern/byggern/byggern.c">
+<area shape="rect" id="node2" href="$crystal_8h.html" title="drivers/crystal.h" alt="" coords="5,131,120,159"/>
+<area shape="rect" id="node7" href="$_address_bus_8h.html" title="drivers/AddressBus.h" alt="" coords="517,131,664,159"/>
+<area shape="rect" id="node8" href="$uart_8h.html" title="drivers/uart.h" alt="" coords="689,131,788,159"/>
+<area shape="rect" id="node9" href="$sram_8h.html" title="drivers/sram.h" alt="" coords="812,131,917,159"/>
+<area shape="rect" id="node10" href="$multifunction_8h.html" title="drivers/multifunction.h" alt="" coords="942,131,1092,159"/>
+<area shape="rect" id="node11" href="$oled_8h.html" title="drivers/oled.h" alt="" coords="1117,131,1219,159"/>
+<area shape="rect" id="node12" href="$menu_8h.html" title="menu/menu.h" alt="" coords="1243,131,1345,159"/>
+<area shape="rect" id="node13" href="$_m_c_p2515_8h.html" title="drivers/MCP2515.h" alt="" coords="1370,131,1504,159"/>
+<area shape="rect" id="node14" href="$_s_p_i_8h.html" title="drivers/SPI.h" alt="" coords="1529,131,1625,159"/>
+<area shape="rect" id="node15" href="$_can_messaging_8h.html" title="drivers/CanMessaging.h" alt="" coords="1675,209,1839,237"/>
+<area shape="rect" id="node16" href="$joy_can_8h.html" title="drivers/joyCan.h" alt="" coords="1650,131,1768,159"/>
+<area shape="rect" id="node17" href="$_timer_8h.html" title="drivers/Timer.h" alt="" coords="1843,131,1951,159"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="sendControlMessage" name="sendControlMessage">
+<area shape="rect" id="node2" href="$byggern_8c.html#a0671a75cbd6096760ce19546576df972" title="setControlMessageCommand" alt="" coords="200,31,398,59"/>
+<area shape="rect" id="node3" href="$_can_messaging_8c.html#a5587a9a0d89f650f45ca9e355eecf5b6" title="CAN_send_message" alt="" coords="225,83,372,111"/>
+<area shape="rect" id="node4" href="$_m_c_p2515_8c.html#a62a8d57b8fe850c612c4d92abb9a3f64" title="mcp_ready_to_send" alt="" coords="446,6,588,34"/>
+<area shape="rect" id="node10" href="$_m_c_p2515_8c.html#a342498942ca4e1fa0fb37caa3f9de5ea" title="mcp_bit_modify_instruction" alt="" coords="638,57,821,85"/>
+<area shape="rect" id="node11" href="$_m_c_p2515_8c.html#ae1ee790cc3a3a1ef2116b01d2f8c12a7" title="mcp_write" alt="" coords="688,109,770,137"/>
+<area shape="rect" id="node12" href="$_m_c_p2515_8c.html#a6ca8946b1b46b51ec8cb4be12d9c07bc" title="mcp_request_to_send" alt="" coords="653,161,806,189"/>
+<area shape="rect" id="node5" href="$_m_c_p2515_8c.html#a3bacc1a9512e49a87037835a7978aefd" title="mcp_read" alt="" coords="689,5,770,33"/>
+<area shape="rect" id="node6" href="$_m_c_p2515_8c.html#ae192ef2a229f40c115c9058de736e27c" title="selectChip" alt="" coords="900,57,983,85"/>
+<area shape="rect" id="node7" href="$_s_p_i_8c.html#af61d14e9a83dbb3d99978a4cdd9e6787" title="SPI_MasterTransmit" alt="" coords="870,109,1013,137"/>
+<area shape="rect" id="node8" href="$_m_c_p2515_8c.html#a33f05c7de0dc7ba3376f7baba58cd302" title="deselectChip" alt="" coords="892,161,991,189"/>
+<area shape="rect" id="node9" href="$_s_p_i_8c.html#a87287c8477a1b4251fb531c0b93626f9" title="SPI_MasterRead" alt="" coords="880,5,1003,33"/>
+</map>

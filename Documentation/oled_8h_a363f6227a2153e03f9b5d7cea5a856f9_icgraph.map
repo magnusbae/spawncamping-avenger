@@ -1,0 +1,7 @@
+<map id="oled_home" name="oled_home">
+<area shape="rect" id="node2" href="$byggern_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="518,60,568,88"/>
+<area shape="rect" id="node3" href="$oled_8h.html#a7146bcf63d6f02cf65be385af76565ed" title="init_oled" alt="" coords="355,34,426,62"/>
+<area shape="rect" id="node4" href="$oled_8h.html#ae6492dc1c73e2ac0fbfd4e0a34c4529c" title="oled_ramtransfer" alt="" coords="142,86,264,114"/>
+<area shape="rect" id="node6" href="$menu_8h.html#a731d9f22694c4ee561beae3fd7cc8ce8" title="menu_display" alt="" coords="151,138,254,166"/>
+<area shape="rect" id="node5" href="$menu_8h.html#ae2c36f670cd83f9cb79afa8dea9c454b" title="menu_display_RAMV2" alt="" coords="312,138,469,166"/>
+</map>

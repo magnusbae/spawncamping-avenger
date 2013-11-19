@@ -1,0 +1,6 @@
+<map id="mcp_clear_interrupt" name="mcp_clear_interrupt">
+<area shape="rect" id="node2" href="$_m_c_p2515_8c.html#ae1ee790cc3a3a1ef2116b01d2f8c12a7" title="mcp_write" alt="" coords="192,57,274,85"/>
+<area shape="rect" id="node3" href="$_m_c_p2515_8c.html#ae192ef2a229f40c115c9058de736e27c" title="selectChip" alt="" coords="353,5,436,33"/>
+<area shape="rect" id="node4" href="$_s_p_i_8c.html#af61d14e9a83dbb3d99978a4cdd9e6787" title="SPI_MasterTransmit" alt="" coords="323,57,466,85"/>
+<area shape="rect" id="node5" href="$_m_c_p2515_8c.html#a33f05c7de0dc7ba3376f7baba58cd302" title="deselectChip" alt="" coords="345,109,444,137"/>
+</map>

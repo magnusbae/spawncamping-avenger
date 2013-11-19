@@ -1,0 +1,7 @@
+<map id="setupUartAndSendWelcomeMessage" name="setupUartAndSendWelcomeMessage">
+<area shape="rect" id="node2" href="$uart_8c.html#ac2cd446c46880f1fd6fa504b8ff0cdb4" title="setBaudRateAndInitialize\lUartWithCorrectBits" alt="" coords="299,5,469,49"/>
+<area shape="rect" id="node3" href="$uart_8c.html#a401650301485b52ca34e0e63cc03719d" title="write" alt="" coords="359,73,409,101"/>
+<area shape="rect" id="node4" href="$uart_8c.html#a19d8d4fbccae7a3fed6e7a51d0e366f3" title="read_" alt="" coords="356,125,412,153"/>
+<area shape="rect" id="node6" href="$uart_8c.html#a2ff76e2396465e142352766d99f11810" title="printWelcomeMessage" alt="" coords="306,177,462,205"/>
+<area shape="rect" id="node5" href="$uart_8c.html#a67a563abf9e8ac983b55c15cdef82324" title="Wait" alt="" coords="518,125,565,153"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="oled_ramtransfer" name="oled_ramtransfer">
+<area shape="rect" id="node2" href="$oled_8c.html#aad3bd7bdbd074b6660549f7b5169cc64" title="oled_goto_position" alt="" coords="312,31,445,59"/>
+<area shape="rect" id="node6" href="$oled_8c.html#a363f6227a2153e03f9b5d7cea5a856f9" title="oled_home" alt="" coords="176,57,264,85"/>
+<area shape="rect" id="node3" href="$oled_8c.html#a92b72a426516bed15ec9ed3e7745e03f" title="oled_goto_line" alt="" coords="505,5,613,33"/>
+<area shape="rect" id="node5" href="$oled_8c.html#a95e197851798fefbc941053c410e7eca" title="oled_goto_column" alt="" coords="494,57,624,85"/>
+<area shape="rect" id="node4" href="$oled_8c.html#aefcabb9f9987bf38cea55bcd9b0d892d" title="write_command" alt="" coords="673,31,788,59"/>
+</map>
