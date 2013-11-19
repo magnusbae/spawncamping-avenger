@@ -41,7 +41,7 @@
 #define ENCODER7 PA0
 
 //needs tuning
-#define Kp 1
+#define Kp 0.8
 #define Kd 0
 #define Ki 0
 

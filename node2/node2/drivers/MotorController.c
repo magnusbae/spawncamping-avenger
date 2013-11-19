@@ -11,7 +11,7 @@ unsigned char bitReverse(unsigned char x);
 uint8_t readEncoderPins();
 uint8_t calculateByteValue(uint8_t joystickValue);
 float calculateSpeed();
-float calculateErrorSpeed(inputMessage data);
+float calculateErrorSpeed();
 void setMotorEnabledState(uint8_t shouldEnable);
 void setupTimer();
 void destroyTimer();
@@ -21,8 +21,10 @@ void resetTimer();
 unsigned char messageBuf[4];
 volatile uint8_t isDirectionRight = 0;
 volatile int lastReadEncoderValue = 0;
+volatile float lastReadError = 0.00;
 volatile int encoderMaxValue = 0;
-uint8_t errorPile = 0; //Will we actually use this one?
+uint8_t errorCounter = 0;
+uint8_t errorSpeed = 0;
 
 uint8_t isTimerSetUp = 0;
 uint8_t assumedMotorPosition = 0;
@@ -31,7 +33,7 @@ inputMessage inputCommand;
 
 void setupTimer(){
 	isTimerSetUp = 1;
-	TCCR3B |= (1<<CS32) | (1<<CS30); //Start timer 3, f(clk_io)/1024 prescaling
+	TCCR3B |= (1<<CS30); //(1<<CS32) | (1<<CS30); //Start timer 3, f(clk_io)/1024 prescaling
 	ETIMSK |= (1<<TOIE3); //Enables interrupt on timer 3
 }
 
@@ -92,9 +94,8 @@ void setMotorDirection(){
 
 void calibrateMotor(){
 	cli();
-	if(!isTimerSetUp){
-		setupTimer();
-	}
+	destroyTimer();
+	sei();
 	
 	resetEncoder();
 	setDirectionRight();
@@ -120,10 +121,12 @@ void calibrateMotor(){
 	inputCommand.motorPosition = MOTOR_POSITION_CENTER;
 	assumedMotorPosition = 0; //make sure to reset this. 
 	resetEncoder(); //and this
+	
+	cli();
+	setupTimer();
+	
 	//lets play!
 	sei();
-
-
 }
 
 
@@ -194,12 +197,14 @@ unsigned char bitReverse( unsigned char x )
 }
 
 int readEncoderValue(){
+	cli();
 	MOTOR_CONTROLLER_PORT &= ~(1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_us(25);
 	volatile uint8_t val_high = readEncoderPins();
 	MOTOR_CONTROLLER_PORT |= (1<<MOTOR_ENCODER_SELECT_HI_OR_LOW_BYTE);
 	_delay_us(25);
 	volatile uint8_t val_low = readEncoderPins(); //ENCODER_PINS;
+	sei();
 	return (val_high*0b100000000) + val_low;
 }
 
@@ -224,21 +229,15 @@ uint8_t convertEncoderValue(int convme){
 }
 
 float calculateSpeed(){
+	cli();
 	float mesurement_1=abs(readEncoderValue());
 	_delay_ms(5);
 	float mesurement_2=abs(readEncoderValue());
-	return (abs(mesurement_2-mesurement_1))/205.00;
+	sei();
+	return (abs(mesurement_2-mesurement_1))/75.00;
 }
 
-float calculateErrorSpeed(inputMessage data){
-	uint8_t refr = 255-data.motorPosition;
-	float error1 = abs(convertEncoderValue(readEncoderValue()))-refr;
-	_delay_ms(5);
-	float error2 = abs(convertEncoderValue(readEncoderValue()))-refr;
-	
-	return ((abs(error2-error1))/205.00)*200;
-	
-}
+
 
 void regulator(){
 	//might not need PID, depending on motor PI might be enought (or even P)
@@ -247,26 +246,21 @@ void regulator(){
 	uint8_t voltage = 0;
 	uint8_t position = assumedMotorPosition; //convertEncoderValue(readEncoderValue());
 	uint8_t reference = inputCommand.motorPosition;
-	uint8_t deltatime = 0; //replace with time since time_stamp or use a timer module from the avr (we want the time since the refrence was changed)
 	
-	if (position>reference+5){
+	if (position<reference+5){
 		setDirectionRight();
 		error = position-reference;
 	}
-	else if(position<reference-5){
+	else if(position>reference-5){
 		setDirectionLeft();
 		error = reference-position;
 	}
 	else{
-		errorPile = 0;
+		errorCounter = 0;
 		error = 0;
 	}
 	
-	uint8_t errorSpeed = calculateErrorSpeed(inputCommand); //We might need to remove this?
-	
-	errorPile += error;
-	
-	voltage = Kp*error +Ki*errorPile - Kd*errorSpeed;
+	voltage = Kp*error +Ki*errorCounter/50; // - Kd*errorSpeed;
 	
 	//printf("Volt: %d Diff: %d ", prev_voltage, diff);
 	if(voltage>255){
@@ -288,13 +282,19 @@ application.
 ****************************************************************************/
 
 //Timer interrupt for decoder-reading and motor-control
-ISR(TIMER3_OVF){ // TODO Check that this is actually the right vector according to the header file.
-	cli();
+ISR(TIMER3_OVF_vect){ // TODO Check that this is actually the right vector according to the header file.
+// 	cli();
+// 	destroyTimer();
+// 	sei();
 	//Is it too much to do this on EVERY interrupt? How about every other, every three. fclk_io / 1024 is max prescaler.
 	int motorMovement = readEncoderValue();
-	resetEncoder();
+	lastReadError = abs(convertEncoderValue(motorMovement))-inputCommand.motorPosition;
+	//_delay_ms(5);
+	//float newReadError = abs(convertEncoderValue(readEncoderValue()))-inputCommand.motorPosition;
 	uint8_t relativeMovement = abs(motorMovement)/decoderMovementTo8bitFactor;
-
+	resetEncoder();								
+	//errorSpeed = ((abs(newReadError-lastReadError))/75.00);
+	
 	if(motorMovement < 0){ 
 		//going right
 		if(255 - assumedMotorPosition > relativeMovement){
@@ -303,7 +303,9 @@ ISR(TIMER3_OVF){ // TODO Check that this is actually the right vector according 
 			//reached end
 			assumedMotorPosition = 255;
 		}
-	}else{
+	} else if(motorMovement == 0){
+		//do nothing. Assumed motorposition is the same.
+	} else{
 		//going left
 		if(assumedMotorPosition > relativeMovement){
 			assumedMotorPosition -= relativeMovement;
@@ -312,7 +314,11 @@ ISR(TIMER3_OVF){ // TODO Check that this is actually the right vector according 
 			assumedMotorPosition = 0;
 		}
 	}
+	errorCounter += 1;
 	regulator();
-	resetTimer(); //set counter to zero and clear flags (if it has fired during execution)
-	sei();
+	//resetTimer(); //set counter to zero and clear flags (if it has fired during execution)
+	
+// 	cli();
+// 	setupTimer();
+// 	sei();
 }
