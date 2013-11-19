@@ -202,7 +202,7 @@ uint8_t readEncoderPins(){
 
 unsigned char bitReverse( unsigned char x )
 {
-	//Copied from the internet (somewhere)
+	//Copied from the internet (somewhere), couldn't find the link back.
 	x = ((x >> 1) & 0x55) | ((x << 1) & 0xaa);
 	x = ((x >> 2) & 0x33) | ((x << 2) & 0xcc);
 	x = ((x >> 4) & 0x0f) | ((x << 4) & 0xf0);
