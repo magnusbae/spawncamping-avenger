@@ -26,3 +26,10 @@ void resetTimer(){
 	TIFR |= (1<<TOV1); //making sure the interrupt flag is cleared.
 }
 
+void setGameTimer(){
+	TCCR1B |= (1<<CS11); //Start timer 1, 8 prescaling
+}
+
+void setMenuTimer(){
+	TCCR1B |= (1<<CS11) | (1<<CS10); //Start timer 1, 64 prescaling
+}

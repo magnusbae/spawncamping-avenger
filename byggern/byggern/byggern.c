@@ -155,7 +155,7 @@ int main(void)
 	mcp_init();
 	
 	
-	controlMessage.data[0] = START_GAME_COMMAND;
+	controlMessage.data[0] = STOP_GAME_COMMAND;
 	controlMessage.length = 1;
 	controlMessage.extendedFrame = 0;
 	controlMessage.RTR = 0;
@@ -190,6 +190,8 @@ int main(void)
 		if(isBallDropped() && gameIsPaused == 0){
 			gameIsPaused = 1;
 			ackExpectedFromNode2 = STOP_GAME_COMMAND;
+			setMenuTimer();
+			resetTimer();
 			setControlMessageCommand(STOP_GAME_COMMAND);
 			CAN_send_message(controlMessage);
 			displaychange = 1;
@@ -299,6 +301,8 @@ void handleMenuSelection(uint8_t menuPosition){
 		case 0:
 			ackExpectedFromNode2 = START_GAME_COMMAND;
 			sendControlMessage(START_GAME_COMMAND);
+			setGameTimer();
+			resetTimer();
 			gameIsRunning = 1;
 			break;
 		case 1:
@@ -322,6 +326,8 @@ void handlePauseMenuSelection( uint8_t menuPosition )
 			ackExpectedFromNode2 = START_GAME_COMMAND;
 			setControlMessageCommand(START_GAME_COMMAND);
 			CAN_send_message(controlMessage);
+			setGameTimer();
+			resetTimer();
 			gameIsPaused = 0;
 			break;
 		case 2:
